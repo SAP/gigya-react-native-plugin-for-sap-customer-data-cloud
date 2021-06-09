@@ -1,5 +1,5 @@
 # React Native plug-in for SAP Customer Data Cloud
-[![REUSE status](https://github.com/SAP/gigya-react-native-plugin-for-sap-customer-data-cloud)](https://api.reuse.software/info/github.com/SAP/gigya-react-native-plugin-for-sap-customer-data-cloud)
+[![REUSE status](https://api.reuse.software/badge/github.com/SAP/gigya-react-native-plugin-for-sap-customer-data-cloud)](https://api.reuse.software/info/github.com/SAP/gigya-react-native-plugin-for-sap-customer-data-cloud)
 
 ## Description
 A React Native plugin for interfacing with SAP Customer Data Cloud. This plugin provides quick access to core elements & business API flows available within SAP Customer Data Cloud; designed for React Native mobile applications.
