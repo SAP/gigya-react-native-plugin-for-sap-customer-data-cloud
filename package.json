@@ -1,5 +1,5 @@
 {
-  "name": "gigya-react-native-plugin-for-sap-customer-data-cloud",
+  "name": "@sap_oss/gigya-react-native-plugin-for-sap-customer-data-cloud",
   "title": "React Native plug-in for SAP Customer Data Cloud",
   "version": "0.0.1",
   "description": "A React Native plugin for interfacing SAP Customer Data Cloud",
