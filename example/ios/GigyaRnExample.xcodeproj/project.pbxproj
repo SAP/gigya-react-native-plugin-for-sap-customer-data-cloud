@@ -14,8 +14,8 @@
 		35D301D8057A62766B106EB6 /* libPods-GigyaRnExample-GigyaRnExampleTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 40749CEEE59DAEE68FEC03E4 /* libPods-GigyaRnExample-GigyaRnExampleTests.a */; };
 		6E7BEDAF9CB4FAEF3ED5DC20 /* libPods-GigyaRnExample.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 45792D02B8D43EEDD5D76C8E /* libPods-GigyaRnExample.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
-		E7FDA98E26565BD000586EED /* FacebookWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7FDA98D26565BD000586EED /* FacebookWrapper.swift */; };
-		E7FDA99026565BDE00586EED /* GigyaExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7FDA98F26565BDE00586EED /* GigyaExtension.swift */; };
+		E76C4F67269AC53F00BC2E2E /* FacebookWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E76C4F65269AC53F00BC2E2E /* FacebookWrapper.swift */; };
+		E76C4F68269AC53F00BC2E2E /* GigyaExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E76C4F66269AC53F00BC2E2E /* GigyaExtension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -45,9 +45,9 @@
 		8E132C3D6E2E40FC193214F3 /* Pods-GigyaRnExample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GigyaRnExample.release.xcconfig"; path = "Target Support Files/Pods-GigyaRnExample/Pods-GigyaRnExample.release.xcconfig"; sourceTree = "<group>"; };
 		AD88830EDDD5DD3C498BA653 /* Pods-GigyaRnExample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GigyaRnExample.debug.xcconfig"; path = "Target Support Files/Pods-GigyaRnExample/Pods-GigyaRnExample.debug.xcconfig"; sourceTree = "<group>"; };
 		CD42C27340FA4AA300A7F48B /* Pods-GigyaRnExample-GigyaRnExampleTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GigyaRnExample-GigyaRnExampleTests.release.xcconfig"; path = "Target Support Files/Pods-GigyaRnExample-GigyaRnExampleTests/Pods-GigyaRnExample-GigyaRnExampleTests.release.xcconfig"; sourceTree = "<group>"; };
+		E76C4F65269AC53F00BC2E2E /* FacebookWrapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FacebookWrapper.swift; sourceTree = "<group>"; };
+		E76C4F66269AC53F00BC2E2E /* GigyaExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GigyaExtension.swift; sourceTree = "<group>"; };
 		E7FDA98C26565BCE00586EED /* GigyaRnExample-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "GigyaRnExample-Bridging-Header.h"; sourceTree = "<group>"; };
-		E7FDA98D26565BD000586EED /* FacebookWrapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FacebookWrapper.swift; path = ../../../ios/FacebookWrapper.swift; sourceTree = "<group>"; };
-		E7FDA98F26565BDE00586EED /* GigyaExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GigyaExtension.swift; path = ../../../ios/GigyaExtension.swift; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -102,12 +102,12 @@
 		13B07FAE1A68108700A75B9A /* GigyaRnExample */ = {
 			isa = PBXGroup;
 			children = (
-				E7FDA98D26565BD000586EED /* FacebookWrapper.swift */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
+				E76C4F65269AC53F00BC2E2E /* FacebookWrapper.swift */,
+				E76C4F66269AC53F00BC2E2E /* GigyaExtension.swift */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
-				E7FDA98F26565BDE00586EED /* GigyaExtension.swift */,
 				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
 				13B07FB71A68108700A75B9A /* main.m */,
 				E7FDA98C26565BCE00586EED /* GigyaRnExample-Bridging-Header.h */,
@@ -419,9 +419,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
-				E7FDA99026565BDE00586EED /* GigyaExtension.swift in Sources */,
+				E76C4F68269AC53F00BC2E2E /* GigyaExtension.swift in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
-				E7FDA98E26565BD000586EED /* FacebookWrapper.swift in Sources */,
+				E76C4F67269AC53F00BC2E2E /* FacebookWrapper.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
