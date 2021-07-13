@@ -28,13 +28,14 @@ extension GigyaSdkWrapper {
             break
         case .pendingVerification:
             break
-        case .conflitingAccount:
+        case .conflictingAccount:
             guard let resolverInstance: GigyaResolver<LinkAccountsResolver<T>> = resolver as? GigyaResolver<LinkAccountsResolver<T>> else {
                 return
             }
 
             switch method {
             case "getConflictingAccount":
+
                 promise?.resolve(result: mapObject(resolverInstance.resolver?.conflictingAccount))
             case "linkToSite":
                 resolverInstance.resolver?.linkToSite(loginId: params["loginId"] as! String, password: params["password"] as! String)

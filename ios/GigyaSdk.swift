@@ -36,7 +36,7 @@ public class GigyaSdk: NSObject {
     }
 
     @objc(send:params:resolver:rejecter:)
-    func send(_ api: String, params: [String: Any], resolve: @escaping RCTPromiseResolveBlock, reject: @escaping RCTPromiseRejectBlock) -> Void {
+    func send(_ api: String, params: String, resolve: @escaping RCTPromiseResolveBlock, reject: @escaping RCTPromiseRejectBlock) -> Void {
         promise.set(promiseResolve: resolve, promiseReject: reject)
 
         let newParams: [String : Any] = ["api": api, "params": params];
@@ -44,10 +44,12 @@ public class GigyaSdk: NSObject {
     }
 
     @objc(register:password:params:resolver:rejecter:)
-    func register(_ email: String, password: String, params: [String: Any], resolve: @escaping RCTPromiseResolveBlock, reject: @escaping RCTPromiseRejectBlock) -> Void {
+    func register(_ email: String, password: String, params: String, resolve: @escaping RCTPromiseResolveBlock, reject: @escaping RCTPromiseRejectBlock) -> Void {
         promise.set(promiseResolve: resolve, promiseReject: reject)
 
-        let newParams: [String : Any] = ["email": email, "password": password, "params": params];
+        let jsonToParams = GigyaSdk.toJson(data: params)
+
+        let newParams: [String : Any] = ["email": email, "password": password, "params": jsonToParams];
         GigyaSdk.gigya?.sendEvent(.register, params: newParams, promise: promise)
     }
 
@@ -61,48 +63,60 @@ public class GigyaSdk: NSObject {
     }
 
     @objc(getAccount:resolver:rejecter:)
-    func getAccount(_ params: [String: Any], resolve: @escaping RCTPromiseResolveBlock, reject: @escaping RCTPromiseRejectBlock) -> Void {
+    func getAccount(_ params: String, resolve: @escaping RCTPromiseResolveBlock, reject: @escaping RCTPromiseRejectBlock) -> Void {
         promise.set(promiseResolve: resolve, promiseReject: reject)
 
-        let newParams: [String : Any] = ["params": params];
+        let jsonToParams = GigyaSdk.toJson(data: params)
+
+        let newParams: [String : Any] = ["params": jsonToParams];
         GigyaSdk.gigya?.sendEvent(.getAccount, params: newParams, promise: promise)
     }
 
     @objc(setAccount:resolver:rejecter:)
-    func setAccount(_ params: [String: Any], resolve: @escaping RCTPromiseResolveBlock, reject: @escaping RCTPromiseRejectBlock) -> Void {
+    func setAccount(_ params: String, resolve: @escaping RCTPromiseResolveBlock, reject: @escaping RCTPromiseRejectBlock) -> Void {
         promise.set(promiseResolve: resolve, promiseReject: reject)
 
-        let newParams: [String : Any] = ["params": params];
+        let jsonToParams = GigyaSdk.toJson(data: params)
+
+        let newParams: [String : Any] = ["params": jsonToParams];
         GigyaSdk.gigya?.sendEvent(.setAccount, params: newParams, promise: promise)
     }
 
     @objc(socialLogin:params:resolver:rejecter:)
-    func socialLogin(_ provider: String, params: [String: Any], resolve: @escaping RCTPromiseResolveBlock, reject: @escaping RCTPromiseRejectBlock) -> Void {
+    func socialLogin(_ provider: String, params: String, resolve: @escaping RCTPromiseResolveBlock, reject: @escaping RCTPromiseRejectBlock) -> Void {
         promise.set(promiseResolve: resolve, promiseReject: reject)
 
-        let newParmas: [String: Any] = ["provider": provider, "params": params]
+        let jsonToParams = GigyaSdk.toJson(data: params)
+
+        let newParmas: [String: Any] = ["provider": provider, "params": jsonToParams]
         GigyaSdk.gigya?.sendEvent(.socialLogin, params: newParmas, promise: promise)
     }
 
     @objc(addConnection:resolver:rejecter:)
-    func addConnection(_ params: [String: Any], resolve: @escaping RCTPromiseResolveBlock, reject: @escaping RCTPromiseRejectBlock) -> Void {
+    func addConnection(_ params: String, resolve: @escaping RCTPromiseResolveBlock, reject: @escaping RCTPromiseRejectBlock) -> Void {
         promise.set(promiseResolve: resolve, promiseReject: reject)
 
-        let newParams: [String : Any] = ["params": params];
+        let jsonToParams = GigyaSdk.toJson(data: params)
+
+        let newParams: [String : Any] = ["params": jsonToParams];
         GigyaSdk.gigya?.sendEvent(.addConnection, params: newParams, promise: promise)
     }
 
     @objc(removeConnection:resolver:rejecter:)
-    func removeConnection(_ params: [String: Any], resolve: @escaping RCTPromiseResolveBlock, reject: @escaping RCTPromiseRejectBlock) -> Void {
+    func removeConnection(_ params: String, resolve: @escaping RCTPromiseResolveBlock, reject: @escaping RCTPromiseRejectBlock) -> Void {
         promise.set(promiseResolve: resolve, promiseReject: reject)
 
-        let newParams: [String : Any] = ["params": params];
+        let jsonToParams = GigyaSdk.toJson(data: params)
+
+        let newParams: [String : Any] = ["params": jsonToParams];
         GigyaSdk.gigya?.sendEvent(.removeConnection, params: newParams, promise: promise)
     }
 
     @objc(showScreenSet:params:)
-    func showScreenSet(name: String, params: [String: Any]) {
-        GigyaSdk.gigya?.showScreenSet(name: name, params: params)
+    func showScreenSet(name: String, params: String) {
+        let jsonToParams = GigyaSdk.toJson(data: params)
+
+        GigyaSdk.gigya?.showScreenSet(name: name, params: jsonToParams)
     }
 
     @objc(logout:rejecter:)
@@ -113,21 +127,22 @@ public class GigyaSdk: NSObject {
     }
 
     @objc(resolve:params:resolver:rejecter:)
-    func resolve(method: String, params: [String: Any], resolve: @escaping RCTPromiseResolveBlock, reject: @escaping RCTPromiseRejectBlock) {
+    func resolve(method: String, params: String, resolve: @escaping RCTPromiseResolveBlock, reject: @escaping RCTPromiseRejectBlock) {
         promise.set(promiseResolve: resolve, promiseReject: reject)
 
-        GigyaSdk.gigya?.useResolver(method: method, params: params)
+        let jsonToParams = GigyaSdk.toJson(data: params)
+
+        GigyaSdk.gigya?.useResolver(method: method, params: jsonToParams)
     }
 
     static func toJson(data: String) -> [String: Any] {
         do {
-            let jsonEncoder = JSONEncoder()
-            let jsonData = try jsonEncoder.encode(data)
-            let dictionary = try JSONSerialization.jsonObject(with: jsonData, options: [])
+            let dictionary = try JSONSerialization.jsonObject(with: data.data(using: .utf8)!, options: [.mutableContainers])
                 as? [String: Any]
             return dictionary ?? [:]
-        } catch {
+        } catch let error {
             // TODO: Add to logger
+            print(error)
         }
 
         return [:]
@@ -138,7 +153,7 @@ public class GigyaSdk: NSObject {
             let jsonData = try JSONSerialization.data(withJSONObject: data, options: [])
             let decoded = String(data: jsonData, encoding: .utf8)
             return decoded ?? ""
-        } catch let error {
+        } catch _ {
             return "{}"
         }
     }

@@ -26,7 +26,7 @@ enum GigyaMethods: String {
 enum GigyaInterruptionsSupported: String {
     case pendingRegistration
     case pendingVerification
-    case conflitingAccount
+    case conflictingAccount
     case unknown
 }
 
@@ -34,9 +34,9 @@ protocol GigyaSdkWrapperProtocol {
     var currentResolver: GigyaResolverModelProtocol? { get }
 
     func isLoggedIn() -> Bool
-
+    
     func initFor(apiKey: String, domain: String)
-
+    
     func sendEvent(_ name: GigyaMethods, params: [String: Any], promise: PromiseWrapper)
 
     func showScreenSet(name: String, params: [String: Any])
@@ -229,51 +229,51 @@ class GigyaSdkWrapper<T: GigyaAccountProtocol>: GigyaSdkWrapperProtocol {
             switch result {
             case .onBeforeValidation(event: let event):
                 let data: [String: Any] = ["event": "onBeforeValidation", "data": event]
-                GigyaSdkEvents.emitter.sendEvent(withName: "event", body: data)
+                GigyaSdkEvents.emitter.sendEvent(withName: "event", body: GigyaSdk.toJsonString(data: data))
             case .onAfterValidation(event: let event):
                 let data: [String: Any] = ["event": "onAfterValidation", "data": event]
-                GigyaSdkEvents.emitter.sendEvent(withName: "event", body: data)
+                GigyaSdkEvents.emitter.sendEvent(withName: "event", body: GigyaSdk.toJsonString(data: data))
             case .onBeforeSubmit(event: let event):
                 let data: [String: Any] = ["event": "onBeforeSubmit", "data": event]
-                GigyaSdkEvents.emitter.sendEvent(withName: "event", body: data)
+                GigyaSdkEvents.emitter.sendEvent(withName: "event", body: GigyaSdk.toJsonString(data: data))
             case .onSubmit(event: let event):
                 let data: [String: Any] = ["event": "onSubmit", "data": event]
-                GigyaSdkEvents.emitter.sendEvent(withName: "event", body: data)
+                GigyaSdkEvents.emitter.sendEvent(withName: "event", body: GigyaSdk.toJsonString(data: data))
             case .onAfterSubmit(event: let event):
                 let data: [String: Any] = ["event": "onAfterSubmit", "data": event]
-                GigyaSdkEvents.emitter.sendEvent(withName: "event", body: data)
+                GigyaSdkEvents.emitter.sendEvent(withName: "event", body: GigyaSdk.toJsonString(data: data))
             case .onBeforeScreenLoad(event: let event):
                 let data: [String: Any] = ["event": "onBeforeScreenLoad", "data": event]
-                GigyaSdkEvents.emitter.sendEvent(withName: "event", body: data)
+                GigyaSdkEvents.emitter.sendEvent(withName: "event", body: GigyaSdk.toJsonString(data: data))
             case .onAfterScreenLoad(event: let event):
                 let data: [String: Any] = ["event": "onAfterScreenLoad", "data": event]
-                GigyaSdkEvents.emitter.sendEvent(withName: "event", body: data)
+                GigyaSdkEvents.emitter.sendEvent(withName: "event", body: GigyaSdk.toJsonString(data: data))
             case .onFieldChanged(event: let event):
                 let data: [String: Any] = ["event": "onFieldChanged", "data": event]
-                GigyaSdkEvents.emitter.sendEvent(withName: "event", body: data)
+                GigyaSdkEvents.emitter.sendEvent(withName: "event", body: GigyaSdk.toJsonString(data: data))
             case .onHide(event: let event):
                 let data: [String: Any] = ["event": "onHide", "data": event]
-                GigyaSdkEvents.emitter.sendEvent(withName: "event", body: data)
+                GigyaSdkEvents.emitter.sendEvent(withName: "event", body: GigyaSdk.toJsonString(data: data))
             case .onLogin(account: let account):
                 let mapped: [String: Any] = self.accountToDic(account: account)
-                let data: [String: Any] = ["event": "onLogin", "data": mapped]
+                let data: [String: Any] = ["event": "onLogin", "data": GigyaSdk.toJsonString(data: mapped)]
 
-                GigyaSdkEvents.emitter.sendEvent(withName: "event", body: data)
+                GigyaSdkEvents.emitter.sendEvent(withName: "event", body: GigyaSdk.toJsonString(data: data))
             case .onLogout:
                 let data: [String: Any] = ["event": "onLogout"]
-                GigyaSdkEvents.emitter.sendEvent(withName: "event", body: data)
+                GigyaSdkEvents.emitter.sendEvent(withName: "event", body: GigyaSdk.toJsonString(data: data))
             case .onConnectionAdded:
                 let data: [String: Any] = ["event": "onConnectionAdded"]
-                GigyaSdkEvents.emitter.sendEvent(withName: "event", body: data)
+                GigyaSdkEvents.emitter.sendEvent(withName: "event", body: GigyaSdk.toJsonString(data: data))
             case .onConnectionRemoved:
                 let data: [String: Any] = ["event": "onConnectionRemoved"]
-                GigyaSdkEvents.emitter.sendEvent(withName: "event", body: data)
+                GigyaSdkEvents.emitter.sendEvent(withName: "event", body: GigyaSdk.toJsonString(data: data))
             case .onCanceled:
                 let data: [String: Any] = ["event": "onCanceled"]
-                GigyaSdkEvents.emitter.sendEvent(withName: "event", body: data)
+                GigyaSdkEvents.emitter.sendEvent(withName: "event", body: GigyaSdk.toJsonString(data: data))
             case .error(event: let event):
                 let data: [String: Any] = ["event": "event", "data": event]
-                GigyaSdkEvents.emitter.sendEvent(withName: "event", body: data)
+                GigyaSdkEvents.emitter.sendEvent(withName: "event", body: GigyaSdk.toJsonString(data: data))
             }
 
         }
@@ -355,11 +355,8 @@ class GigyaSdkWrapper<T: GigyaAccountProtocol>: GigyaSdkWrapperProtocol {
         switch interruption {
         case .pendingRegistration(resolver: let resolver):
             self.currentResolver = GigyaResolver(interrupt: .pendingRegistration, resolver: resolver)
-        case .pendingVerification(regToken: let regToken):
-//            self.currentResolver = GigyaResolver(interrupt: .pendingVerification, resolver: resolver)
-            break
         case .conflitingAccount(resolver: let resolver):
-            self.currentResolver = GigyaResolver(interrupt: .conflitingAccount, resolver: resolver)
+            self.currentResolver = GigyaResolver(interrupt: .conflictingAccount, resolver: resolver)
         default:
             break
         }

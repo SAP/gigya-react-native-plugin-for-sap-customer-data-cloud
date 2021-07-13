@@ -2970,8 +2970,8 @@ getpass@^0.1.1:
   dependencies:
     assert-plus "^1.0.0"
 
-"gigya-react-native-plugin@file:..":
-  version "1.0.0"
+"gigya-react-native-plugin-for-sap-customer-data-cloud@file:..":
+  version "0.0.1"
 
 glob-parent@^5.0.0:
   version "5.1.2"

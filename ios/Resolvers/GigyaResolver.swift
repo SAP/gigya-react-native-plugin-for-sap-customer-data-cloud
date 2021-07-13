@@ -14,6 +14,7 @@ protocol GigyaResolverModelProtocol {
 class GigyaResolver<T>: GigyaResolverModelProtocol {
     var interrupt: GigyaInterruptionsSupported
     var resolver: T?
+    var regToken: String?
 
     init(interrupt: GigyaInterruptionsSupported, resolver: T) {
         self.resolver = resolver

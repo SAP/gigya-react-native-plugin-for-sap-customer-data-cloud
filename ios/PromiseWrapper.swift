@@ -37,7 +37,8 @@ class PromiseWrapper {
         }
 
         let e = NSError(domain: "gigyaError", code: errorCode, userInfo: nil)
-        promiseReject(error, GigyaSdk.toJsonString(data: data), e)
+        let json = GigyaSdk.toJsonString(data: data)
+        promiseReject(error, json, e)
 
         self.clear()
     }

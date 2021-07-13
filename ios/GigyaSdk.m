@@ -17,7 +17,7 @@
 }
 
 RCT_EXTERN_METHOD(send:(NSString *)api
-                  params:(id *)params
+                  params:(NSString *)params
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 
@@ -32,20 +32,20 @@ RCT_EXTERN_METHOD(login:(NSString *)loginId
 
 RCT_EXTERN_METHOD(register:(NSString *)email
                   password:(NSString *)password
-                  params:(id *)params
+                  params:(NSString *)params
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 
-RCT_EXTERN_METHOD(getAccount:params:(id *)params
+RCT_EXTERN_METHOD(getAccount:params:(NSString *)params
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 
-RCT_EXTERN_METHOD(setAccount:(id *)params
+RCT_EXTERN_METHOD(setAccount:(NSString *)params
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 
 RCT_EXTERN_METHOD(socialLogin: (NSString *)provider
-                  params: (id *)params
+                  params: (NSString *)params
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 
@@ -63,10 +63,10 @@ RCT_EXTERN_METHOD(initFor:(NSString *)apiKey
                   apiDomain:(NSString *)apiDomain)
 
 RCT_EXTERN_METHOD(showScreenSet:(NSString *)name
-                  params:(id *)params)
+                  params:(NSString *)params)
 
 RCT_EXTERN_METHOD(resolve:(NSString *)method
-                  params:(id *)params
+                  params:(NSString *)params
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 
