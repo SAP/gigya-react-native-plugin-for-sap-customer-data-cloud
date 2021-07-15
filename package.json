@@ -3,7 +3,7 @@
   "title": "React Native plug-in for SAP Customer Data Cloud",
   "version": "0.0.3",
   "description": "A React Native plugin for interfacing SAP Customer Data Cloud",
-  "main": "src/index.js"
+  "main": "src/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
