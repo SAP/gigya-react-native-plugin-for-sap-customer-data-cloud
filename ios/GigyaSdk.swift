@@ -26,7 +26,7 @@ public class GigyaSdk: NSObject {
     }
 
     @objc(initFor:apiDomain:)
-    init(apiKey: String, apiDomain: String) {
+    init(apiKey: String, apiDomain: String?) {
         GigyaSdk.gigya?.initFor(apiKey: apiKey, domain: apiDomain)
     }
 

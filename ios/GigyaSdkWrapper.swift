@@ -34,9 +34,9 @@ protocol GigyaSdkWrapperProtocol {
     var currentResolver: GigyaResolverModelProtocol? { get }
 
     func isLoggedIn() -> Bool
-    
-    func initFor(apiKey: String, domain: String)
-    
+
+    func initFor(apiKey: String, domain: String?)
+
     func sendEvent(_ name: GigyaMethods, params: [String: Any], promise: PromiseWrapper)
 
     func showScreenSet(name: String, params: [String: Any])
@@ -52,7 +52,7 @@ class GigyaSdkWrapper<T: GigyaAccountProtocol>: GigyaSdkWrapperProtocol {
     var currentResolver: GigyaResolverModelProtocol?
 
     init(accountSchema: T.Type) {
-        GigyaLogger.setDebugMode(to: true)
+        GigyaDefinitions.versionPrefix = "react_native_0.0.3_"
         gigya = Gigya.sharedInstance(accountSchema)
     }
 
@@ -91,8 +91,8 @@ class GigyaSdkWrapper<T: GigyaAccountProtocol>: GigyaSdkWrapperProtocol {
         }
     }
 
-    func initFor(apiKey: String, domain: String) {
-        gigya.initFor(apiKey: apiKey)
+    func initFor(apiKey: String, domain: String?) {
+        gigya.initFor(apiKey: apiKey, apiDomain: domain)
     }
 
     func isLoggedIn() -> Bool {
