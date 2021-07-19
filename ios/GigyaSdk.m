@@ -36,7 +36,7 @@ RCT_EXTERN_METHOD(register:(NSString *)email
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 
-RCT_EXTERN_METHOD(getAccount:params:(NSString *)params
+RCT_EXTERN_METHOD(getAccount:(NSString *)params
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 

@@ -2,7 +2,7 @@ import { GigyaError } from ".";
 import { GigyaDictionary, GigyaSocialProviders } from "./Models";
 
 export class ResolverFactory {
-    getResolver(error: GigyaError) : void
+    getResolver(error: GigyaError) : IResolver
 }
 
 export class IResolver {
@@ -11,7 +11,7 @@ export class IResolver {
     constructor(regToken: string)
 }
 
-export class LinkAccountResolver extends IResolver { 
+export interface LinkAccountResolver extends IResolver { 
     getConflictingAccount(): Promise<GigyaDictionary>
     
     linkToSite(loginId: string, password: string): Promise<GigyaDictionary>
@@ -19,10 +19,8 @@ export class LinkAccountResolver extends IResolver {
     linkToSocial(provider: GigyaSocialProviders): Promise<GigyaDictionary>
 }
 
-export class PendingRegistrationResolver extends IResolver { 
+export interface PendingRegistrationResolver extends IResolver { 
     setAccount(params: Record<string, any>): Promise<GigyaDictionary>
 }
 
-export class PendingVerificationResolver extends IResolver {  }
-
-
+export interface PendingVerificationResolver extends IResolver {  }
