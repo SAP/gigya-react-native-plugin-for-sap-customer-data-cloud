@@ -174,7 +174,7 @@ try {
       const e = error as GigyaError;
       switch (e.getInterruption()) {
         case GigyaInterruption.conflictingAccounts: {
-          const resolver = Gigya.resolverFactory.getResolver<LinkAccountResolver>(e)
+          const resolver = Gigya.resolverFactory.getResolver(e) as LinkAccountResolver;
 
           console.log("link:")
           console.log(resolver.regToken)
