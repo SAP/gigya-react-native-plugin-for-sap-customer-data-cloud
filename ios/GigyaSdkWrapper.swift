@@ -41,7 +41,7 @@ protocol GigyaSdkWrapperProtocol {
 
     func showScreenSet(name: String, params: [String: Any])
 
-    func useResolver(method: String, params: [String: Any])
+    func useResolver(method: String, params: [String: Any], promise: PromiseWrapper)
 }
 
 class GigyaSdkWrapper<T: GigyaAccountProtocol>: GigyaSdkWrapperProtocol {

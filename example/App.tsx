@@ -29,13 +29,16 @@ import {
 
 import { Gigya, GigyaError, GigyaInterruption } from 'gigya-react-native-plugin-for-sap-customer-data-cloud';
 import { Button } from 'react-native';
-import { LinkAccountResolver, PendingVerificationResolver } from 'gigya-react-native-plugin-for-sap-customer-data-cloud/src/resolvers';
+import { IResolver, LinkAccountResolver, PendingVerificationResolver } from 'gigya-react-native-plugin-for-sap-customer-data-cloud/src/resolvers';
 import { PendingRegistrationResolver } from 'gigya-react-native-plugin-for-sap-customer-data-cloud/src/resolvers';
+
+let linkResolver: LinkAccountResolver | null = null; 
 
 const App = (): React.ReactElement => {
   const [isLoggedIn, updateIsLoggedIn] = useState(Gigya.isLoggedIn());
 
   const [visible, setVisible] = useState(false);
+  const [visibleLink, setVisibleLink] = useState(false);
 
   console.log("is: " + Gigya.isLoggedIn())
 
@@ -83,37 +86,16 @@ const App = (): React.ReactElement => {
         }
         case GigyaInterruption.conflictingAccounts: {
           console.log("conflictingAccounts start")
-          const resolver = Gigya.resolverFactory.getResolver(e) as LinkAccountResolver;
+          linkResolver = Gigya.resolverFactory.getResolver(e) as LinkAccountResolver;
 
           console.log("link:")
-          console.log(resolver.regToken)
-          const accounts = await resolver.getConflictingAccount()
+          console.log(linkResolver.regToken)
+          const accounts = await linkResolver.getConflictingAccount()
           console.log("account:")
           console.log(JSON.stringify(accounts))
 
-          Alert.prompt(
-            "Site Link Account",
-            "Login with user and pass",
-            [
-              {
-                text: "Cancel",
-                onPress: () => Alert.alert("Cancel Pressed"),
-                style: "cancel",
-              },
-              {
-                text: 'login',
-                onPress: async (data) => {
-                  const userData: user = data as unknown as user;
-                  const loginToSite = await resolver.linkToSite(userData.login, userData.password)
-                  console.log("link to site:")
-                  console.log(JSON.stringify(loginToSite))
+          setVisibleLink(true);
 
-                  updateIsLoggedIn(Gigya.isLoggedIn())
-                }
-              }
-            ],
-            'login-password'
-          );
         }
       }
     }
@@ -293,6 +275,7 @@ const App = (): React.ReactElement => {
 
     const handleCancel = () => {
       setVisible(false)
+      setVisibleLink(false)
       dispose()
     };
 
@@ -314,16 +297,33 @@ const App = (): React.ReactElement => {
       dispose()
     };
 
+    const handleSiteLink = async () => {
+      console.log(linkResolver);
+      const loginToSite = await linkResolver?.linkToSite(userData.login, userData.password);
+      console.log("link to site:");
+      console.log(JSON.stringify(loginToSite));
+
+      updateIsLoggedIn(Gigya.isLoggedIn());
+      setVisibleLink(false);
+    };
+
     const dispose = () => {
       userData.login = ""
       userData.password = ""
     };
 
-
     var userData: user = {login: "", password: ""};
 
   return (
     <>
+      <Dialog.Container visible={visibleLink}>
+        <Dialog.Title>Link To Site</Dialog.Title>
+        <Dialog.Input label="email" onChangeText={(email : string) => userData.login = email} />
+        <Dialog.Input label="password" onChangeText={(pass : string) => userData.password = pass} />
+        <Dialog.Button label="Cancel" onPress={handleCancel} />
+        <Dialog.Button label="Submit" onPress={handleSiteLink} />
+      </Dialog.Container>
+      
       <Dialog.Container visible={visible}>
         <Dialog.Title>Login/Register</Dialog.Title>
         <Dialog.Input label="email" onChangeText={(email : string) => userData.login = email} />

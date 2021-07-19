@@ -131,8 +131,7 @@ public class GigyaSdk: NSObject {
         promise.set(promiseResolve: resolve, promiseReject: reject)
 
         let jsonToParams = GigyaSdk.toJson(data: params)
-
-        GigyaSdk.gigya?.useResolver(method: method, params: jsonToParams)
+        GigyaSdk.gigya?.useResolver(method: method, params: jsonToParams, promise: promise)
     }
 
     static func toJson(data: String) -> [String: Any] {
@@ -141,8 +140,7 @@ public class GigyaSdk: NSObject {
                 as? [String: Any]
             return dictionary ?? [:]
         } catch let error {
-            // TODO: Add to logger
-            print(error)
+            GigyaLogger.log(with: self, message: error.localizedDescription)
         }
 
         return [:]
