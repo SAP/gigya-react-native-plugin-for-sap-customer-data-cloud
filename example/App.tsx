@@ -29,13 +29,16 @@ import {
 
 import { Gigya, GigyaError, GigyaInterruption } from 'gigya-react-native-plugin-for-sap-customer-data-cloud';
 import { Button } from 'react-native';
-import { LinkAccountResolver, PendingVerificationResolver } from 'gigya-react-native-plugin-for-sap-customer-data-cloud/resolvers';
-import { PendingRegistrationResolver } from 'gigya-react-native-plugin-for-sap-customer-data-cloud/resolvers';
+import { IResolver, LinkAccountResolver, PendingVerificationResolver } from 'gigya-react-native-plugin-for-sap-customer-data-cloud/src/resolvers';
+import { PendingRegistrationResolver } from 'gigya-react-native-plugin-for-sap-customer-data-cloud/src/resolvers';
+
+let linkResolver: LinkAccountResolver | null = null; 
 
 const App = (): React.ReactElement => {
   const [isLoggedIn, updateIsLoggedIn] = useState(Gigya.isLoggedIn());
 
   const [visible, setVisible] = useState(false);
+  const [visibleLink, setVisibleLink] = useState(false);
 
   console.log("is: " + Gigya.isLoggedIn())
 
@@ -44,7 +47,7 @@ const App = (): React.ReactElement => {
   const sendApi = async () => {
     try {
       const senddd = await Gigya.send("socialize.getSDKConfig");
-      console.log("sendd: " + JSON.stringify(senddd));
+      console.log("send: " + JSON.stringify(senddd));
     } catch (error) {
       console.log("errorSend:" + error);
     }
@@ -55,16 +58,16 @@ const App = (): React.ReactElement => {
     try {
       const senddd = await Gigya.socialLogin("facebook");
 
-      console.log("sendd: " + JSON.stringify(senddd));
+      console.log("socialLogin: " + JSON.stringify(senddd));
 
       updateIsLoggedIn(Gigya.isLoggedIn())
-    } catch (error) {
-      console.log("errorSend:" + error);
+    } catch (e) {
+      console.log("errorSend:" + JSON.stringify(e));
 
-      const e = new GigyaError(error)
+      console.log("socialLogin interruption");
       switch (e.getInterruption()) {
         case GigyaInterruption.pendingRegistration: {
-          const resolver = Gigya.resolverFactory.getResolver<PendingRegistrationResolver>(e)
+          const resolver = Gigya.resolverFactory.getResolver(e) as PendingRegistrationResolver;
 
           console.log("pendingRegistration:")
           console.log(resolver.regToken)
@@ -82,55 +85,35 @@ const App = (): React.ReactElement => {
           break
         }
         case GigyaInterruption.conflictingAccounts: {
-          const resolver = Gigya.resolverFactory.getResolver<LinkAccountResolver>(e)
+          console.log("conflictingAccounts start")
+          linkResolver = Gigya.resolverFactory.getResolver(e) as LinkAccountResolver;
 
           console.log("link:")
-          console.log(resolver.regToken)
-          const accounts = await resolver.getConflictingAccount()
+          console.log(linkResolver.regToken)
+          const accounts = await linkResolver.getConflictingAccount()
           console.log("account:")
           console.log(JSON.stringify(accounts))
 
-          Alert.prompt(
-            "Site Link Account",
-            "Login with user and pass",
-            [
-              {
-                text: "Cancel",
-                onPress: () => Alert.alert("Cancel Pressed"),
-                style: "cancel",
-              },
-              {
-                text: 'login',
-                onPress: async (data) => {
-                  const userData: user = data as unknown as user;
-                  const loginToSite = await resolver.linkToSite(userData.login, userData.password)
-                  console.log("link to site:")
-                  console.log(JSON.stringify(loginToSite))
+          setVisibleLink(true);
 
-                  updateIsLoggedIn(Gigya.isLoggedIn())
-                }
-              }
-            ],
-            'login-password'
-          );
         }
       }
     }
   };
 
   const login = async (login: string, password: string) => {
+    console.log("start login");
     try {
-      const senddd = await Gigya.login(login, password);
-      console.log("sendd: " + senddd);
-      updateIsLoggedIn(Gigya.isLoggedIn())
-    } catch (error) {
-      console.log("login error:" + error);
-    
-      const e = error as GigyaError;
-      
+      const send = await Gigya.login(login, password);
+      console.log("login: " + send);
+      updateIsLoggedIn(Gigya.isLoggedIn());
+      console.log("login status: "+Gigya.isLoggedIn());
+    } catch (e) {
+      console.log("login error:" + e);
+          
       switch (e.getInterruption()) {
         case GigyaInterruption.pendingRegistration: {
-          const resolver = Gigya.resolverFactory.getResolver(e)
+          const resolver = Gigya.resolverFactory.getResolver(e) as PendingRegistrationResolver;
 
           console.log("pendingRegistration:")
           console.log(resolver.regToken)
@@ -147,7 +130,7 @@ const App = (): React.ReactElement => {
   const logout = async () => {
     try {
       const senddd = await Gigya.logout()
-      console.log("sendd: " + JSON.stringify(senddd));
+      console.log("logout: " + JSON.stringify(senddd));
       updateIsLoggedIn(Gigya.isLoggedIn())
     } catch (error) {
       console.log("errorSend:" + error);
@@ -157,16 +140,15 @@ const App = (): React.ReactElement => {
   const register = async (login: string, password: string) => {
     try {
       const senddd = await Gigya.register(login, password, { 'sessionExpiration': 0 });
-      console.log("sendd: " + JSON.stringify(senddd));
+      console.log("register: " + JSON.stringify(senddd));
       updateIsLoggedIn(Gigya.isLoggedIn())
 
-    } catch (error) {
-      console.log("register error:" + error);
+    } catch (e) {
+      console.log("register error:" + e);
 
-      const e = error as GigyaError;
       switch (e.getInterruption()) {
         case GigyaInterruption.conflictingAccounts: {
-          const resolver = Gigya.resolverFactory.getResolver<LinkAccountResolver>(e)
+          const resolver = Gigya.resolverFactory.getResolver(e) as LinkAccountResolver;
 
           console.log("link:")
           console.log(resolver.regToken)
@@ -175,6 +157,17 @@ const App = (): React.ReactElement => {
         }
       }
 
+    }
+  };
+
+
+  const getAccount = async () => {
+    try {
+      const send = await Gigya.getAccount()
+      console.log("getAccount: " + JSON.stringify(send));
+
+    } catch (error) {
+      console.log("errorSend:" + error);
     }
   };
 
@@ -282,6 +275,7 @@ const App = (): React.ReactElement => {
 
     const handleCancel = () => {
       setVisible(false)
+      setVisibleLink(false)
       dispose()
     };
 
@@ -303,16 +297,33 @@ const App = (): React.ReactElement => {
       dispose()
     };
 
+    const handleSiteLink = async () => {
+      console.log(linkResolver);
+      const loginToSite = await linkResolver?.linkToSite(userData.login, userData.password);
+      console.log("link to site:");
+      console.log(JSON.stringify(loginToSite));
+
+      updateIsLoggedIn(Gigya.isLoggedIn());
+      setVisibleLink(false);
+    };
+
     const dispose = () => {
       userData.login = ""
       userData.password = ""
     };
 
-
     var userData: user = {login: "", password: ""};
 
   return (
     <>
+      <Dialog.Container visible={visibleLink}>
+        <Dialog.Title>Link To Site</Dialog.Title>
+        <Dialog.Input label="email" onChangeText={(email : string) => userData.login = email} />
+        <Dialog.Input label="password" onChangeText={(pass : string) => userData.password = pass} />
+        <Dialog.Button label="Cancel" onPress={handleCancel} />
+        <Dialog.Button label="Submit" onPress={handleSiteLink} />
+      </Dialog.Container>
+      
       <Dialog.Container visible={visible}>
         <Dialog.Title>Login/Register</Dialog.Title>
         <Dialog.Input label="email" onChangeText={(email : string) => userData.login = email} />

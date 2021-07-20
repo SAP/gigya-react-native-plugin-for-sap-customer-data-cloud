@@ -8,7 +8,9 @@
 import Gigya
 
 extension GigyaSdkWrapper {
-    func useResolver(method: String, params: [String: Any]) {
+    func useResolver(method: String, params: [String: Any], promise: PromiseWrapper) {
+        self.promise = promise
+
         guard let resolver = currentResolver else {
             return
         }
@@ -36,7 +38,7 @@ extension GigyaSdkWrapper {
             switch method {
             case "getConflictingAccount":
 
-                promise?.resolve(result: mapObject(resolverInstance.resolver?.conflictingAccount))
+                promise.resolve(result: mapObject(resolverInstance.resolver?.conflictingAccount))
             case "linkToSite":
                 resolverInstance.resolver?.linkToSite(loginId: params["loginId"] as! String, password: params["password"] as! String)
             case "linkToSocial":

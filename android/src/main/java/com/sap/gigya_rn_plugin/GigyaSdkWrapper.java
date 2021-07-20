@@ -299,18 +299,19 @@ public class GigyaSdkWrapper<T extends GigyaAccount> {
     void resolve(@Nonnull String method, @Nonnull String jsonParameters, @Nonnull Promise promise) {
         GigyaSdkRNLogger.log("resolve: called with method:" + method);
         promiseWrapper.promise = promise;
-        Map<String, Object> params = mapParams(jsonParameters);
+        final Map<String, Object> params = mapParams(jsonParameters);
         switch(resolverHelper.interrupt) {
             case "pendingRegistration": {
                 if (method.equals("setAccount")) {
-                    resolverHelper.pendingRegistrationResolver.setAccount(params);
+                    final Map<String, Object> mappedAccountParams = mapSetAccountParameters(jsonParameters);
+                    resolverHelper.pendingRegistrationResolver.setAccount(mappedAccountParams);
                 }
                 break;
             }
             case "conflictingAccount": {
                 switch(method) {
                     case "getConflictingAccount": {
-                        String conflictingAccountsJson = mapObjectToJson(resolverHelper.linkAccountsResolver.getConflictingAccounts());
+                        final String conflictingAccountsJson = mapObjectToJson(resolverHelper.linkAccountsResolver.getConflictingAccounts());
                         promise.resolve(conflictingAccountsJson);
                         break;   
                     }
@@ -465,6 +466,21 @@ public class GigyaSdkWrapper<T extends GigyaAccount> {
         final Type type = (new TypeToken<Map<String, Object>>() {
         }).getType();
         return gson.fromJson(jsonString, type);
+    }
+
+     /**
+     * Mapping specific set account parameters given a JSON String.
+     *
+     * @see <a href="https://help.sap.com/viewer/8b8d6fffe113457094a17701f63e3d6a/GIGYA/en-US/41398a8670b21014bbc5a10ce4041860.html?q=accounts.setAccountInfo</a>
+     */
+    private Map<String, Object> mapSetAccountParameters(String jsonString) {
+        final Map<String, Object> mapped = mapJson(jsonString);
+        for (Map.Entry<String, Object> entry : mapped.entrySet()) {
+            if (entry.getValue() instanceof Map) {
+                mapped.put(entry.getKey(), gson.toJson(entry.getValue()));
+            }
+        }
+        return mapped;
     }
 
 }

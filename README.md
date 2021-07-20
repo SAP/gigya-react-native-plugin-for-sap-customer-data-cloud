@@ -70,6 +70,21 @@ To run the example application included in the repository:
 2. Navigate to the example folder and run the *yarn install* command.
 3. Navigate to the example/ios folder and run the *pod install* command.
 
+** Android - If changing the API key, make sure to update the signingConfigs section as the example app includes a specific keystore path 
+used for testing purposes *** 
+
+```
+signingConfigs {
+
+        debug {
+            storeFile file('debug.keystore')
+            storePassword 'android'
+            keyAlias 'androiddebugkey'
+            keyPassword 'android'
+        }
+    }
+```
+
 ## Sending a simple request
 
 Sending a request is available using the plugin's **send** method.
@@ -174,7 +189,7 @@ try {
       const e = error as GigyaError;
       switch (e.getInterruption()) {
         case GigyaInterruption.conflictingAccounts: {
-          const resolver = Gigya.resolverFactory.getResolver<LinkAccountResolver>(e)
+          const resolver = Gigya.resolverFactory.getResolver(e) as LinkAccountResolver;
 
           console.log("link:")
           console.log(resolver.regToken)

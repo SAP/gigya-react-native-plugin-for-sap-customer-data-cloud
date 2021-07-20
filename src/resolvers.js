@@ -29,21 +29,21 @@ export class IResolver {
 
 export class LinkAccountResolver extends IResolver { 
     async getConflictingAccount() {
-        return await GigyaSdk.resolve("getConflictingAccount", {})
+        return await GigyaSdk.resolve("getConflictingAccount", "")
     }
 
     async linkToSite(loginId, password) {
-        return await GigyaSdk.resolve("linkToSite", {'loginId': loginId, 'password': password})
+        return await GigyaSdk.resolve("linkToSite", JSON.stringify({'loginId': loginId, 'password': password}) ?? "")
     }
 
     async linkToSocial(provider) {
-        return await GigyaSdk.resolve("linkToSocial", {'provider': provider})
+        return await GigyaSdk.resolve("linkToSocial", JSON.stringify({'provider': provider}) ?? "")
     }
 }
 
 export class PendingRegistrationResolver extends IResolver {
     async setAccount(params) {
-        return await GigyaSdk.resolve("setAccount", params ?? {})
+        return await GigyaSdk.resolve("setAccount", JSON.stringify(params) ?? "")
     }
  }
 
