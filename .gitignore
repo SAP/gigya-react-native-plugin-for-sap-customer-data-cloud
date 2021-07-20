@@ -40,5 +40,8 @@ local.properties
 # BUCK
 buck-out/
 \.buckd/
-*.keystore
 debug.log
+
+android/.project
+
+example/android/.project
