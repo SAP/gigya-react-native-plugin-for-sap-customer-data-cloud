@@ -39,7 +39,8 @@ public class GigyaSdk: NSObject {
     func send(_ api: String, params: String, resolve: @escaping RCTPromiseResolveBlock, reject: @escaping RCTPromiseRejectBlock) -> Void {
         promise.set(promiseResolve: resolve, promiseReject: reject)
 
-        let newParams: [String : Any] = ["api": api, "params": params];
+        let jsonToParams = GigyaSdk.toJson(data: params);
+        let newParams: [String : Any] = ["api": api, "params": jsonToParams]
         GigyaSdk.gigya?.sendEvent(.send, params: newParams, promise: promise)
     }
 

@@ -39,6 +39,7 @@ const App = (): React.ReactElement => {
 
   const [visible, setVisible] = useState(false);
   const [visibleLink, setVisibleLink] = useState(false);
+  const [visibleAccount, setVisibleAccount] = useState(false);
 
   console.log("is: " + Gigya.isLoggedIn())
 
@@ -60,11 +61,14 @@ const App = (): React.ReactElement => {
 
       console.log("socialLogin: " + JSON.stringify(senddd));
 
+      
       updateIsLoggedIn(Gigya.isLoggedIn())
-    } catch (e) {
+    } catch (error) {
+      const e = error as GigyaError
       console.log("errorSend:" + JSON.stringify(e));
 
       console.log("socialLogin interruption");
+      
       switch (e.getInterruption()) {
         case GigyaInterruption.pendingRegistration: {
           const resolver = Gigya.resolverFactory.getResolver(e) as PendingRegistrationResolver;
@@ -108,7 +112,8 @@ const App = (): React.ReactElement => {
       console.log("login: " + send);
       updateIsLoggedIn(Gigya.isLoggedIn());
       console.log("login status: "+Gigya.isLoggedIn());
-    } catch (e) {
+    } catch (error) {
+      const e = error as GigyaError
       console.log("login error:" + e);
           
       switch (e.getInterruption()) {
@@ -133,7 +138,7 @@ const App = (): React.ReactElement => {
       console.log("logout: " + JSON.stringify(senddd));
       updateIsLoggedIn(Gigya.isLoggedIn())
     } catch (error) {
-      console.log("errorSend:" + error);
+      console.log("Logout error:" + error);
     }
   };
 
@@ -143,7 +148,8 @@ const App = (): React.ReactElement => {
       console.log("register: " + JSON.stringify(senddd));
       updateIsLoggedIn(Gigya.isLoggedIn())
 
-    } catch (e) {
+    } catch (error) {
+      const e = error as GigyaError
       console.log("register error:" + e);
 
       switch (e.getInterruption()) {
@@ -160,16 +166,27 @@ const App = (): React.ReactElement => {
     }
   };
 
-
   const getAccount = async () => {
     try {
       const send = await Gigya.getAccount()
       console.log("getAccount: " + JSON.stringify(send));
 
     } catch (error) {
-      console.log("errorSend:" + error);
+      console.log("getAccount error:" + error);
     }
   };
+
+  const setAccount = async () => {
+    console.log("setAccount called");
+    try {
+      // Update your example parameters here.
+      const send = Gigya.setAccount({profile: { zip: 555555}});
+    } catch(error) {
+      const e = error as GigyaError
+      console.log("setAccount error:" + e);
+    }
+}
+
 
   const showScreenSet = () => {
     Gigya.showScreenSet("Default-RegistrationLogin", (event, data) => {
@@ -186,7 +203,8 @@ const App = (): React.ReactElement => {
     register,
     social,
     logout,
-    showScreenSet
+    showScreenSet,
+    setAccount,
   }
 
   const [activeMethod, setActiveMethod] = useState(Method.init);
@@ -217,6 +235,11 @@ const App = (): React.ReactElement => {
       }
       case Method.showScreenSet: {
         showScreenSet()
+        break
+      }
+      case Method.setAccount: {
+        setVisibleAccount(true)
+        setAccount()
         break
       }
     }
@@ -259,6 +282,12 @@ const App = (): React.ReactElement => {
         'Pop the Web screenset.',
     },
     {
+      title: 'setAccount',
+      method: Method.setAccount,
+      description:
+        'Set account information',
+    },
+    {
       title: 'logout',
       method: Method.logout,
       description:
@@ -276,6 +305,7 @@ const App = (): React.ReactElement => {
     const handleCancel = () => {
       setVisible(false)
       setVisibleLink(false)
+      setVisibleAccount(false)
       dispose()
     };
 
@@ -296,6 +326,13 @@ const App = (): React.ReactElement => {
       }
       dispose()
     };
+
+    const handleSetAccount = () => {
+      setVisibleAccount(false)
+      console.log(activeMethod)
+      setAccount()
+      dispose
+    }
 
     const handleSiteLink = async () => {
       console.log(linkResolver);
@@ -330,6 +367,13 @@ const App = (): React.ReactElement => {
         <Dialog.Input label="password" onChangeText={(pass : string) => userData.password = pass} />
         <Dialog.Button label="Cancel" onPress={handleCancel} />
         <Dialog.Button label="Submit" onPress={handleLogin} />
+      </Dialog.Container>
+
+      <Dialog.Container visible={visibleAccount}>
+        <Dialog.Title>Set account info (must have a valid session)</Dialog.Title>
+        <Dialog.Description>Update your example parameters within the setAccount methood</Dialog.Description>
+        <Dialog.Button label="Cancel" onPress={handleCancel} />
+        <Dialog.Button label="Submit" onPress={handleSetAccount} />
       </Dialog.Container>
 
       <StatusBar barStyle="dark-content" />

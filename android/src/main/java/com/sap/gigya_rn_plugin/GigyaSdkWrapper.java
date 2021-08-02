@@ -53,10 +53,8 @@ public class GigyaSdkWrapper<T extends GigyaAccount> {
         gson = new GsonBuilder().registerTypeAdapter(type, new CustomGSONDeserializer()).create();
 
         try {
-            PackageInfo pInfo = application.getPackageManager().getPackageInfo(application.getPackageName(), 0);
-            String version = pInfo.versionName;
             IApiRequestFactory ref = Gigya.getContainer().get(IApiRequestFactory.class);
-            ref.setSDK("react_native_" + version + "_android_" + Gigya.VERSION);
+            ref.setSDK("react_native_" + "0.0.5" + "_android_" + Gigya.VERSION);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -207,7 +205,8 @@ public class GigyaSdkWrapper<T extends GigyaAccount> {
     void setAccount(@Nonnull String jsonParameters, Promise promise) {
         GigyaSdkRNLogger.log("setAccount: called");
         promiseWrapper.promise = promise;
-        gigyaInstance.setAccount(mapParams(jsonParameters), new GigyaCallback<T>() {
+        final Map<String, Object> mappedAccountParams = mapSetAccountParameters(jsonParameters);
+        gigyaInstance.setAccount(mappedAccountParams, new GigyaCallback<T>() {
             @Override
             public void onSuccess(T account) {
                 GigyaSdkRNLogger.log("setAccount: success");
