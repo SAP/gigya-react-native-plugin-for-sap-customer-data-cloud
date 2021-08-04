@@ -40,7 +40,7 @@ export class GigyaInterface {
      */
     async send(api, params) {
         try {
-            return await GigyaSdk.send(api, JSON.stringify(params) ?? {})
+            return await GigyaSdk.send(api, JSON.stringify(params) ?? "")
         } catch (e) {
             const error = new GigyaError(e)
             throw error
