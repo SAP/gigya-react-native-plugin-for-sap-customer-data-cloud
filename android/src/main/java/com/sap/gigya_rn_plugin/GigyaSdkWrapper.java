@@ -20,6 +20,7 @@ import com.gigya.android.sdk.interruption.link.ILinkAccountsResolver;
 import com.gigya.android.sdk.interruption.tfa.TFAResolverFactory;
 import com.gigya.android.sdk.interruption.tfa.models.TFAProviderModel;
 import com.gigya.android.sdk.network.GigyaError;
+import com.gigya.android.sdk.session.SessionInfo;
 import com.gigya.android.sdk.ui.plugin.GigyaPluginEvent;
 import com.gigya.android.sdk.utils.CustomGSONDeserializer;
 import com.google.gson.Gson;
@@ -68,6 +69,21 @@ public class GigyaSdkWrapper<T extends GigyaAccount> {
             return;
         }
         gigyaInstance.init(apikey, apiDomain);
+    }
+
+    void getSession(Promise promise) {
+        GigyaSdkRNLogger.log("getSession: called");
+        final String sessionJson = mapObjectToJson(gigyaInstance.getSession());
+        promise.resolve(sessionJson);
+    }
+
+    void setSession(@Nonnull String token, @Nonnull String secret, @Nonnull Double expiration, Promise promise) {
+        GigyaSdkRNLogger.log("setSession: called");
+        final SessionInfo session = new SessionInfo(secret, token, expiration.longValue());
+        gigyaInstance.setSession(session);
+
+        final String sessionJson = mapObjectToJson(session);
+        promise.resolve(sessionJson);
     }
 
     void send(String api, Map<String, Object> parameters, Promise promise) {

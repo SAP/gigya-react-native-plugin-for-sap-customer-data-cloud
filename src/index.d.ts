@@ -24,6 +24,10 @@ export namespace Gigya {
 
     function initFor(apikey: string, apiDomain?: string): void;
 
+    function getSession(): Promise<null | {sessionToken: string, sessionSecret: string, expirationTime: number}>;
+
+    function setSession(token: string, secret: string, expiration?: number): Promise<{sessionToken: string, sessionSecret: string, expirationTime: number}>;
+
     function send(api: string, params?: Record<string, any>): Promise<GigyaDictionary>;
 
     function logout(): void;

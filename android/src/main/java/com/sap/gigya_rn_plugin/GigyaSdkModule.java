@@ -51,6 +51,16 @@ public class GigyaSdkModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
+    public void getSession(Promise promise) {
+        gigyaSdk.getSession(promise);
+    }
+
+    @ReactMethod
+    public void setSession(@Nonnull String token, @Nonnull String secret, @Nonnull Double expiration, Promise promise) {
+        gigyaSdk.setSession(token, secret, expiration, promise);
+    }
+
+    @ReactMethod
     public void send(@Nonnull String api, @Nullable ReadableMap params, Promise promise) {
         gigyaSdk.send(api, params == null ? new HashMap<>() : params.toHashMap(), promise);
     }

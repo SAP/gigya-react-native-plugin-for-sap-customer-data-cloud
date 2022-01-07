@@ -29,6 +29,39 @@ export class GigyaInterface {
     initFor(apikey, domain) {
         GigyaSdk.initFor(apikey, domain ?? null);
     }
+
+    /**
+     * 
+     * Get current session.
+     * 
+     * @returns Session promise.
+     */
+    async getSession() {
+        try {
+            return await GigyaSdk.getSession();
+        } catch (e) {
+            const error = new GigyaError(e)
+            throw error
+        }
+    }
+
+    /**
+     * 
+     * Manually set the current session.
+     * 
+     * @param {string} token 
+     * @param {string} secret 
+     * @param {number} [expiration] 
+     * @returns Session promise.
+     */
+    async setSession(token, secret, expiration) {
+        try {
+            return await GigyaSdk.setSession(token, secret, expiration ?? 0)
+        } catch (e) {
+            const error = new GigyaError(e)
+            throw error
+        }
+    }
     
     /**
      * 
