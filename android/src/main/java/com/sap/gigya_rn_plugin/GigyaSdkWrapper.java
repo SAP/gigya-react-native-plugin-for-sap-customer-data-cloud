@@ -68,14 +68,10 @@ public class GigyaSdkWrapper<T extends GigyaAccount> {
         gigyaInstance.init(apikey, apiDomain);
     }
 
-    void send(String api, Map<String, Object> parameters, Promise promise) {
+    void send(String api, String jsonParameters, Promise promise) {
         GigyaSdkRNLogger.log("send: called");
         promiseWrapper.promise = promise;
-        if (parameters == null) {
-            parameters = new HashMap<>();
-        }
-        gigyaInstance.send(api, parameters, new GigyaCallback<GigyaApiResponse>() {
-            @Override
+        gigyaInstance.send(api, mapParams(jsonParameters), new GigyaCallback<GigyaApiResponse>() {            @Override
             public void onSuccess(GigyaApiResponse gigyaApiResponse) {
                 GigyaSdkRNLogger.log("send: success with response: " + gigyaApiResponse.asJson());
                 promiseWrapper.resolve(gigyaApiResponse);
