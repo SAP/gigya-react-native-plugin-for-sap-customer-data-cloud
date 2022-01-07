@@ -38,7 +38,9 @@ export class GigyaInterface {
      */
     async getSession() {
         try {
-            return await GigyaSdk.getSession();
+            const result = await GigyaSdk.getSession()
+            if (result === '{}') return null
+            return result
         } catch (e) {
             const error = new GigyaError(e)
             throw error

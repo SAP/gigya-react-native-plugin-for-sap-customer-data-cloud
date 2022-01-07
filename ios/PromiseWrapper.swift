@@ -20,7 +20,7 @@ class PromiseWrapper {
         return true
     }
 
-    func resolve(result: Any) {
+    func resolve(result: Any?) {
         guard let promiseResolve = promiseResolve else {
             return
         }
