@@ -10,8 +10,6 @@ import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableMap;
 import com.gigya.android.sdk.account.models.GigyaAccount;
 
-import java.util.HashMap;
-
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -51,8 +49,8 @@ public class GigyaSdkModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void send(@Nonnull String api, @Nullable ReadableMap params, Promise promise) {
-        gigyaSdk.send(api, params == null ? new HashMap<>() : params.toHashMap(), promise);
+    public void send(@Nonnull String api, @Nonnull String params, Promise promise) {
+        gigyaSdk.send(api, params, promise);
     }
 
     @ReactMethod
