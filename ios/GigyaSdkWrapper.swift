@@ -32,12 +32,6 @@ enum GigyaInterruptionsSupported: String {
     case unknown
 }
 
-struct SessionModel: Codable {
-    var sessionToken: String
-    var sessionSecret: String
-    var expirationTime: Double
-}
-
 protocol GigyaSdkWrapperProtocol {
     var currentResolver: GigyaResolverModelProtocol? { get }
 
@@ -69,9 +63,9 @@ class GigyaSdkWrapper<T: GigyaAccountProtocol>: GigyaSdkWrapperProtocol {
 
         switch name {
         case .getSession:
-            _ = self.getSession()
+            self.getSession()
         case .setSession:
-            self.setSession(token: params["token"] as! String, secret: params["secret"] as! String, expiration: params["expiration"] as! NSNumber)
+            self.setSession(token: params["token"] as! String, secret: params["secret"] as! String, expiration: params["expiration"] as! Double)
         case .send:
             self.send(api: params["api"] as! String, params: params["params"] as! [String : Any])
         case .register:
@@ -116,8 +110,8 @@ class GigyaSdkWrapper<T: GigyaAccountProtocol>: GigyaSdkWrapperProtocol {
         self.promise?.resolve(result: mapped)
     }
 
-    func setSession(token: String, secret: String, expiration: NSNumber = 0) {
-        let session: GigyaSession! = GigyaSession(sessionToken: token, secret: secret, expiration: expiration as? Double)
+    func setSession(token: String, secret: String, expiration: Double = 0) {
+        let session: GigyaSession! = GigyaSession(sessionToken: token, secret: secret, expiration: expiration)
         gigya.setSession(session)
         
         let mapped = self.sessionToDic(session: session)
@@ -341,17 +335,14 @@ class GigyaSdkWrapper<T: GigyaAccountProtocol>: GigyaSdkWrapperProtocol {
         if (session == nil) {
             return nil
         }
-        do {
-            let jsonEncoder = JSONEncoder()
-            let sessionModel = SessionModel(sessionToken: session!.token, sessionSecret: session!.secret, expirationTime: session!.sessionExpirationTimestamp ?? 0)
-            let jsonData = try jsonEncoder.encode(sessionModel)
-            let dictionary = try JSONSerialization.jsonObject(with: jsonData, options: [])
-                as? [String: Any]
-            return dictionary ?? [:]
-        } catch {
-            print(error)
-        }
-        return [:]
+
+        let sessionAsMap: [String: Any] = [
+            "sessionToken": session!.token,
+            "sessionSecret": session!.secret,
+            "expirationTime": session!.sessionExpirationTimestamp ?? 0
+        ]
+
+        return sessionAsMap
     }
 
     func accountToDic<T: GigyaAccountProtocol>(account: T) -> [String: Any]{
