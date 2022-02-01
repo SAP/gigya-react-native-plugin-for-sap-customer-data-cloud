@@ -1,6 +1,6 @@
 {
   "name": "GigyaRnExample",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "private": true,
   "scripts": {
     "android": "react-native run-android",
@@ -13,7 +13,7 @@
     "@react-native-community/cli-platform-ios": "^5.0.1-alpha.2",
     "gigya-react-native-plugin-for-sap-customer-data-cloud": "file:../",
     "react": "17.0.1",
-    "react-native": "0.64.0",
+    "react-native": "0.64.1",
     "react-native-cli": "^2.0.1",
     "react-native-dialog": "^8.0.1",
     "react-native-eject": "^0.1.2",

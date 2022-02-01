@@ -45,3 +45,13 @@ debug.log
 android/.project
 
 example/android/.project
+
+.vscode/
+
+example/android/app/.project
+
+example/android/.settings/
+
+example/android/app/.classpath
+
+example/android/app/.settings/
