@@ -11,6 +11,8 @@ import Gigya
 
 enum GigyaMethods: String {
     case isLoggedIn
+    case getSession
+    case setSession
     case send
     case login
     case register
@@ -60,6 +62,10 @@ class GigyaSdkWrapper<T: GigyaAccountProtocol>: GigyaSdkWrapperProtocol {
         self.promise = promise
 
         switch name {
+        case .getSession:
+            self.getSession()
+        case .setSession:
+            self.setSession(token: params["token"] as! String, secret: params["secret"] as! String, expiration: params["expiration"] as! Double)
         case .send:
             self.send(api: params["api"] as! String, params: params["params"] as! [String : Any])
         case .register:
@@ -97,6 +103,19 @@ class GigyaSdkWrapper<T: GigyaAccountProtocol>: GigyaSdkWrapperProtocol {
 
     func isLoggedIn() -> Bool {
         return gigya.isLoggedIn()
+    }
+
+    func getSession() {
+        let mapped = self.sessionToDic(session: gigya.getSession())
+        self.promise?.resolve(result: mapped)
+    }
+
+    func setSession(token: String, secret: String, expiration: Double = 0) {
+        let session: GigyaSession! = GigyaSession(sessionToken: token, secret: secret, expiration: expiration)
+        gigya.setSession(session)
+        
+        let mapped = self.sessionToDic(session: session)
+        self.promise?.resolve(result: mapped)
     }
 
     func send(api: String, params: [String: Any]) {
@@ -310,6 +329,20 @@ class GigyaSdkWrapper<T: GigyaAccountProtocol>: GigyaSdkWrapperProtocol {
                 self.promise?.reject(error: error.localizedDescription)
             }
         }
+    }
+
+    func sessionToDic(session: GigyaSession?) -> [String: Any]? {
+        if (session == nil) {
+            return nil
+        }
+
+        let sessionAsMap: [String: Any] = [
+            "sessionToken": session!.token,
+            "sessionSecret": session!.secret,
+            "expirationTime": session!.sessionExpirationTimestamp ?? 0
+        ]
+
+        return sessionAsMap
     }
 
     func accountToDic<T: GigyaAccountProtocol>(account: T) -> [String: Any]{

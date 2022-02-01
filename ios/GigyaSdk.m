@@ -16,6 +16,15 @@
   return YES;
 }
 
+RCT_EXTERN_METHOD(getSession:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject)
+
+RCT_EXTERN_METHOD(setSession:(NSString *)token
+                  secret:(NSString *)secret
+                  expiration:(nonnull NSNumber *)expiration
+                  resolver:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject)
+
 RCT_EXTERN_METHOD(send:(NSString *)api
                   params:(NSString *)params
                   resolver:(RCTPromiseResolveBlock)resolve
