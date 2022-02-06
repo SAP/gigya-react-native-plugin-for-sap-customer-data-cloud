@@ -84,7 +84,7 @@ public class GigyaSdkWrapper<T extends GigyaAccount> {
         promise.resolve(sessionJson);
     }
 
-    void send(String api, Map<String, Object> parameters, Promise promise) {
+    void send(String api, String jsonParameters, Promise promise) {
         GigyaSdkRNLogger.log("send: called");
         promiseWrapper.promise = promise;
         gigyaInstance.send(api, mapParams(jsonParameters), new GigyaCallback<GigyaApiResponse>() {            @Override
