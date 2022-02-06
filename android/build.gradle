@@ -79,7 +79,7 @@ dependencies {
     implementation 'com.facebook.react:react-native:+'  // From node_modules
 
     // Gigya implementations.
-    api 'com.github.SAP.gigya-android-sdk:gigya-android-sdk-core:core-v5.1.3'
+    api 'com.github.SAP.gigya-android-sdk:gigya-android-sdk-core:core-v5.1.6'
     api 'com.google.code.gson:gson:2.8.6'
 }
 

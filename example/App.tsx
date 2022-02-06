@@ -43,7 +43,7 @@ const App = (): React.ReactElement => {
 
   console.log("is: " + Gigya.isLoggedIn())
 
-  Gigya.initFor("3_KF6Dwf0BoTktLiX54s_rSWRiklW69xCLG8pZa413Z6pkuBGBwQeSK9k19grZfCDe");
+  Gigya.initFor("3_l7zxNcj4vhu8tLzYafUnKDSA4VsOVNzR4VnclcC6VKsXXmQdq950uC-zY7Vsu9RC");
 
   const sendApi = async () => {
     try {
