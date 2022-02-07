@@ -12,9 +12,8 @@
 #import <SKIOSNetworkPlugin/SKIOSNetworkAdapter.h>
 #import <FlipperKitReactPlugin/FlipperKitReactPlugin.h>
 
-#import <FBSDKCoreKit/FBSDKCoreKit.h>
 #import "GigyaRnExample-Swift.h"
-
+#import <FBSDKCoreKit/FBSDKCoreKit.h>
 
 static void InitializeFlipper(UIApplication *application) {
   FlipperClient *client = [FlipperClient sharedClient];
@@ -40,18 +39,17 @@ static void InitializeFlipper(UIApplication *application) {
                                                    moduleName:@"GigyaRnExample"
                                             initialProperties:nil];
 
-  if (@available(iOS 13.0, *)) {
-      rootView.backgroundColor = [UIColor systemBackgroundColor];
-  } else {
-      rootView.backgroundColor = [UIColor whiteColor];
-  }
-
   [[FBSDKApplicationDelegate sharedInstance] application:application
                            didFinishLaunchingWithOptions:launchOptions];
 
   GigyaExtension * gigya = [[GigyaExtension alloc] init];
   [gigya setMySchema];
-
+  
+  if (@available(iOS 13.0, *)) {
+      rootView.backgroundColor = [UIColor systemBackgroundColor];
+  } else {
+      rootView.backgroundColor = [UIColor whiteColor];
+  }
 
   self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
   UIViewController *rootViewController = [UIViewController new];
@@ -76,6 +74,4 @@ static void InitializeFlipper(UIApplication *application) {
                                                  options:options];
   return YES;
 }
-
-
 @end
