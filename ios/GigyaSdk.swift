@@ -35,11 +35,27 @@ public class GigyaSdk: NSObject {
         return GigyaSdk.gigya?.isLoggedIn() ?? false
     }
 
+    @objc(getSession:rejecter:)
+    func getSession(_ resolve: @escaping RCTPromiseResolveBlock, reject: @escaping RCTPromiseRejectBlock) -> Void {
+        promise.set(promiseResolve: resolve, promiseReject: reject)
+
+        GigyaSdk.gigya?.sendEvent(.getSession, params: [:], promise: promise)
+    }
+
+    @objc(setSession:secret:expiration:resolver:rejecter:)
+    func setSession(_ token: String, secret: String, expiration: NSNumber, resolve: @escaping RCTPromiseResolveBlock, reject: @escaping RCTPromiseRejectBlock) -> Void {
+        promise.set(promiseResolve: resolve, promiseReject: reject)
+
+        let newParams: [String : Any] = ["token": token, "secret": secret, "expiration": expiration];
+        GigyaSdk.gigya?.sendEvent(.setSession, params: newParams, promise: promise)
+    }
+
     @objc(send:params:resolver:rejecter:)
     func send(_ api: String, params: String, resolve: @escaping RCTPromiseResolveBlock, reject: @escaping RCTPromiseRejectBlock) -> Void {
         promise.set(promiseResolve: resolve, promiseReject: reject)
 
-        let newParams: [String : Any] = ["api": api, "params": params];
+        let jsonToParams = GigyaSdk.toJson(data: params);
+        let newParams: [String : Any] = ["api": api, "params": jsonToParams]
         GigyaSdk.gigya?.sendEvent(.send, params: newParams, promise: promise)
     }
 

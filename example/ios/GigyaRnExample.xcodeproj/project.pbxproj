@@ -11,11 +11,11 @@
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
-		35D301D8057A62766B106EB6 /* libPods-GigyaRnExample-GigyaRnExampleTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 40749CEEE59DAEE68FEC03E4 /* libPods-GigyaRnExample-GigyaRnExampleTests.a */; };
-		6E7BEDAF9CB4FAEF3ED5DC20 /* libPods-GigyaRnExample.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 45792D02B8D43EEDD5D76C8E /* libPods-GigyaRnExample.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
-		E76C4F67269AC53F00BC2E2E /* FacebookWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E76C4F65269AC53F00BC2E2E /* FacebookWrapper.swift */; };
-		E76C4F68269AC53F00BC2E2E /* GigyaExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E76C4F66269AC53F00BC2E2E /* GigyaExtension.swift */; };
+		8762E477A7F3188FA1DDCAA4 /* libPods-GigyaRnExample-GigyaRnExampleTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6C4D285EB7418CC2F8176AAC /* libPods-GigyaRnExample-GigyaRnExampleTests.a */; };
+		E0B38198BE059387CAC24FCC /* libPods-GigyaRnExample.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D440AA9C962D278ACD631744 /* libPods-GigyaRnExample.a */; };
+		E76A022A27B102EE00A3A861 /* GigyaExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E76A022927B102EE00A3A861 /* GigyaExtension.swift */; };
+		E76A022D27B11DBF00A3A861 /* FacebookWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E76A022C27B11DBE00A3A861 /* FacebookWrapper.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -32,22 +32,22 @@
 		00E356EE1AD99517003FC87E /* GigyaRnExampleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GigyaRnExampleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* GigyaRnExampleTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GigyaRnExampleTests.m; sourceTree = "<group>"; };
+		0235067C78779D894EDD9F03 /* Pods-GigyaRnExample-GigyaRnExampleTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GigyaRnExample-GigyaRnExampleTests.release.xcconfig"; path = "Target Support Files/Pods-GigyaRnExample-GigyaRnExampleTests/Pods-GigyaRnExample-GigyaRnExampleTests.release.xcconfig"; sourceTree = "<group>"; };
+		090BC834623F7F13779E9540 /* Pods-GigyaRnExample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GigyaRnExample.debug.xcconfig"; path = "Target Support Files/Pods-GigyaRnExample/Pods-GigyaRnExample.debug.xcconfig"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* GigyaRnExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GigyaRnExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = GigyaRnExample/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = GigyaRnExample/AppDelegate.m; sourceTree = "<group>"; };
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = GigyaRnExample/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = GigyaRnExample/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = GigyaRnExample/main.m; sourceTree = "<group>"; };
-		40749CEEE59DAEE68FEC03E4 /* libPods-GigyaRnExample-GigyaRnExampleTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-GigyaRnExample-GigyaRnExampleTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		45792D02B8D43EEDD5D76C8E /* libPods-GigyaRnExample.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-GigyaRnExample.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		5224E05319162D1A980E3078 /* Pods-GigyaRnExample-GigyaRnExampleTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GigyaRnExample-GigyaRnExampleTests.debug.xcconfig"; path = "Target Support Files/Pods-GigyaRnExample-GigyaRnExampleTests/Pods-GigyaRnExample-GigyaRnExampleTests.debug.xcconfig"; sourceTree = "<group>"; };
+		6C4D285EB7418CC2F8176AAC /* libPods-GigyaRnExample-GigyaRnExampleTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-GigyaRnExample-GigyaRnExampleTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = GigyaRnExample/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		8E132C3D6E2E40FC193214F3 /* Pods-GigyaRnExample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GigyaRnExample.release.xcconfig"; path = "Target Support Files/Pods-GigyaRnExample/Pods-GigyaRnExample.release.xcconfig"; sourceTree = "<group>"; };
-		AD88830EDDD5DD3C498BA653 /* Pods-GigyaRnExample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GigyaRnExample.debug.xcconfig"; path = "Target Support Files/Pods-GigyaRnExample/Pods-GigyaRnExample.debug.xcconfig"; sourceTree = "<group>"; };
-		CD42C27340FA4AA300A7F48B /* Pods-GigyaRnExample-GigyaRnExampleTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GigyaRnExample-GigyaRnExampleTests.release.xcconfig"; path = "Target Support Files/Pods-GigyaRnExample-GigyaRnExampleTests/Pods-GigyaRnExample-GigyaRnExampleTests.release.xcconfig"; sourceTree = "<group>"; };
-		E76C4F65269AC53F00BC2E2E /* FacebookWrapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FacebookWrapper.swift; sourceTree = "<group>"; };
-		E76C4F66269AC53F00BC2E2E /* GigyaExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GigyaExtension.swift; sourceTree = "<group>"; };
-		E7FDA98C26565BCE00586EED /* GigyaRnExample-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "GigyaRnExample-Bridging-Header.h"; sourceTree = "<group>"; };
+		A776132391FBF0D9FDB6FD2F /* Pods-GigyaRnExample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GigyaRnExample.release.xcconfig"; path = "Target Support Files/Pods-GigyaRnExample/Pods-GigyaRnExample.release.xcconfig"; sourceTree = "<group>"; };
+		B568DA681D8C6904AB9C6845 /* Pods-GigyaRnExample-GigyaRnExampleTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GigyaRnExample-GigyaRnExampleTests.debug.xcconfig"; path = "Target Support Files/Pods-GigyaRnExample-GigyaRnExampleTests/Pods-GigyaRnExample-GigyaRnExampleTests.debug.xcconfig"; sourceTree = "<group>"; };
+		D440AA9C962D278ACD631744 /* libPods-GigyaRnExample.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-GigyaRnExample.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		E76A022427AFF99000A3A861 /* GigyaRnExample-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "GigyaRnExample-Bridging-Header.h"; sourceTree = "<group>"; };
+		E76A022927B102EE00A3A861 /* GigyaExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GigyaExtension.swift; path = GigyaRnExample/GigyaExtension.swift; sourceTree = "<group>"; };
+		E76A022C27B11DBE00A3A861 /* FacebookWrapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FacebookWrapper.swift; path = GigyaRnExample/FacebookWrapper.swift; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -56,7 +56,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				35D301D8057A62766B106EB6 /* libPods-GigyaRnExample-GigyaRnExampleTests.a in Frameworks */,
+				8762E477A7F3188FA1DDCAA4 /* libPods-GigyaRnExample-GigyaRnExampleTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -64,7 +64,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6E7BEDAF9CB4FAEF3ED5DC20 /* libPods-GigyaRnExample.a in Frameworks */,
+				E0B38198BE059387CAC24FCC /* libPods-GigyaRnExample.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -88,13 +88,13 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		10969AA49C6C26528F310EE5 /* Pods */ = {
+		07A2FD261E4042C119338846 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				AD88830EDDD5DD3C498BA653 /* Pods-GigyaRnExample.debug.xcconfig */,
-				8E132C3D6E2E40FC193214F3 /* Pods-GigyaRnExample.release.xcconfig */,
-				5224E05319162D1A980E3078 /* Pods-GigyaRnExample-GigyaRnExampleTests.debug.xcconfig */,
-				CD42C27340FA4AA300A7F48B /* Pods-GigyaRnExample-GigyaRnExampleTests.release.xcconfig */,
+				090BC834623F7F13779E9540 /* Pods-GigyaRnExample.debug.xcconfig */,
+				A776132391FBF0D9FDB6FD2F /* Pods-GigyaRnExample.release.xcconfig */,
+				B568DA681D8C6904AB9C6845 /* Pods-GigyaRnExample-GigyaRnExampleTests.debug.xcconfig */,
+				0235067C78779D894EDD9F03 /* Pods-GigyaRnExample-GigyaRnExampleTests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -102,15 +102,15 @@
 		13B07FAE1A68108700A75B9A /* GigyaRnExample */ = {
 			isa = PBXGroup;
 			children = (
+				E76A022927B102EE00A3A861 /* GigyaExtension.swift */,
+				E76A022C27B11DBE00A3A861 /* FacebookWrapper.swift */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
-				E76C4F65269AC53F00BC2E2E /* FacebookWrapper.swift */,
-				E76C4F66269AC53F00BC2E2E /* GigyaExtension.swift */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
 				13B07FB71A68108700A75B9A /* main.m */,
-				E7FDA98C26565BCE00586EED /* GigyaRnExample-Bridging-Header.h */,
+				E76A022427AFF99000A3A861 /* GigyaRnExample-Bridging-Header.h */,
 			);
 			name = GigyaRnExample;
 			sourceTree = "<group>";
@@ -119,8 +119,8 @@
 			isa = PBXGroup;
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
-				45792D02B8D43EEDD5D76C8E /* libPods-GigyaRnExample.a */,
-				40749CEEE59DAEE68FEC03E4 /* libPods-GigyaRnExample-GigyaRnExampleTests.a */,
+				D440AA9C962D278ACD631744 /* libPods-GigyaRnExample.a */,
+				6C4D285EB7418CC2F8176AAC /* libPods-GigyaRnExample-GigyaRnExampleTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -140,7 +140,7 @@
 				00E356EF1AD99517003FC87E /* GigyaRnExampleTests */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
-				10969AA49C6C26528F310EE5 /* Pods */,
+				07A2FD261E4042C119338846 /* Pods */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -163,12 +163,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "GigyaRnExampleTests" */;
 			buildPhases = (
-				E9C424E671ACDAD164EAE08C /* [CP] Check Pods Manifest.lock */,
+				D3999879FF0116429959F74D /* [CP] Check Pods Manifest.lock */,
 				00E356EA1AD99517003FC87E /* Sources */,
 				00E356EB1AD99517003FC87E /* Frameworks */,
 				00E356EC1AD99517003FC87E /* Resources */,
-				48B49B61A228ABA140E82E82 /* [CP] Embed Pods Frameworks */,
-				C59BE4614D8AF013C7D788F7 /* [CP] Copy Pods Resources */,
+				18DFC32B87322198F224CAB5 /* [CP] Embed Pods Frameworks */,
+				B87DE827A92A871D2BA20663 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -184,14 +184,14 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "GigyaRnExample" */;
 			buildPhases = (
-				41A1FE3A3BCF1F69565623D4 /* [CP] Check Pods Manifest.lock */,
+				6C049462133915925F59A931 /* [CP] Check Pods Manifest.lock */,
 				FD10A7F022414F080027D42C /* Start Packager */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
-				9AF5208A3D17898C951D6629 /* [CP] Embed Pods Frameworks */,
-				14A450FF41BDB64BBA52AF57 /* [CP] Copy Pods Resources */,
+				2E0D392806A67C1D878DDE7C /* [CP] Embed Pods Frameworks */,
+				2F010A42C4436FC31DA41B6F /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -215,7 +215,7 @@
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 					13B07F861A680F5B00A75B9A = {
-						LastSwiftMigration = 1250;
+						LastSwiftMigration = 1320;
 					};
 				};
 			};
@@ -272,7 +272,41 @@
 			shellPath = /bin/sh;
 			shellScript = "set -e\n\nexport NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh\n";
 		};
-		14A450FF41BDB64BBA52AF57 /* [CP] Copy Pods Resources */ = {
+		18DFC32B87322198F224CAB5 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-GigyaRnExample-GigyaRnExampleTests/Pods-GigyaRnExample-GigyaRnExampleTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-GigyaRnExample-GigyaRnExampleTests/Pods-GigyaRnExample-GigyaRnExampleTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-GigyaRnExample-GigyaRnExampleTests/Pods-GigyaRnExample-GigyaRnExampleTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		2E0D392806A67C1D878DDE7C /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-GigyaRnExample/Pods-GigyaRnExample-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-GigyaRnExample/Pods-GigyaRnExample-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-GigyaRnExample/Pods-GigyaRnExample-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		2F010A42C4436FC31DA41B6F /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -289,7 +323,7 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-GigyaRnExample/Pods-GigyaRnExample-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		41A1FE3A3BCF1F69565623D4 /* [CP] Check Pods Manifest.lock */ = {
+		6C049462133915925F59A931 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -311,41 +345,7 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		48B49B61A228ABA140E82E82 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-GigyaRnExample-GigyaRnExampleTests/Pods-GigyaRnExample-GigyaRnExampleTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-GigyaRnExample-GigyaRnExampleTests/Pods-GigyaRnExample-GigyaRnExampleTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-GigyaRnExample-GigyaRnExampleTests/Pods-GigyaRnExample-GigyaRnExampleTests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		9AF5208A3D17898C951D6629 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-GigyaRnExample/Pods-GigyaRnExample-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-GigyaRnExample/Pods-GigyaRnExample-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-GigyaRnExample/Pods-GigyaRnExample-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		C59BE4614D8AF013C7D788F7 /* [CP] Copy Pods Resources */ = {
+		B87DE827A92A871D2BA20663 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -362,7 +362,7 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-GigyaRnExample-GigyaRnExampleTests/Pods-GigyaRnExample-GigyaRnExampleTests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		E9C424E671ACDAD164EAE08C /* [CP] Check Pods Manifest.lock */ = {
+		D3999879FF0116429959F74D /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -419,9 +419,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
-				E76C4F68269AC53F00BC2E2E /* GigyaExtension.swift in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
-				E76C4F67269AC53F00BC2E2E /* FacebookWrapper.swift in Sources */,
+				E76A022A27B102EE00A3A861 /* GigyaExtension.swift in Sources */,
+				E76A022D27B11DBF00A3A861 /* FacebookWrapper.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -438,7 +438,7 @@
 /* Begin XCBuildConfiguration section */
 		00E356F61AD99517003FC87E /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5224E05319162D1A980E3078 /* Pods-GigyaRnExample-GigyaRnExampleTests.debug.xcconfig */;
+			baseConfigurationReference = B568DA681D8C6904AB9C6845 /* Pods-GigyaRnExample-GigyaRnExampleTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -447,7 +447,7 @@
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = GigyaRnExampleTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -466,13 +466,13 @@
 		};
 		00E356F71AD99517003FC87E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = CD42C27340FA4AA300A7F48B /* Pods-GigyaRnExample-GigyaRnExampleTests.release.xcconfig */;
+			baseConfigurationReference = 0235067C78779D894EDD9F03 /* Pods-GigyaRnExample-GigyaRnExampleTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
 				INFOPLIST_FILE = GigyaRnExampleTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -491,7 +491,7 @@
 		};
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = AD88830EDDD5DD3C498BA653 /* Pods-GigyaRnExample.debug.xcconfig */;
+			baseConfigurationReference = 090BC834623F7F13779E9540 /* Pods-GigyaRnExample.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -518,7 +518,7 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 8E132C3D6E2E40FC193214F3 /* Pods-GigyaRnExample.release.xcconfig */;
+			baseConfigurationReference = A776132391FBF0D9FDB6FD2F /* Pods-GigyaRnExample.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -574,7 +574,7 @@
 				COPY_PHASE_STRIP = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
-				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "arm64 ";
+				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -590,14 +590,14 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					/usr/lib/swift,
 					"$(inherited)",
 				);
 				LIBRARY_SEARCH_PATHS = (
+					"\"$(SDKROOT)/usr/lib/swift\"",
 					"\"$(TOOLCHAIN_DIR)/usr/lib/swift/$(PLATFORM_NAME)\"",
-					"\"$(TOOLCHAIN_DIR)/usr/lib/swift-5.0/$(PLATFORM_NAME)\"",
 					"\"$(inherited)\"",
 				);
 				MTL_ENABLE_DEBUG_INFO = YES;
@@ -639,7 +639,7 @@
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "arm64 ";
+				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -648,14 +648,14 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					/usr/lib/swift,
 					"$(inherited)",
 				);
 				LIBRARY_SEARCH_PATHS = (
+					"\"$(SDKROOT)/usr/lib/swift\"",
 					"\"$(TOOLCHAIN_DIR)/usr/lib/swift/$(PLATFORM_NAME)\"",
-					"\"$(TOOLCHAIN_DIR)/usr/lib/swift-5.0/$(PLATFORM_NAME)\"",
 					"\"$(inherited)\"",
 				);
 				MTL_ENABLE_DEBUG_INFO = NO;

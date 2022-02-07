@@ -29,6 +29,41 @@ export class GigyaInterface {
     initFor(apikey, domain) {
         GigyaSdk.initFor(apikey, domain ?? null);
     }
+
+    /**
+     * 
+     * Get current session.
+     * 
+     * @returns Session promise.
+     */
+    async getSession() {
+        try {
+            const result = await GigyaSdk.getSession()
+            if (result === '{}') return null
+            return result
+        } catch (e) {
+            const error = new GigyaError(e)
+            throw error
+        }
+    }
+
+    /**
+     * 
+     * Manually set the current session.
+     * 
+     * @param {string} token 
+     * @param {string} secret 
+     * @param {number} [expiration] 
+     * @returns Session promise.
+     */
+    async setSession(token, secret, expiration) {
+        try {
+            return await GigyaSdk.setSession(token, secret, expiration ?? 0)
+        } catch (e) {
+            const error = new GigyaError(e)
+            throw error
+        }
+    }
     
     /**
      * 
@@ -40,7 +75,7 @@ export class GigyaInterface {
      */
     async send(api, params) {
         try {
-            return await GigyaSdk.send(api, JSON.stringify(params) ?? {})
+            return await GigyaSdk.send(api, JSON.stringify(params) ?? "")
         } catch (e) {
             const error = new GigyaError(e)
             throw error
