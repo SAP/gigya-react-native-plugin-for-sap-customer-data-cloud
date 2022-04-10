@@ -43,7 +43,8 @@ const App = (): React.ReactElement => {
 
   console.log("is: " + Gigya.isLoggedIn())
 
-  Gigya.initFor("3_l7zxNcj4vhu8tLzYafUnKDSA4VsOVNzR4VnclcC6VKsXXmQdq950uC-zY7Vsu9RC");
+  // 3_l7zxNcj4vhu8tLzYafUnKDSA4VsOVNzR4VnclcC6VKsXXmQdq950uC-zY7Vsu9RC
+  Gigya.initFor("3_KF6Dwf0BoTktLiX54s_rSWRiklW69xCLG8pZa413Z6pkuBGBwQeSK9k19grZfCDe");
 
   const sendApi = async () => {
     try {
@@ -68,6 +69,56 @@ const App = (): React.ReactElement => {
       console.log("errorSend:" + JSON.stringify(e));
 
       console.log("socialLogin interruption");
+      
+      switch (e.getInterruption()) {
+        case GigyaInterruption.pendingRegistration: {
+          const resolver = Gigya.resolverFactory.getResolver(e) as PendingRegistrationResolver;
+
+          console.log("pendingRegistration:")
+          console.log(resolver.regToken)
+
+          try {
+            const setAccount = await resolver.setAccount({ "profile": { "zip": "34234" } })
+            console.log("setAccount: " + JSON.stringify(setAccount));
+            updateIsLoggedIn(Gigya.isLoggedIn())
+          } catch (e) {
+            console.log("setAccount error:" + e);
+          }
+
+
+
+          break
+        }
+        case GigyaInterruption.conflictingAccounts: {
+          console.log("conflictingAccounts start")
+          linkResolver = Gigya.resolverFactory.getResolver(e) as LinkAccountResolver;
+
+          console.log("link:")
+          console.log(linkResolver.regToken)
+          const accounts = await linkResolver.getConflictingAccount()
+          console.log("account:")
+          console.log(JSON.stringify(accounts))
+
+          setVisibleLink(true);
+
+        }
+      }
+    }
+  };
+
+  const sso = async () => {
+    try {
+      const senddd = await Gigya.sso();
+
+      console.log("sso: " + JSON.stringify(senddd));
+
+      
+      updateIsLoggedIn(Gigya.isLoggedIn())
+    } catch (error) {
+      const e = error as GigyaError
+      console.log("errorSend:" + JSON.stringify(e));
+
+      console.log("sso interruption");
       
       switch (e.getInterruption()) {
         case GigyaInterruption.pendingRegistration: {
@@ -205,6 +256,7 @@ const App = (): React.ReactElement => {
     logout,
     showScreenSet,
     setAccount,
+    sso,
   }
 
   const [activeMethod, setActiveMethod] = useState(Method.init);
@@ -240,6 +292,10 @@ const App = (): React.ReactElement => {
       case Method.setAccount: {
         setVisibleAccount(true)
         setAccount()
+        break
+      }
+      case Method.sso: {
+        sso()
         break
       }
     }
@@ -286,6 +342,12 @@ const App = (): React.ReactElement => {
       method: Method.setAccount,
       description:
         'Set account information',
+    },
+    {
+      title: 'SSO',
+      method: Method.sso,
+      description:
+        'Login via SSO',
     },
     {
       title: 'logout',

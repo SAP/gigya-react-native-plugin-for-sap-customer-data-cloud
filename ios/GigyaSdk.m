@@ -58,6 +58,10 @@ RCT_EXTERN_METHOD(socialLogin: (NSString *)provider
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 
+RCT_EXTERN_METHOD(sso: (NSString *)params
+                  resolver:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject)
+
 RCT_EXTERN_METHOD(addConnection: (NSString *)provider
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)

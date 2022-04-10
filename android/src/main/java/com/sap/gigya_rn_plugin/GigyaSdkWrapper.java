@@ -10,6 +10,7 @@ import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.gigya.android.sdk.Gigya;
 import com.gigya.android.sdk.GigyaCallback;
+import com.gigya.android.sdk.GigyaDefinitions;
 import com.gigya.android.sdk.GigyaLoginCallback;
 import com.gigya.android.sdk.GigyaPluginCallback;
 import com.gigya.android.sdk.account.models.GigyaAccount;
@@ -271,6 +272,44 @@ public class GigyaSdkWrapper<T extends GigyaAccount> {
         });
     }
 
+   void sso(@Nonnull String jsonParameters, Promise promise) {
+        GigyaSdkRNLogger.log("sso login: called");
+        promiseWrapper.promise = promise;
+        gigyaInstance.login(GigyaDefinitions.Providers.SSO, mapParams(jsonParameters), new GigyaLoginCallback<T>() {
+            @Override
+            public void onSuccess(T account) {
+                GigyaSdkRNLogger.log("social login : success");
+                resolverHelper.clear();
+                promiseWrapper.resolve(account);
+            }
+
+            @Override
+            public void onError(GigyaError gigyaError) {
+                GigyaSdkRNLogger.log("social login : error with message: " + gigyaError.getLocalizedMessage());
+                promiseWrapper.reject(gigyaError);
+            }
+
+            @Override
+            public void onConflictingAccounts(@NonNull GigyaApiResponse response, @NonNull ILinkAccountsResolver resolver) {
+                resolverHelper.interrupt = "conflictingAccount";
+                resolverHelper.linkAccountsResolver = resolver;
+                promiseWrapper.reject(response);
+            }
+
+            @Override
+            public void onPendingRegistration(@NonNull GigyaApiResponse response, @NonNull IPendingRegistrationResolver resolver) {
+                resolverHelper.interrupt = "pendingRegistration";
+                resolverHelper.pendingRegistrationResolver = resolver;
+                promiseWrapper.reject(response);
+            }
+
+            @Override
+            public void onPendingVerification(@NonNull GigyaApiResponse response, @Nullable String regToken) {
+                promiseWrapper.reject(response);
+            }
+        });
+    }
+    
     void addConnection(@Nonnull String provider, @Nonnull String jsonParameters, Promise promise) {
         GigyaSdkRNLogger.log("addConnection: called");
         promiseWrapper.promise = promise;

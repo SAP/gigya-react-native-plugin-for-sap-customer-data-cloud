@@ -38,6 +38,8 @@ export namespace Gigya {
 
     function socialLogin(provider: GigyaSocialProviders, params?: Record<string, any>): Promise<GigyaDictionary>;
 
+    function sso(params?: Record<string, any>): Promise<GigyaDictionary>;
+
     function setAccount(params: Record<string, any>): Promise<GigyaDictionary>;
 
     function getAccount(params?: Record<string, any>): Promise<GigyaDictionary>;

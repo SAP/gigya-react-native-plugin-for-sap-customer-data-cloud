@@ -81,7 +81,7 @@ PODS:
     - FlipperKit/Core
     - FlipperKit/FlipperKitNetworkPlugin
   - fmt (6.2.1)
-  - Gigya (1.2.5)
+  - Gigya (1.3.1)
   - gigya-react-native-plugin-for-sap-customer-data-cloud (0.0.5):
     - Gigya
     - React
@@ -537,7 +537,7 @@ SPEC CHECKSUMS:
   Flipper-RSocket: d9d9ade67cbecf6ac10730304bf5607266dd2541
   FlipperKit: d8d346844eca5d9120c17d441a2f38596e8ed2b9
   fmt: ff9d55029c625d3757ed641535fd4a75fedc7ce9
-  Gigya: d6735cfabfaae24799246c2d5aab8fb724406966
+  Gigya: 5d7235a37144b12e5373d04183a9d5c27f4495d0
   gigya-react-native-plugin-for-sap-customer-data-cloud: 9506bc7d3d112caf1f6388bd4981a776588c3eb3
   glog: 85ecdd10ee8d8ec362ef519a6a45ff9aa27b2e85
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
@@ -572,4 +572,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 579214ab12c2419d3ee090a7653ce7592d17a261
 
-COCOAPODS: 1.11.2
+COCOAPODS: 1.11.3

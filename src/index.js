@@ -146,6 +146,21 @@ export class GigyaInterface {
     }
 
     /**
+     * SSO login via CLP.
+     * 
+     * @param {map} params 
+     * @returns Response promise. 
+     */
+         async sso(params) {
+            try {
+                return await GigyaSdk.sso(JSON.stringify(params) ?? "")
+            } catch (e) {
+                const error = new GigyaError(e)
+                throw error
+            }
+        }
+
+    /**
      * Set/update account information.
      * @param {map} params 
      * @returns Response promise.

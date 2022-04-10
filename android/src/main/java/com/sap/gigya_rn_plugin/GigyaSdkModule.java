@@ -96,6 +96,11 @@ public class GigyaSdkModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
+    public void sso(@Nonnull String params, Promise promise) {
+        gigyaSdk.sso(params, promise);
+    }
+
+    @ReactMethod
     public void addConnection(@Nonnull String provider, @Nonnull String params, Promise promise) {
         gigyaSdk.addConnection(provider, params, promise);
     }
