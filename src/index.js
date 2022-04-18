@@ -151,14 +151,14 @@ export class GigyaInterface {
      * @param {map} params 
      * @returns Response promise. 
      */
-         async sso(params) {
-            try {
-                return await GigyaSdk.sso(JSON.stringify(params) ?? "")
-            } catch (e) {
-                const error = new GigyaError(e)
-                throw error
-            }
+    async sso(params) {
+        try {
+            return await GigyaSdk.sso(JSON.stringify(params) ?? "")
+        } catch (e) {
+            const error = new GigyaError(e)
+            throw error
         }
+    }
 
     /**
      * Set/update account information.
@@ -220,23 +220,14 @@ export class GigyaInterface {
     }
 
     /**
-     * Show screen-set.
+     * Show screen-set with params.
      * 
      * @param {string} name 
      * @param {map} params 
-     */
-    showScreenSet(name, params, callback) {
-        GigyaSdk.showScreenSet(name, JSON.stringify(params) ?? "")
-    }
-
-    /**
-     * Show screen-set.
-     * 
-     * @param {*} name 
      * @param {*} callback 
      */
-    showScreenSet(name, callback) {
-        GigyaSdk.showScreenSet(name, "")
+     showScreenSetWithParams(name, params, callback) {
+        GigyaSdk.showScreenSet(name, JSON.stringify(params) ?? "")
 
         listener = GigyaSdkEvents.addListener('event', (jsonData) => {
             const data = JSON.parse(jsonData)
@@ -246,6 +237,16 @@ export class GigyaInterface {
                 listener.remove()
             }
         })
+    }
+
+    /**
+     * Show screen-set.
+     * 
+     * @param {*} name 
+     * @param {*} callback 
+     */
+    showScreenSet(name, callback) {
+        this.showScreenSetWithParams(name, "", callback)
     }
 }
 
