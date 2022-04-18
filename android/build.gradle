@@ -48,7 +48,7 @@ android {
         minSdkVersion safeExtGet('minSdkVersion', DEFAULT_MIN_SDK_VERSION)
         targetSdkVersion safeExtGet('targetSdkVersion', DEFAULT_TARGET_SDK_VERSION)
         versionCode 1
-        versionName "0.0.5"
+        versionName "0.0.7"
     }
     lintOptions {
         abortOnError false
@@ -79,7 +79,7 @@ dependencies {
     implementation 'com.facebook.react:react-native:+'  // From node_modules
 
     // Gigya implementations.
-    api 'com.github.SAP.gigya-android-sdk:gigya-android-sdk-core:core-v5.1.6'
+    api 'com.github.SAP.gigya-android-sdk:sdk-core:core-v5.1.7'
     api 'com.google.code.gson:gson:2.8.6'
 }
 

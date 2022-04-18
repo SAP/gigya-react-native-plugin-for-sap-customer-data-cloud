@@ -23,6 +23,7 @@ enum GigyaMethods: String {
     case addConnection
     case removeConnection
     case showScreenSet
+    case sso
 }
 
 enum GigyaInterruptionsSupported: String {
@@ -88,6 +89,8 @@ class GigyaSdkWrapper<T: GigyaAccountProtocol>: GigyaSdkWrapperProtocol {
             self.setAccount(params: params["params"] as? [String : Any] ?? [:])
         case .socialLogin:
             self.socialLogin(provider: params["provider"] as? String ?? "", params: params["params"] as? [String : Any] ?? [:])
+        case .sso:
+            self.sso(params: params["params"] as? [String : Any] ?? [:])
         case .addConnection:
             self.addConnection(provider: params["provider"] as? String ?? "", params: params["params"] as? [String : Any] ?? [:])
         case .removeConnection:
@@ -238,6 +241,32 @@ class GigyaSdkWrapper<T: GigyaAccountProtocol>: GigyaSdkWrapperProtocol {
         }
     }
 
+    func sso(params: [String : Any]) {
+        guard let viewController = RCTPresentedViewController() else {
+            GigyaLogger.log(with: self, message: "ViewController not found.")
+            return
+        }
+
+        gigya.login(with: .sso, viewController: viewController, params: params) { (result) in
+            switch result {
+            case .success(let data):
+                let mapped: [String: Any] = self.accountToDic(account: data)
+                self.promise?.resolve(result: mapped)
+            case .failure(let error):
+                if let interruption = error.interruption {
+                    self.intteruptionHandle(interruption: interruption)
+                }
+
+                switch error.error {
+                case .gigyaError(let data):
+                    self.promise?.reject(error: data.errorMessage, errorCode: data.errorCode, data: data.toDictionary())
+                default:
+                    self.promise?.reject(error: error.error.localizedDescription)
+                }
+            }
+        }
+    }
+    
     func showScreenSet(name: String, params: [String: Any]) {
         guard let viewController = RCTPresentedViewController() else {
             GigyaLogger.log(with: self, message: "Presented viewController not found.")

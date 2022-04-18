@@ -107,6 +107,16 @@ public class GigyaSdk: NSObject {
         let newParmas: [String: Any] = ["provider": provider, "params": jsonToParams]
         GigyaSdk.gigya?.sendEvent(.socialLogin, params: newParmas, promise: promise)
     }
+    
+    @objc(sso:resolver:rejecter:)
+    func socialLogin(_ params: String, resolve: @escaping RCTPromiseResolveBlock, reject: @escaping RCTPromiseRejectBlock) -> Void {
+        promise.set(promiseResolve: resolve, promiseReject: reject)
+
+        let jsonToParams = GigyaSdk.toJson(data: params)
+
+        let newParmas: [String: Any] = ["params": jsonToParams]
+        GigyaSdk.gigya?.sendEvent(.sso, params: newParmas, promise: promise)
+    }
 
     @objc(addConnection:resolver:rejecter:)
     func addConnection(_ params: String, resolve: @escaping RCTPromiseResolveBlock, reject: @escaping RCTPromiseRejectBlock) -> Void {

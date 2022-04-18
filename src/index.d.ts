@@ -38,6 +38,8 @@ export namespace Gigya {
 
     function socialLogin(provider: GigyaSocialProviders, params?: Record<string, any>): Promise<GigyaDictionary>;
 
+    function sso(params?: Record<string, any>): Promise<GigyaDictionary>;
+
     function setAccount(params: Record<string, any>): Promise<GigyaDictionary>;
 
     function getAccount(params?: Record<string, any>): Promise<GigyaDictionary>;
@@ -47,5 +49,8 @@ export namespace Gigya {
     function removeAccount(provider: GigyaSocialProviders): Promise<GigyaDictionary>;
 
     function showScreenSet(name: string, callback: (event: string, data: GigyaDictionary) => void): void;
+
+    function showScreenSetWithParams(name: string, params: Record<string, any>, callback: (event: string, data: GigyaDictionary) => void): void;
+
 }
 
