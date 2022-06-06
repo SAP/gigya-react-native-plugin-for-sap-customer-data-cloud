@@ -256,6 +256,9 @@ const App = (): React.ReactElement => {
     showScreenSet,
     setAccount,
     sso,
+    isOptIn,
+    optIn,
+    optOut,
   }
 
   const [activeMethod, setActiveMethod] = useState(Method.init);
@@ -295,6 +298,10 @@ const App = (): React.ReactElement => {
       }
       case Method.sso: {
         sso()
+        break
+      }
+      case Method.isOptIn: {
+        Gigya.biometric.isOptIn()
         break
       }
     }
@@ -347,6 +354,24 @@ const App = (): React.ReactElement => {
       method: Method.sso,
       description:
         'Login via SSO',
+    },
+    {
+      title: 'isOptIn',
+      method: Method.isOptIn,
+      description:
+        'Is opt in',
+    },
+    {
+      title: 'optIn',
+      method: Method.optIn,
+      description:
+        'Opt in',
+    },
+    {
+      title: 'optOut',
+      method: Method.optOut,
+      description:
+        'Opt out',
     },
     {
       title: 'logout',

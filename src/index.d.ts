@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { BiometricService } from './biometric';
 import { GigyaDictionary, GigyaInterruption, GigyaSocialProviders } from './Models';
 import { ResolverFactory} from './Resolvers'
 
@@ -19,6 +20,8 @@ export class GigyaError {
 
 export namespace Gigya {
     const resolverFactory: ResolverFactory
+
+    const biometric: BiometricService
     
     function isLoggedIn(): boolean;
 

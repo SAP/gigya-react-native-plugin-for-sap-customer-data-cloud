@@ -1,4 +1,5 @@
 import { NativeEventEmitter, NativeModules } from 'react-native'
+import { BiometricService } from './biometric'
 import { ResolverFactory } from './resolvers'
 
 const { GigyaSdk } = NativeModules
@@ -7,6 +8,8 @@ const GigyaSdkEvents = new NativeEventEmitter(NativeModules.GigyaSdkEvents)
 
 export class GigyaInterface {
     resolverFactory = new ResolverFactory()
+    
+    biometric = new BiometricService()
 
     /**
      * Check login state.

@@ -24,6 +24,12 @@ enum GigyaMethods: String {
     case removeConnection
     case showScreenSet
     case sso
+    case optIn
+    case optOut
+    case isLocked
+    case isOptIn
+    case unlockSession
+    case lockSession
 }
 
 enum GigyaInterruptionsSupported: String {
@@ -37,6 +43,10 @@ protocol GigyaSdkWrapperProtocol {
     var currentResolver: GigyaResolverModelProtocol? { get }
 
     func isLoggedIn() -> Bool
+
+    func isOptIn() -> Bool
+
+    func isLocked() -> Bool
 
     func initFor(apiKey: String, domain: String?)
 
@@ -95,6 +105,14 @@ class GigyaSdkWrapper<T: GigyaAccountProtocol>: GigyaSdkWrapperProtocol {
             self.addConnection(provider: params["provider"] as? String ?? "", params: params["params"] as? [String : Any] ?? [:])
         case .removeConnection:
             self.removeConnection(provider: params["provider"] as? String ?? "")
+        case .optIn:
+            self.optIn()
+        case .optOut:
+            self.optOut()
+        case .lockSession:
+            self.lockSession()
+        case .unlockSession:
+            self.unlockSession()
         default:
             break
         }
@@ -356,6 +374,60 @@ class GigyaSdkWrapper<T: GigyaAccountProtocol>: GigyaSdkWrapperProtocol {
                 self.promise?.resolve(result: [])
             case .failure(let error):
                 self.promise?.reject(error: error.localizedDescription)
+            }
+        }
+    }
+    
+    func isOptIn() -> Bool {
+        return gigya.biometric.isOptIn
+    }
+    
+    func isLocked() -> Bool {
+        return gigya.biometric.isLocked
+    }
+    
+    // MARK: - Biometric service
+    
+    func optIn() {
+        gigya.biometric.optIn { (result) in
+            switch result {
+            case .success:
+                self.promise?.resolve(result: [])
+            case .failure:
+                self.promise?.reject(error: "error")
+            }
+        }
+    }
+    
+    func optOut() {
+        gigya.biometric.optOut { (result) in
+            switch result {
+            case .success:
+                self.promise?.resolve(result: [])
+            case .failure:
+                self.promise?.reject(error: "error")
+            }
+        }
+    }
+    
+    func lockSession() {
+        gigya.biometric.lockSession { (result) in
+            switch result {
+            case .success:
+                self.promise?.resolve(result: [])
+            case .failure:
+                self.promise?.reject(error: "error")
+            }
+        }
+    }
+    
+    func unlockSession() {
+        gigya.biometric.unlockSession { (result) in
+            switch result {
+            case .success:
+                self.promise?.resolve(result: [])
+            case .failure:
+                self.promise?.reject(error: "error")
             }
         }
     }
