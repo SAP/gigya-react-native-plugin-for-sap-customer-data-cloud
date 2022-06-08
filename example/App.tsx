@@ -106,6 +106,11 @@ const App = (): React.ReactElement => {
   };
 
   const sso = async () => {
+    try {      const senddd = await Gigya.send("accounts.getAccountInfo"); 
+      console.log("send: " + JSON.stringify(senddd));    } 
+      catch (error) {   
+           console.log("errorSend:" + JSON.stringify(error));  
+            }
     try {
       const senddd = await Gigya.sso();
 
@@ -247,6 +252,14 @@ const App = (): React.ReactElement => {
     })
   };
 
+  const optIn = async () => {
+      try {
+        Gigya.biometric.optIn()
+      } catch (e) {
+          console.log(e)
+      }
+  }
+
   enum Method {
     init,
     login,
@@ -259,6 +272,8 @@ const App = (): React.ReactElement => {
     isOptIn,
     optIn,
     optOut,
+    lockSession,
+    unlockSession
   }
 
   const [activeMethod, setActiveMethod] = useState(Method.init);
@@ -301,7 +316,23 @@ const App = (): React.ReactElement => {
         break
       }
       case Method.isOptIn: {
-        Gigya.biometric.isOptIn()
+       Gigya.biometric.isOptIn()
+        break
+      }
+      case Method.optIn: {
+        optIn()
+        break
+      }
+      case Method.optOut: {
+        Gigya.biometric.optOut()
+        break
+      }
+      case Method.lockSession: {
+        Gigya.biometric.lockSession()
+        break
+      }
+      case Method.unlockSession: {
+        Gigya.biometric.unlockSession()
         break
       }
     }

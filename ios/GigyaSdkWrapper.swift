@@ -392,9 +392,9 @@ class GigyaSdkWrapper<T: GigyaAccountProtocol>: GigyaSdkWrapperProtocol {
         gigya.biometric.optIn { (result) in
             switch result {
             case .success:
-                self.promise?.resolve(result: [])
+                self.promise?.resolve(result: true)
             case .failure:
-                self.promise?.reject(error: "error")
+                self.promise?.reject(error: "Opt In failed")
             }
         }
     }
@@ -403,9 +403,9 @@ class GigyaSdkWrapper<T: GigyaAccountProtocol>: GigyaSdkWrapperProtocol {
         gigya.biometric.optOut { (result) in
             switch result {
             case .success:
-                self.promise?.resolve(result: [])
+                self.promise?.resolve(result: true)
             case .failure:
-                self.promise?.reject(error: "error")
+                self.promise?.reject(error: "Opt out failed")
             }
         }
     }
@@ -414,9 +414,9 @@ class GigyaSdkWrapper<T: GigyaAccountProtocol>: GigyaSdkWrapperProtocol {
         gigya.biometric.lockSession { (result) in
             switch result {
             case .success:
-                self.promise?.resolve(result: [])
+                self.promise?.resolve(result: true)
             case .failure:
-                self.promise?.reject(error: "error")
+                self.promise?.reject(error: "Lock session failed")
             }
         }
     }
@@ -425,9 +425,9 @@ class GigyaSdkWrapper<T: GigyaAccountProtocol>: GigyaSdkWrapperProtocol {
         gigya.biometric.unlockSession { (result) in
             switch result {
             case .success:
-                self.promise?.resolve(result: [])
+                self.promise?.resolve(result: true)
             case .failure:
-                self.promise?.reject(error: "error")
+                self.promise?.reject(error: "Unlock session failed")
             }
         }
     }

@@ -1,7 +1,14 @@
-import { NativeModules } from 'react-native'
+import { NativeModules, Platform } from 'react-native'
+
 const { GigyaBiometric } = NativeModules
 
+
 export class BiometricService {
+    async isSupported() {
+        if (Platform.OS === 'ios') return true;
+        return GigyaBiometric.isSupported()
+    }
+    
     async isLocked() {
         return GigyaBiometric.isLocked()
     }

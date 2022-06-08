@@ -80,6 +80,7 @@ dependencies {
 
     // Gigya implementations.
     api 'com.github.SAP.gigya-android-sdk:sdk-core:core-v5.1.7'
+    api 'com.github.SAP.gigya-android-sdk:gigya-android-biometric:bio-v2.0.0'
     api 'com.google.code.gson:gson:2.8.6'
 }
 
