@@ -9,7 +9,6 @@ import com.gigya.android.sdk.account.models.GigyaAccount;
 import com.gigya.android.sdk.biometric.GigyaBiometric;
 import com.gigya.android.sdk.biometric.GigyaPromptInfo;
 import com.gigya.android.sdk.biometric.IGigyaBiometricCallback;
-import com.gigya.android.sdk.biometric.IGigyaBiometricOperationCallback;
 import com.gigya.android.sdk.utils.CustomGSONDeserializer;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -54,7 +53,7 @@ public class GigyaSdkBiometricWrapper<T extends GigyaAccount> {
                 new IGigyaBiometricCallback() {
                     @Override
                     public void onBiometricOperationCanceled() {
-                        // Callback not used.
+                        promise.reject("opt in canceled");
                     }
 
                     @Override
@@ -66,7 +65,7 @@ public class GigyaSdkBiometricWrapper<T extends GigyaAccount> {
 
                     @Override
                     public void onBiometricOperationFailed(String s) {
-                        promise.reject("Opt in failed");
+                        promise.reject("opt in failed");
                     }
                 });
     }
@@ -76,7 +75,7 @@ public class GigyaSdkBiometricWrapper<T extends GigyaAccount> {
                 new IGigyaBiometricCallback() {
                     @Override
                     public void onBiometricOperationCanceled() {
-                        // Callback not used.
+                        promise.reject("opt in canceled");
                     }
 
                     @Override
@@ -93,7 +92,13 @@ public class GigyaSdkBiometricWrapper<T extends GigyaAccount> {
     }
 
     void lockSession(Promise promise) {
-        gigyaBiometricInstance.lock(new IGigyaBiometricOperationCallback() {
+        gigyaBiometricInstance.lock(new IGigyaBiometricCallback() {
+
+            @Override
+            public void onBiometricOperationCanceled() {
+                promise.reject("opt in canceled");
+            }
+
             @Override
             public void onBiometricOperationSuccess(@NonNull GigyaBiometric.Action action) {
                 if (action.equals(GigyaBiometric.Action.LOCK))
@@ -113,7 +118,7 @@ public class GigyaSdkBiometricWrapper<T extends GigyaAccount> {
                 new IGigyaBiometricCallback() {
                     @Override
                     public void onBiometricOperationCanceled() {
-                        // Callback not used.
+                        promise.reject("opt in canceled");
                     }
 
                     @Override

@@ -2,6 +2,7 @@ package com.gigyarnexample;
 
 import android.app.Application;
 import android.content.Context;
+import android.hardware.biometrics.BiometricPrompt;
 
 import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
@@ -10,6 +11,9 @@ import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.soloader.SoLoader;
 import com.gigya.android.sdk.account.models.GigyaAccount;
+import com.gigya.android.sdk.biometric.GigyaBiometric;
+import com.gigya.android.sdk.biometric.GigyaPromptInfo;
+import com.sap.gigya_rn_plugin.GigyaSdkBiometricModule;
 import com.sap.gigya_rn_plugin.GigyaSdkModule;
 
 import java.lang.reflect.InvocationTargetException;
@@ -52,6 +56,9 @@ public class MainApplication extends Application implements ReactApplication {
 
         // Set and initialize the account schema for the Gigya core SDK.
         GigyaSdkModule.setSchema(this, GigyaAccount.class);
+        GigyaSdkBiometricModule.setBiometricPromptInfo(new GigyaPromptInfo(
+                "Biometric Auth", "Place finger on sensor to authenticate", ""
+        ));
     }
 
     /**
