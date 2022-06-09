@@ -109,7 +109,7 @@ const App = (): React.ReactElement => {
     try {      const senddd = await Gigya.send("accounts.getAccountInfo"); 
       console.log("send: " + JSON.stringify(senddd));    } 
       catch (error) {   
-           console.log("errorSend:" + JSON.stringify(error));  
+           console.log("errorSendaaa:" + JSON.stringify(error));  
             }
     try {
       const senddd = await Gigya.sso();
@@ -260,6 +260,15 @@ const App = (): React.ReactElement => {
       }
   }
 
+  const unlockSession = async () => {
+    try {
+      await Gigya.biometric.unlockSession()
+      updateIsLoggedIn(Gigya.isLoggedIn())
+    } catch (e) {
+        console.log(e)
+    }
+}
+
   enum Method {
     init,
     login,
@@ -332,7 +341,7 @@ const App = (): React.ReactElement => {
         break
       }
       case Method.unlockSession: {
-        Gigya.biometric.unlockSession()
+        unlockSession()
         break
       }
     }
@@ -403,6 +412,19 @@ const App = (): React.ReactElement => {
       method: Method.optOut,
       description:
         'Opt out',
+    },
+    {
+      title: 'lockSession',
+      method: Method.lockSession,
+      description:
+        'Lock Session',
+    },
+
+    {
+      title: 'unlockSession',
+      method: Method.unlockSession,
+      description:
+        'unlock Session',
     },
     {
       title: 'logout',

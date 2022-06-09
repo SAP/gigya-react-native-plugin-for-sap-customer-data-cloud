@@ -147,7 +147,7 @@ class GigyaSdkWrapper<T: GigyaAccountProtocol>: GigyaSdkWrapperProtocol {
 
                     self.promise?.resolve(result: mapped)
                case .failure(let error):
-                    self.promise?.reject(error: error.localizedDescription)
+                    self.promise?.reject(error: error)
                }
         }
     }
@@ -165,12 +165,7 @@ class GigyaSdkWrapper<T: GigyaAccountProtocol>: GigyaSdkWrapperProtocol {
                     self.intteruptionHandle(interruption: interruption)
                 }
 
-                switch error.error {
-                case .gigyaError(let data):
-                    self.promise?.reject(error: data.errorMessage, errorCode: data.errorCode, data: data.toDictionary())
-                default:
-                    self.promise?.reject(error: error.error.localizedDescription)
-                }
+                self.promise?.reject(error: error.error)
             }
         }
     }
@@ -187,13 +182,8 @@ class GigyaSdkWrapper<T: GigyaAccountProtocol>: GigyaSdkWrapperProtocol {
                 if let interruption = error.interruption {
                     self.intteruptionHandle(interruption: interruption)
                 }
-
-                switch error.error {
-                case .gigyaError(let data):
-                    self.promise?.reject(error: data.errorMessage, errorCode: data.errorCode, data: data.toDictionary())
-                default:
-                    self.promise?.reject(error: error.error.localizedDescription)
-                }
+                
+                self.promise?.reject(error: error.error)
             }
         }
     }
@@ -204,7 +194,7 @@ class GigyaSdkWrapper<T: GigyaAccountProtocol>: GigyaSdkWrapperProtocol {
             case .success:
                 self.promise?.resolve(result: [])
             case .failure(let error):
-                self.promise?.reject(error: error.localizedDescription)
+                self.promise?.reject(error: error)
             }
         }
     }
@@ -216,7 +206,7 @@ class GigyaSdkWrapper<T: GigyaAccountProtocol>: GigyaSdkWrapperProtocol {
                 let mapped: [String: Any] = self.accountToDic(account: data)
                 self.promise?.resolve(result: mapped)
             case .failure(let error):
-                self.promise?.reject(error: error.localizedDescription)
+                self.promise?.reject(error: error)
             }
         }
     }
@@ -228,7 +218,7 @@ class GigyaSdkWrapper<T: GigyaAccountProtocol>: GigyaSdkWrapperProtocol {
                 let mapped: [String: Any] = self.accountToDic(account: data)
                 self.promise?.resolve(result: mapped)
             case .failure(let error):
-                self.promise?.reject(error: error.localizedDescription)
+                self.promise?.reject(error: error)
             }
         }
     }
@@ -250,12 +240,8 @@ class GigyaSdkWrapper<T: GigyaAccountProtocol>: GigyaSdkWrapperProtocol {
                     self.intteruptionHandle(interruption: interruption)
                 }
 
-                switch error.error {
-                case .gigyaError(let data):
-                    self.promise?.reject(error: data.errorMessage, errorCode: data.errorCode, data: data.toDictionary())
-                default:
-                    self.promise?.reject(error: error.error.localizedDescription)
-                }            }
+                self.promise?.reject(error: error.error)
+            }
         }
     }
 
@@ -275,12 +261,7 @@ class GigyaSdkWrapper<T: GigyaAccountProtocol>: GigyaSdkWrapperProtocol {
                     self.intteruptionHandle(interruption: interruption)
                 }
 
-                switch error.error {
-                case .gigyaError(let data):
-                    self.promise?.reject(error: data.errorMessage, errorCode: data.errorCode, data: data.toDictionary())
-                default:
-                    self.promise?.reject(error: error.error.localizedDescription)
-                }
+                self.promise?.reject(error: error.error)
             }
         }
     }
@@ -356,7 +337,7 @@ class GigyaSdkWrapper<T: GigyaAccountProtocol>: GigyaSdkWrapperProtocol {
             case .success:
                 self.promise?.resolve(result: [])
             case .failure(let error):
-                self.promise?.reject(error: error.localizedDescription)
+                self.promise?.reject(error: error)
             }
         }
     }
@@ -373,7 +354,7 @@ class GigyaSdkWrapper<T: GigyaAccountProtocol>: GigyaSdkWrapperProtocol {
             case .success:
                 self.promise?.resolve(result: [])
             case .failure(let error):
-                self.promise?.reject(error: error.localizedDescription)
+                self.promise?.reject(error: error)
             }
         }
     }
