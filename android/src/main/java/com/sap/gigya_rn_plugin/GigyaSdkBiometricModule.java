@@ -4,6 +4,8 @@ import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
+import com.gigya.android.sdk.biometric.GigyaPromptInfo;
+
 
 public class GigyaSdkBiometricModule extends ReactContextBaseJavaModule {
 
@@ -15,6 +17,10 @@ public class GigyaSdkBiometricModule extends ReactContextBaseJavaModule {
         super(reactContext);
         this.reactContext = reactContext;
         gigyaBiometricSdk = new GigyaSdkBiometricWrapper();
+    }
+
+    public static void setBiometricPromptInfo(GigyaPromptInfo info) {
+        gigyaBiometricSdk.promptInfo = info;
     }
 
     @Override

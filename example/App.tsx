@@ -252,13 +252,45 @@ const App = (): React.ReactElement => {
     })
   };
 
+  // START: Biometric operations
+
   const optIn = async () => {
       try {
-        Gigya.biometric.optIn()
+        var operation = await Gigya.biometric.optIn()
+        console.log("biometric operation " + operation)
       } catch (e) {
-          console.log(e)
+          console.log("opt in error " + e)
       }
   }
+
+  const optOut = async () => {
+    try {
+      var operation = await Gigya.biometric.optOut()
+      console.log("biometric operation " + operation)
+    } catch (e) {
+        console.log("opt in error " + e)
+    } 
+  }
+
+  const lockSession = async () => {
+    try {
+      var operation = await Gigya.biometric.lockSession()
+      console.log("biometric operation " + operation)
+    } catch (e) {
+        console.log("opt in error " + e)
+    } 
+  }
+
+  const unlockSession = async () => {
+    try {
+      var operation = await Gigya.biometric.unlockSession()
+      console.log("biometric operation " + operation)
+    } catch (e) {
+        console.log("opt in error " + e)
+    } 
+  }
+
+  // END: Biometric operations
 
   enum Method {
     init,
@@ -324,15 +356,15 @@ const App = (): React.ReactElement => {
         break
       }
       case Method.optOut: {
-        Gigya.biometric.optOut()
+        optOut()
         break
       }
       case Method.lockSession: {
-        Gigya.biometric.lockSession()
+        lockSession()
         break
       }
       case Method.unlockSession: {
-        Gigya.biometric.unlockSession()
+        unlockSession()
         break
       }
     }

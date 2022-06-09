@@ -221,6 +221,63 @@ Example of resolving link to the site when trying to link a new social account t
 const loginToSite = await resolver.linkToSite(userData.login, userData.password)
 ```
 
+## Biometrics support
+
+The plugin offers biometric support for Android/iOS for these flows.
+
+```
+An end user logs in.
+An end user opts in to biometric authentication.
+This will require the end user to verify his fingerprint.
+The app is locked or being cleared from memory.
+The end user is required to unlock the app in order to restore his session.
+This will require the end user to verify his fingerprint.
+The end user opts out of biometric authentication
+```
+The biometric fingerprint feature is a security encryption on top of an existing session of your app, therefore, calling any biometric
+operations requires a valid session.
+
+Please make sure you are following native implementations:
+
+# iOS
+1. The device has a Passcode.
+2. The device has a TouchID/FaceID available.
+
+**FaceID**
+In order to use FaceID in a compatible device, you must include following key to your Info.plist file.
+
+**NSFaceIDUsageDescription = (String) “Your custom message”**
+Additionally, when you want to set a custom text in Touch ID prompt , you can include the following key:
+
+**GigyaTouchIDMessage = (String) “Your custom message” (default = “Please authenticate to proceed”).**
+
+# Android
+
+1. Android SDK 23 and above is required.
+2. The device has a fingerprint sensor available.
+3. A minimum of 1 fingerprint already enrolled in the device.
+4. Relevant permissions are already requested in the library manifest:
+      android.permission.USE_FINGERPRINT
+      android.permission.USE_BIOMETRIC
+
+**Declaring you prompt display**
+The Andorid biometric authentication uses a prompt display. You are able to customize the text shown by declaring your
+own ***BiometricPromptIfo*** object.
+
+In you application class (After initating the SDK), you can add the following:
+```java
+GigyaSdkBiometricModule.setBiometricPromptInfo(new GigyaPromptInfo(
+                "Title", "Subtitle", "Description"
+        ));
+```
+
+If no prompt info is supplied the prompt window will use default English texts.
+
+
+
+
+
+
 ## Known Issues
 None
 
