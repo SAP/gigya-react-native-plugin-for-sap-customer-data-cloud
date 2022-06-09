@@ -276,6 +276,7 @@ const App = (): React.ReactElement => {
     try {
       var operation = await Gigya.biometric.lockSession()
       console.log("biometric operation " + operation)
+      updateIsLoggedIn(Gigya.isLoggedIn())
     } catch (e) {
         console.log("opt in error " + e)
     } 
@@ -285,6 +286,7 @@ const App = (): React.ReactElement => {
     try {
       var operation = await Gigya.biometric.unlockSession()
       console.log("biometric operation " + operation)
+      updateIsLoggedIn(Gigya.isLoggedIn())
     } catch (e) {
         console.log("opt in error " + e)
     } 
