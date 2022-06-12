@@ -82,8 +82,8 @@ PODS:
     - FlipperKit/FlipperKitNetworkPlugin
   - fmt (6.2.1)
   - Gigya (1.3.1)
-  - gigya-react-native-plugin-for-sap-customer-data-cloud (0.0.5):
-    - Gigya
+  - gigya-react-native-plugin-for-sap-customer-data-cloud (0.0.6):
+    - Gigya (~> 1.3.1)
     - React
   - glog (0.3.5)
   - libevent (2.1.12)
@@ -538,7 +538,7 @@ SPEC CHECKSUMS:
   FlipperKit: d8d346844eca5d9120c17d441a2f38596e8ed2b9
   fmt: ff9d55029c625d3757ed641535fd4a75fedc7ce9
   Gigya: 5d7235a37144b12e5373d04183a9d5c27f4495d0
-  gigya-react-native-plugin-for-sap-customer-data-cloud: 9506bc7d3d112caf1f6388bd4981a776588c3eb3
+  gigya-react-native-plugin-for-sap-customer-data-cloud: 0341614d3a50f2d43a7760329bf0eeb3e39df8ae
   glog: 85ecdd10ee8d8ec362ef519a6a45ff9aa27b2e85
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
   OpenSSL-Universal: 1aa4f6a6ee7256b83db99ec1ccdaa80d10f9af9b

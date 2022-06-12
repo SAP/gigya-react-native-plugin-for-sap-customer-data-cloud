@@ -106,6 +106,11 @@ const App = (): React.ReactElement => {
   };
 
   const sso = async () => {
+    try {      const senddd = await Gigya.send("accounts.getAccountInfo"); 
+      console.log("send: " + JSON.stringify(senddd));    } 
+      catch (error) {   
+           console.log("errorSendaaa:" + JSON.stringify(error));  
+            }
     try {
       const senddd = await Gigya.sso();
 
@@ -247,6 +252,48 @@ const App = (): React.ReactElement => {
     })
   };
 
+  // START: Biometric operations
+
+  const optIn = async () => {
+      try {
+        var operation = await Gigya.biometric.optIn()
+        console.log("biometric operation " + operation)
+      } catch (e) {
+          console.log("opt in error " + e)
+      }
+  }
+
+  const optOut = async () => {
+    try {
+      var operation = await Gigya.biometric.optOut()
+      console.log("biometric operation " + operation)
+    } catch (e) {
+        console.log("opt in error " + e)
+    } 
+  }
+
+  const lockSession = async () => {
+    try {
+      var operation = await Gigya.biometric.lockSession()
+      console.log("biometric operation " + operation)
+      updateIsLoggedIn(Gigya.isLoggedIn())
+    } catch (e) {
+        console.log("opt in error " + e)
+    } 
+  }
+
+  const unlockSession = async () => {
+    try {
+      var operation = await Gigya.biometric.unlockSession()
+      console.log("biometric operation " + operation)
+      updateIsLoggedIn(Gigya.isLoggedIn())
+    } catch (e) {
+        console.log("opt in error " + e)
+    } 
+  }
+
+  // END: Biometric operations
+
   enum Method {
     init,
     login,
@@ -256,6 +303,11 @@ const App = (): React.ReactElement => {
     showScreenSet,
     setAccount,
     sso,
+    isOptIn,
+    optIn,
+    optOut,
+    lockSession,
+    unlockSession
   }
 
   const [activeMethod, setActiveMethod] = useState(Method.init);
@@ -295,6 +347,26 @@ const App = (): React.ReactElement => {
       }
       case Method.sso: {
         sso()
+        break
+      }
+      case Method.isOptIn: {
+       Gigya.biometric.isOptIn()
+        break
+      }
+      case Method.optIn: {
+        optIn()
+        break
+      }
+      case Method.optOut: {
+        optOut()
+        break
+      }
+      case Method.lockSession: {
+        lockSession()
+        break
+      }
+      case Method.unlockSession: {
+        unlockSession()
         break
       }
     }
@@ -347,6 +419,37 @@ const App = (): React.ReactElement => {
       method: Method.sso,
       description:
         'Login via SSO',
+    },
+    {
+      title: 'isOptIn',
+      method: Method.isOptIn,
+      description:
+        'Is opt in',
+    },
+    {
+      title: 'optIn',
+      method: Method.optIn,
+      description:
+        'Opt in',
+    },
+    {
+      title: 'optOut',
+      method: Method.optOut,
+      description:
+        'Opt out',
+    },
+    {
+      title: 'lockSession',
+      method: Method.lockSession,
+      description:
+        'Lock Session',
+    },
+
+    {
+      title: 'unlockSession',
+      method: Method.unlockSession,
+      description:
+        'unlock Session',
     },
     {
       title: 'logout',

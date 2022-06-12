@@ -7,6 +7,7 @@
 
 import Foundation
 import React
+import Gigya
 
 class PromiseWrapper {
     var promiseResolve: RCTPromiseResolveBlock?
@@ -41,6 +42,15 @@ class PromiseWrapper {
         promiseReject(error, json, e)
 
         self.clear()
+    }
+    
+    func reject(error: NetworkError) {
+        switch error {
+            case .gigyaError(let data):
+                self.reject(error: data.errorMessage, errorCode: data.errorCode, data: data.toDictionary())
+            default:
+                self.reject(error: error.localizedDescription)
+        }
     }
 
     func clear() {

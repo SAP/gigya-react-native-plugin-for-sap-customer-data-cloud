@@ -221,6 +221,51 @@ Example of resolving link to the site when trying to link a new social account t
 const loginToSite = await resolver.linkToSite(userData.login, userData.password)
 ```
 
+## Biometric support
+
+The plugin provides Android/iOS biometric support for these flows.
+
+```
+An end user logs in.
+An end user decides to use biometric authentication.
+This requires the end user to verify their fingerprint.
+The app is locked or deleted from memory.
+The end user needs to unlock the app to restore his session.
+In this case, the end user needs to verify his fingerprint.
+The end user decides not to use biometric authentication
+```
+The biometric fingerprint feature is a security cipher that is placed on top of an existing session of your app, so invoking biometric operations requires a valid session.
+
+Please make sure you are using native implementations:
+
+# iOS 1. The device has a passcode.
+2. the device has TouchID/FaceID.
+
+**FaceID
+To use FaceID in a compatible device, you must include the following key in your Info.plist file.
+
+**NSFaceIDUsageDescription = (String) "Your own message "**.
+If you also want to set a custom text in the Touch ID prompt, you can include the following key:
+
+**GigyaTouchIDMessage = (String) "Your custom message" (Default = "Please authenticate to continue").**
+
+# Android
+
+1. Android SDK 23 and above is required.
+2. the device has a fingerprint sensor.
+3. at least 1 fingerprint is already registered on the device.
+4. appropriate permissions are already requested in the library manifest: android.permission.USE _FINGERPRINT android.permission. USE _BIOMETRIC
+
+**Declaring the prompt display**.
+Andorid's biometric authentication uses a prompt display. You can customize the text displayed by declaring your own ***BiometricPromptIfo*** object.
+
+In your application class (after launching the SDK), you can add the following:
+```java
+GigyaSdkBiometricModule.setBiometricPromptInfo(new GigyaPromptInfo( "title", "subtitle", "description" ));
+```
+
+If no prompt info is specified, the prompt window uses default English texts.
+
 ## Known Issues
 None
 
