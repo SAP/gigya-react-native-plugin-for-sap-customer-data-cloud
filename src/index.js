@@ -249,7 +249,7 @@ export class GigyaInterface {
      * @param {*} callback 
      */
     showScreenSet(name, callback) {
-        this.showScreenSetWithParams(name, "", callback)
+        this.showScreenSetWithParams(name, {}, callback)
     }
 }
 
