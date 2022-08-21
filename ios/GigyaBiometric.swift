@@ -8,6 +8,7 @@
 import Foundation
 import Gigya
 import React
+import LocalAuthentication
 
 @objc(GigyaBiometric)
 public class GigyaBiometric: NSObject {
@@ -21,6 +22,16 @@ public class GigyaBiometric: NSObject {
 
     // GigyaSdk.gigya
 
+    @objc(isSupported)
+    func isSupported() -> Any {
+        let localAuthenticationContext = LAContext()
+        if localAuthenticationContext.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: nil) {
+            return true
+        }
+        
+        return false
+    }
+    
     @objc(isLocked)
     func isLocked() -> Any {
         return GigyaSdk.gigya?.isLocked() ?? false

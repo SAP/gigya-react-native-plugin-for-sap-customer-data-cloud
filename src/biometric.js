@@ -4,16 +4,15 @@ const { GigyaBiometric } = NativeModules
 
 
 export class BiometricService {
-    async isSupported() {
-        if (Platform.OS === 'ios') return true;
+    isSupported() {
         return GigyaBiometric.isSupported()
     }
     
-    async isLocked() {
+    isLocked() {
         return GigyaBiometric.isLocked()
     }
 
-    async isOptIn() {
+    isOptIn() {
         return GigyaBiometric.isOptIn()
     }
 
