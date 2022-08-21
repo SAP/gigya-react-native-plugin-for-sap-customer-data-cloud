@@ -221,62 +221,50 @@ Example of resolving link to the site when trying to link a new social account t
 const loginToSite = await resolver.linkToSite(userData.login, userData.password)
 ```
 
-## Biometrics support
+## Biometric support
 
-The plugin offers biometric support for Android/iOS for these flows.
+The plugin provides Android/iOS biometric support for these flows.
 
 ```
 An end user logs in.
-An end user opts in to biometric authentication.
-This will require the end user to verify his fingerprint.
-The app is locked or being cleared from memory.
-The end user is required to unlock the app in order to restore his session.
-This will require the end user to verify his fingerprint.
-The end user opts out of biometric authentication
+An end user decides to use biometric authentication.
+This requires the end user to verify their fingerprint.
+The app is locked or deleted from memory.
+The end user needs to unlock the app to restore his session.
+In this case, the end user needs to verify his fingerprint.
+The end user decides not to use biometric authentication
 ```
-The biometric fingerprint feature is a security encryption on top of an existing session of your app, therefore, calling any biometric
-operations requires a valid session.
+The biometric fingerprint feature is a security cipher that is placed on top of an existing session of your app, so invoking biometric operations requires a valid session.
 
-Please make sure you are following native implementations:
+Please make sure you are using native implementations:
 
-# iOS
-1. The device has a Passcode.
-2. The device has a TouchID/FaceID available.
+# iOS 1. The device has a passcode.
+2. the device has TouchID/FaceID.
 
-**FaceID**
-In order to use FaceID in a compatible device, you must include following key to your Info.plist file.
+**FaceID
+To use FaceID in a compatible device, you must include the following key in your Info.plist file.
 
-**NSFaceIDUsageDescription = (String) “Your custom message”**
-Additionally, when you want to set a custom text in Touch ID prompt , you can include the following key:
+**NSFaceIDUsageDescription = (String) "Your own message "**.
+If you also want to set a custom text in the Touch ID prompt, you can include the following key:
 
-**GigyaTouchIDMessage = (String) “Your custom message” (default = “Please authenticate to proceed”).**
+**GigyaTouchIDMessage = (String) "Your custom message" (Default = "Please authenticate to continue").**
 
 # Android
 
 1. Android SDK 23 and above is required.
-2. The device has a fingerprint sensor available.
-3. A minimum of 1 fingerprint already enrolled in the device.
-4. Relevant permissions are already requested in the library manifest:
-      android.permission.USE_FINGERPRINT
-      android.permission.USE_BIOMETRIC
+2. the device has a fingerprint sensor.
+3. at least 1 fingerprint is already registered on the device.
+4. appropriate permissions are already requested in the library manifest: android.permission.USE _FINGERPRINT android.permission. USE _BIOMETRIC
 
-**Declaring you prompt display**
-The Andorid biometric authentication uses a prompt display. You are able to customize the text shown by declaring your
-own ***BiometricPromptIfo*** object.
+**Declaring the prompt display**.
+Andorid's biometric authentication uses a prompt display. You can customize the text displayed by declaring your own ***BiometricPromptIfo*** object.
 
-In you application class (After initating the SDK), you can add the following:
+In your application class (after launching the SDK), you can add the following:
 ```java
-GigyaSdkBiometricModule.setBiometricPromptInfo(new GigyaPromptInfo(
-                "Title", "Subtitle", "Description"
-        ));
+GigyaSdkBiometricModule.setBiometricPromptInfo(new GigyaPromptInfo( "title", "subtitle", "description" ));
 ```
 
-If no prompt info is supplied the prompt window will use default English texts.
-
-
-
-
-
+If no prompt info is specified, the prompt window uses default English texts.
 
 ## Known Issues
 None
