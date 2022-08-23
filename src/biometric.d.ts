@@ -1,7 +1,7 @@
 import { GigyaDictionary } from './Models';
 
 export interface BiometricService {
-    isAvailable(): boolean;
+    isSupported(): boolean;
     isLocked(): boolean;
     isOptIn(): boolean
     optIn(): Promise<boolean>
