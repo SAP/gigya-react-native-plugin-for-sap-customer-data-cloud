@@ -45,6 +45,7 @@ const App = (): React.ReactElement => {
 
   console.log("biometric: " + Gigya.biometric.isSupported())
 
+  console.log("biometric lock: " + Gigya.biometric.isLocked())
 
   Gigya.initFor("3_KF6Dwf0BoTktLiX54s_rSWRiklW69xCLG8pZa413Z6pkuBGBwQeSK9k19grZfCDe");
 
