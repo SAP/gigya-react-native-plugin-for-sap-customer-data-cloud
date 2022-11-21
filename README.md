@@ -4,8 +4,6 @@
 ## Description
 A React Native plugin for interfacing with SAP Customer Data Cloud. This plugin provides quick access to core elements & business API flows available within SAP Customer Data Cloud; designed for React Native mobile applications.
 
-## Developers Preview Status
-This plugin is currently in an early developers preview stage.
 
 ## Requirements
 Android SDK support requires Android SDK 14 and above.
