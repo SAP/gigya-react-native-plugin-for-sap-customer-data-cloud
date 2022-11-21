@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		B3E7B58A1CC2AC0600A0062D /* GigyaSdk.m in Sources */ = {isa = PBXBuildFile; fileRef = B3E7B5891CC2AC0600A0062D /* GigyaSdk.m */; };
+		E7A38E8F28EAB57C000E06B7 /* GigyaWebAuthn.m in Sources */ = {isa = PBXBuildFile; fileRef = E7A38E8E28EAB57C000E06B7 /* GigyaWebAuthn.m */; };
 		E7D49A1E283BC4B000DBFA4D /* GigyaBiometric.m in Sources */ = {isa = PBXBuildFile; fileRef = E7D49A1C283BC4AF00DBFA4D /* GigyaBiometric.m */; };
 /* End PBXBuildFile section */
 
@@ -27,6 +28,7 @@
 		134814201AA4EA6300B7C361 /* libGigyaSdk.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libGigyaSdk.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		B3E7B5881CC2AC0600A0062D /* GigyaSdk.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GigyaSdk.h; sourceTree = "<group>"; };
 		B3E7B5891CC2AC0600A0062D /* GigyaSdk.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GigyaSdk.m; sourceTree = "<group>"; };
+		E7A38E8E28EAB57C000E06B7 /* GigyaWebAuthn.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GigyaWebAuthn.m; sourceTree = "<group>"; };
 		E7D49A1C283BC4AF00DBFA4D /* GigyaBiometric.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GigyaBiometric.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -52,6 +54,7 @@
 		58B511D21A9E6C8500147676 = {
 			isa = PBXGroup;
 			children = (
+				E7A38E8E28EAB57C000E06B7 /* GigyaWebAuthn.m */,
 				E7D49A1C283BC4AF00DBFA4D /* GigyaBiometric.m */,
 				B3E7B5881CC2AC0600A0062D /* GigyaSdk.h */,
 				B3E7B5891CC2AC0600A0062D /* GigyaSdk.m */,
@@ -118,6 +121,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E7D49A1E283BC4B000DBFA4D /* GigyaBiometric.m in Sources */,
+				E7A38E8F28EAB57C000E06B7 /* GigyaWebAuthn.m in Sources */,
 				B3E7B58A1CC2AC0600A0062D /* GigyaSdk.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

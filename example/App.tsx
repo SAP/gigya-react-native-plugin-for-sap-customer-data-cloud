@@ -44,6 +44,7 @@ const App = (): React.ReactElement => {
   console.log("is: " + Gigya.isLoggedIn())
 
   console.log("biometric: " + Gigya.biometric.isSupported())
+  console.log("biometric lock: " + Gigya.biometric.isLocked())
 
   console.log("biometric lock: " + Gigya.biometric.isLocked())
 

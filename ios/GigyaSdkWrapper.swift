@@ -30,6 +30,9 @@ enum GigyaMethods: String {
     case isOptIn
     case unlockSession
     case lockSession
+    case webAuthnLogin
+    case webAuthnRegister
+    case webAuthnRevoke
 }
 
 enum GigyaInterruptionsSupported: String {
@@ -410,6 +413,83 @@ class GigyaSdkWrapper<T: GigyaAccountProtocol>: GigyaSdkWrapperProtocol {
             case .failure:
                 self.promise?.reject(error: "Unlock session failed")
             }
+        }
+    }
+
+    func webAuthnLogin() {
+        guard let viewController = RCTPresentedViewController() else {
+            GigyaLogger.log(with: self, message: "Presented viewController not found.")
+            return
+        }
+
+
+        if #available(iOS 16.0.0, *) {
+            
+            Task { [weak self] in
+                 let res = await gigya.webAuthn.login(viewController: viewController)
+                
+                switch res {
+                case .success(let data):
+                    let mapped: [String: Any] = self?.accountToDic(account: data) ?? [:]
+                    self?.promise?.resolve(result: mapped)
+                case .failure(let error):
+                    if let interruption = error.interruption {
+                        self?.intteruptionHandle(interruption: interruption)
+                    }
+                    
+                    self?.promise?.reject(error: error.error)
+                    
+                }
+            }
+        } else {
+            GigyaLogger.log(with: self, message: "not supported in this iOS version.")
+            self.promise?.reject(error: "not supported in this iOS version")
+        }
+    }
+
+    func webAuthnRegister() {
+        guard let viewController = RCTPresentedViewController() else {
+            GigyaLogger.log(with: self, message: "Presented viewController not found.")
+            return
+        }
+
+        if #available(iOS 16.0.0, *) {
+            Task {
+                let res = await gigya.webAuthn.register(viewController: viewController)
+                
+                switch res {
+                case .success(let data):
+                    let mapped: [String: Any] = data.mapValues { value in return value.value }
+
+                    self.promise?.resolve(result: mapped)
+                case .failure(let error):
+                    self.promise?.reject(error: error)
+                }
+            }
+        } else {
+            GigyaLogger.log(with: self, message: "not supported in this iOS version.")
+            self.promise?.reject(error: "not supported in this iOS version")
+        }
+    }
+
+    func webAuthnRevoke() {
+
+        if #available(iOS 16.0.0, *) {
+            Task {
+                let res = await gigya.webAuthn.revoke()
+                
+                switch res {
+                case .success(let data):
+                    let mapped: [String: Any] = data.mapValues { value in return value.value }
+
+                    self.promise?.resolve(result: mapped)
+                case .failure(let error):
+                    self.promise?.reject(error: error)
+                }
+            }
+        } else {
+            GigyaLogger.log(with: self, message: "not supported in this iOS version.")
+            self.promise?.reject(error: "not supported in this iOS version.")
         }
     }
 
