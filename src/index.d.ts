@@ -33,7 +33,7 @@ export namespace Gigya {
 
     function send(api: string, params?: Record<string, any>): Promise<GigyaDictionary>;
 
-    function logout(): void;
+    function logout(): Promise<GigyaDictionary>;
 
     function register(email: string, password: string, params?: Record<string, any>): Promise<GigyaDictionary>;
 
