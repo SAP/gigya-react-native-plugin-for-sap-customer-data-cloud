@@ -249,8 +249,9 @@ const App = (): React.ReactElement => {
 
 
   const showScreenSet = () => {
+    console.log("start showScreemSet");
     Gigya.showScreenSet("Default-RegistrationLogin", (event, data) => {
-      console.log(`event: ${event}`);
+      console.log(`event: ${event} ${data}`);
       if (event == "onLogin") {
         updateIsLoggedIn(Gigya.isLoggedIn())
       }

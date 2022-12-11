@@ -22,11 +22,14 @@
   "licenseFilename": "LICENSE",
   "readmeFilename": "README.md",
   "peerDependencies": {
-    "react": "^16.8.1",
+    "react": "^18.1.0",
     "react-native": ">=0.59.0-rc.0 <1.0.x"
   },
   "devDependencies": {
-    "react": "^16.8.3",
-    "react-native": "^0.70.3"
+    "react": "^18.1.0",
+    "react-native": "^0.70.6"
+  },
+  "dependencies": {
+    "@react-native-community/cli": "^9.3.2"
   }
 }
