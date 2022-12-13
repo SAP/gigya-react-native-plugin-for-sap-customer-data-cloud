@@ -11,12 +11,13 @@ import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.uimanager.ViewManager;
 import com.facebook.react.bridge.JavaScriptModule;
 
-public class  GigyaSdkPackage implements ReactPackage {
+public class GigyaSdkPackage implements ReactPackage {
     @Override
     public List<NativeModule> createNativeModules(ReactApplicationContext reactContext) {
         List<NativeModule> modules = new ArrayList<>();
         modules.add(new GigyaSdkModule(reactContext));
         modules.add(new GigyaSdkBiometricModule(reactContext));
+        modules.add(new GigyaWebAuthnModule(reactContext));
         return modules;
     }
 
