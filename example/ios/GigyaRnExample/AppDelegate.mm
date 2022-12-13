@@ -6,7 +6,7 @@
 
 #import <React/RCTAppSetupUtils.h>
 #import "GigyaRnExample-Swift.h"
-#import <FBSDKCoreKit/FBSDKCoreKit.h>
+//#import <FBSDKCoreKit/FBSDKCoreKit.h>
 
 #if RCT_NEW_ARCH_ENABLED
 #import <React/CoreModulesPlugins.h>
@@ -49,8 +49,8 @@ static NSString *const kRNConcurrentRoot = @"concurrentRoot";
   GigyaExtension * gigya = [[GigyaExtension alloc] init];
   [gigya setMySchema];
   
-  [[FBSDKApplicationDelegate sharedInstance] application:application
-                           didFinishLaunchingWithOptions:launchOptions];
+//  [[FBSDKApplicationDelegate sharedInstance] application:application
+//                           didFinishLaunchingWithOptions:launchOptions];
 
 
   NSDictionary *initProps = [self prepareInitialProps];
@@ -71,9 +71,9 @@ static NSString *const kRNConcurrentRoot = @"concurrentRoot";
 }
 
 - (BOOL) application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options {
-  [[FBSDKApplicationDelegate sharedInstance] application:app
-                                                 openURL:url
-                                                 options:options];
+//  [[FBSDKApplicationDelegate sharedInstance] application:app
+//                                                 openURL:url
+//                                                 options:options];
   return YES;
 }
 

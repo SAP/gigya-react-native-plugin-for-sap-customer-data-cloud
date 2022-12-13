@@ -1,6 +1,7 @@
 import { NativeEventEmitter, NativeModules } from 'react-native'
 import { BiometricService } from './biometric'
 import { ResolverFactory } from './resolvers'
+import { WebAuthnService } from './webauthn'
 
 const { GigyaSdk } = NativeModules
 
@@ -10,6 +11,8 @@ export class GigyaInterface {
     resolverFactory = new ResolverFactory()
     
     biometric = new BiometricService()
+
+    webAuthn = new WebAuthnService()
 
     /**
      * Check login state.

@@ -24,21 +24,21 @@ public class GigyaWebAuthn: NSObject {
     func login(_ resolve: @escaping RCTPromiseResolveBlock, reject: @escaping RCTPromiseRejectBlock) -> Void {
         promise.set(promiseResolve: resolve, promiseReject: reject)
 
-        GigyaSdk.gigya?.sendEvent(.optIn, params: [:], promise: promise)
+        GigyaSdk.gigya?.sendEvent(.webAuthnLogin, params: [:], promise: promise)
     }
     
     @objc(register:rejecter:)
     func register(_ resolve: @escaping RCTPromiseResolveBlock, reject: @escaping RCTPromiseRejectBlock) -> Void {
         promise.set(promiseResolve: resolve, promiseReject: reject)
 
-        GigyaSdk.gigya?.sendEvent(.optOut, params: [:], promise: promise)
+        GigyaSdk.gigya?.sendEvent(.webAuthnRegister, params: [:], promise: promise)
     }
     
     @objc(revoke:rejecter:)
     func revoke(_ resolve: @escaping RCTPromiseResolveBlock, reject: @escaping RCTPromiseRejectBlock) -> Void {
         promise.set(promiseResolve: resolve, promiseReject: reject)
 
-        GigyaSdk.gigya?.sendEvent(.lockSession, params: [:], promise: promise)
+        GigyaSdk.gigya?.sendEvent(.webAuthnRevoke, params: [:], promise: promise)
     }
 
 }

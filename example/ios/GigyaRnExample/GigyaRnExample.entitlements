@@ -3,6 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>com.apple.developer.associated-domains</key>
-	<array/>
+	<array>
+		<string>webcredentials:websdk.gigyax.com</string>
+		<string>webcredentials:sagi.gigya-cs.com</string>
+	</array>
 </dict>
 </plist>

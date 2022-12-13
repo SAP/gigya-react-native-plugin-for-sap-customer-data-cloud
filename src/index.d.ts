@@ -2,6 +2,7 @@ import * as React from 'react';
 import { BiometricService } from './biometric';
 import { GigyaDictionary, GigyaInterruption, GigyaSocialProviders } from './Models';
 import { ResolverFactory} from './Resolvers'
+import { WebAuthnService } from './webauthn';
 
 export { GigyaInterruption }
 
@@ -23,6 +24,8 @@ export namespace Gigya {
 
     const biometric: BiometricService
     
+    const webAuthn: WebAuthnService
+
     function isLoggedIn(): boolean;
 
     function initFor(apikey: string, apiDomain?: string): void;

@@ -23,7 +23,7 @@ export class WebAuthnService {
 
     async revoke() {
         try {
-            return await GigyaWebAuthn.register()
+            return await GigyaWebAuthn.revoke()
         } catch (e) {
             const error = new GigyaError(e)
             throw error

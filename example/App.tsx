@@ -46,9 +46,8 @@ const App = (): React.ReactElement => {
   console.log("biometric: " + Gigya.biometric.isSupported())
   console.log("biometric lock: " + Gigya.biometric.isLocked())
 
-  console.log("biometric lock: " + Gigya.biometric.isLocked())
 
-  Gigya.initFor("3_KF6Dwf0BoTktLiX54s_rSWRiklW69xCLG8pZa413Z6pkuBGBwQeSK9k19grZfCDe");
+  Gigya.initFor("4_pdQIHqnYLk6LBvkVPAr_tQ");
 
   const sendApi = async () => {
     try {
@@ -300,6 +299,38 @@ const App = (): React.ReactElement => {
 
   // END: Biometric operations
 
+    // START: WebAuthn operations
+
+  const webAuthnLogin = async () => {
+    try {
+      var operation = await Gigya.webAuthn.login()
+      console.log("webAuthnLogin start " + operation)
+      updateIsLoggedIn(Gigya.isLoggedIn())
+      console.log("webAuthnLogin finish " + operation)
+    } catch (e) {
+        console.log("webAuthnLogin in error " + e)
+    }
+  }
+
+  const webAuthnRegister = async () => {
+    try {
+      var operation = await Gigya.webAuthn.register()
+      console.log("webAuthnRegister start " + operation)
+    } catch (e) {
+        console.log("webAuthnRegister in error " + e)
+    } 
+  }
+
+  const webAuthnRevoke = async () => {
+    try {
+      var operation = await Gigya.webAuthn.revoke()
+      console.log("webAuthnRevoke start " + operation)
+      updateIsLoggedIn(Gigya.isLoggedIn())
+    } catch (e) {
+        console.log("opt in error " + e)
+    } 
+  }
+
   enum Method {
     init,
     login,
@@ -313,7 +344,10 @@ const App = (): React.ReactElement => {
     optIn,
     optOut,
     lockSession,
-    unlockSession
+    unlockSession,
+    webAuthnLogin,
+    webAuthnRegister,
+    webAuthnRevoke
   }
 
   const [activeMethod, setActiveMethod] = useState(Method.init);
@@ -375,13 +409,32 @@ const App = (): React.ReactElement => {
         unlockSession()
         break
       }
+      case Method.webAuthnLogin: {
+        webAuthnLogin()
+        break
+      }
+      case Method.webAuthnRegister: {
+        webAuthnRegister()
+        break
+      }
+      case Method.webAuthnRevoke: {
+        webAuthnRevoke()
+        break
+      }
     }
+  }
+
+  enum ShowIn {
+    notLogged,
+    loggedIn,
+    both
   }
 
   type Link = {
     title: string,
     method: Method,
-    description: string
+    description: string,
+    show: ShowIn
   };
 
   const links: (Link)[] = [
@@ -389,66 +442,77 @@ const App = (): React.ReactElement => {
       title: 'Init',
       method: Method.init,
       description: 'Customize initlize our sdk.',
+      show: ShowIn.both
     },
     {
       title: 'Login',
       method: Method.login,
       description:
         'Login with credentials.',
-    },
+        show: ShowIn.notLogged
+      },
     {
       title: 'Register',
       method: Method.register,
       description:
         'Register with user/pass.',
+        show: ShowIn.notLogged
     },
     {
       title: 'Social login',
       method: Method.social,
       description:
         'Login/Register with Social provider.',
+        show: ShowIn.notLogged
     },
     {
       title: 'ScreenSet',
       method: Method.showScreenSet,
       description:
         'Pop the Web screenset.',
+        show: ShowIn.both
     },
     {
       title: 'setAccount',
       method: Method.setAccount,
       description:
         'Set account information',
+        show: ShowIn.loggedIn
     },
     {
       title: 'SSO',
       method: Method.sso,
       description:
         'Login via SSO',
+        show: ShowIn.notLogged
     },
     {
       title: 'isOptIn',
       method: Method.isOptIn,
       description:
         'Is opt in',
+        show: ShowIn.both
     },
     {
       title: 'optIn',
       method: Method.optIn,
       description:
         'Opt in',
+        show: ShowIn.loggedIn
     },
     {
       title: 'optOut',
       method: Method.optOut,
       description:
         'Opt out',
+        show: ShowIn.loggedIn
     },
     {
       title: 'lockSession',
       method: Method.lockSession,
       description:
         'Lock Session',
+        show: ShowIn.loggedIn
     },
 
     {
@@ -456,12 +520,35 @@ const App = (): React.ReactElement => {
       method: Method.unlockSession,
       description:
         'unlock Session',
+        show: ShowIn.notLogged
+    },
+    {
+      title: 'WebAuthn Login',
+      method: Method.webAuthnLogin,
+      description:
+        'WebAuthn Login',
+        show: ShowIn.notLogged
+    },
+    {
+      title: 'WebAuthn Register',
+      method: Method.webAuthnRegister,
+      description:
+        'WebAuthn Register',
+        show: ShowIn.loggedIn
+    },
+    {
+      title: 'WebAuthn Revoke',
+      method: Method.webAuthnRevoke,
+      description:
+        'WebAuthn Revoke',
+        show: ShowIn.loggedIn
     },
     {
       title: 'logout',
       method: Method.logout,
       description:
         'Call Logout.',
+        show: ShowIn.loggedIn
     },
 
   ];
@@ -563,7 +650,7 @@ const App = (): React.ReactElement => {
             </View>
             <View style={styles.container}>
               {links.map((item, index) => {
-                if (item.method == Method.logout && !isLoggedIn) {
+                if (item.show == true && !isLoggedIn) {
                   return null
                 }
                 return (
