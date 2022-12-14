@@ -28,29 +28,11 @@ public class GigyaWebAuthnModule extends ReactContextBaseJavaModule {
 
     private GigyaWebAuthnWrapper webAuthnWrapper;
 
-    private ActivityResultLauncher<IntentSenderRequest> resultLauncher;
+    public static ActivityResultLauncher<IntentSenderRequest> resultLauncher;
 
     public GigyaWebAuthnModule(ReactApplicationContext reactContext) {
         this.reactContext = reactContext;
         this.webAuthnWrapper = new GigyaWebAuthnWrapper();
-        attachResultLauncherToActivity();
-    }
-
-    private void attachResultLauncherToActivity() {
-        Activity activity = this.reactContext.getCurrentActivity();
-        if (activity == null) return;
-        if (this.reactContext.getCurrentActivity() instanceof ComponentActivity) {
-            resultLauncher = ((ComponentActivity) activity).registerForActivityResult(
-                    new ActivityResultContracts.StartIntentSenderForResult(),
-                    new ActivityResultCallback<ActivityResult>() {
-                        @Override
-                        public void onActivityResult(ActivityResult result) {
-                            Gigya.getInstance().WebAuthn().handleFidoResult(result);
-                        }
-                    }
-
-            );
-        }
     }
 
     @ReactMethod

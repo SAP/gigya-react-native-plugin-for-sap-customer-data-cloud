@@ -19,6 +19,7 @@ import {
 } from 'react-native';
 
 import Dialog from "react-native-dialog";
+import Toast from 'react-native-simple-toast';
 
 import {
   LearnMoreLinks,
@@ -305,6 +306,7 @@ const App = (): React.ReactElement => {
     try {
       var operation = await Gigya.webAuthn.login()
       console.log("webAuthnLogin start " + operation)
+      Toast.show('WebAuthn login success', Toast.SHORT);
       updateIsLoggedIn(Gigya.isLoggedIn())
       console.log("webAuthnLogin finish " + operation)
     } catch (e) {
@@ -316,6 +318,7 @@ const App = (): React.ReactElement => {
     try {
       var operation = await Gigya.webAuthn.register()
       console.log("webAuthnRegister start " + operation)
+      Toast.show('WebAuthn registration success', Toast.SHORT);
     } catch (e) {
         console.log("webAuthnRegister in error " + e)
     } 
@@ -325,6 +328,7 @@ const App = (): React.ReactElement => {
     try {
       var operation = await Gigya.webAuthn.revoke()
       console.log("webAuthnRevoke start " + operation)
+      Toast.show('WebAuthn revoke success', Toast.SHORT);
       updateIsLoggedIn(Gigya.isLoggedIn())
     } catch (e) {
         console.log("opt in error " + e)

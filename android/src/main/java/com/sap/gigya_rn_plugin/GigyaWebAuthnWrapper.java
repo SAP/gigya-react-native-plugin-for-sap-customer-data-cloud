@@ -27,8 +27,7 @@ public class GigyaWebAuthnWrapper<T extends GigyaAccount> {
                     public void onError(GigyaError error) {
                         promiseWrapper.reject(error);
                     }
-                }
-        );
+                });
     }
 
     public void login(Promise promise, ActivityResultLauncher<IntentSenderRequest> resultLauncher) {
@@ -61,6 +60,5 @@ public class GigyaWebAuthnWrapper<T extends GigyaAccount> {
             }
         });
     }
-
 
 }
