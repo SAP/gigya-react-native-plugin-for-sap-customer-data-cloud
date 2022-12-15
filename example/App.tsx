@@ -62,7 +62,7 @@ const App = (): React.ReactElement => {
 
   const socialLogin = async () => {
     try {
-      const senddd = await Gigya.socialLogin("facebook");
+      const senddd = await Gigya.socialLogin("linkedin");
 
       console.log("socialLogin: " + JSON.stringify(senddd));
 
