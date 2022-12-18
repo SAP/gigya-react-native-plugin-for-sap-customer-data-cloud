@@ -1,11 +1,13 @@
 import { NativeModules, Platform } from 'react-native'
+import { GigyaError } from "./index";
 
 const { GigyaWebAuthn } = NativeModules
 
 export class WebAuthnService {
     async login() {
         try {
-            return await GigyaWebAuthn.login()
+            const req = await GigyaWebAuthn.login()
+            return JSON.parse(req)
         } catch (e) {
             const error = new GigyaError(e)
             throw error
@@ -14,7 +16,8 @@ export class WebAuthnService {
 
     async register() {
         try {
-            return await GigyaWebAuthn.register()
+            const req = await GigyaWebAuthn.register()
+            return JSON.parse(req)
         } catch (e) {
             const error = new GigyaError(e)
             throw error
@@ -23,7 +26,8 @@ export class WebAuthnService {
 
     async revoke() {
         try {
-            return await GigyaWebAuthn.revoke()
+            const req = await GigyaWebAuthn.revoke()
+            return JSON.parse(req)
         } catch (e) {
             const error = new GigyaError(e)
             throw error

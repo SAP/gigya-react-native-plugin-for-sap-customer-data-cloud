@@ -1,5 +1,4 @@
 import { NativeModules, Platform } from 'react-native'
-
 const { GigyaBiometric } = NativeModules
 
 

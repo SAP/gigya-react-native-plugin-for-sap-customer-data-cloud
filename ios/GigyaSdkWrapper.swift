@@ -116,6 +116,12 @@ class GigyaSdkWrapper<T: GigyaAccountProtocol>: GigyaSdkWrapperProtocol {
             self.lockSession()
         case .unlockSession:
             self.unlockSession()
+        case .webAuthnLogin:
+            self.webAuthnLogin()
+        case .webAuthnRegister:
+            self.webAuthnRegister()
+        case .webAuthnRevoke:
+            self.webAuthnRevoke()
         default:
             break
         }

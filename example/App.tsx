@@ -46,6 +46,7 @@ const App = (): React.ReactElement => {
 
   console.log("biometric: " + Gigya.biometric.isSupported())
   console.log("biometric lock: " + Gigya.biometric.isLocked())
+  console.log("biometric optin: " + Gigya.biometric.isOptIn())
 
 
   Gigya.initFor("4_pdQIHqnYLk6LBvkVPAr_tQ");
@@ -228,8 +229,9 @@ const App = (): React.ReactElement => {
 
   const getAccount = async () => {
     try {
-      const send = await Gigya.getAccount()
-      console.log("getAccount: " + JSON.stringify(send));
+      const send = await Gigya.getSession()
+      console.log(send?.sessionSecret)
+      // console.log("getAccount: " + JSON.stringify(send));
 
     } catch (error) {
       console.log("getAccount error:" + error);
@@ -264,6 +266,8 @@ const App = (): React.ReactElement => {
       try {
         var operation = await Gigya.biometric.optIn()
         console.log("biometric operation " + operation)
+        console.log("biometric optin: " + Gigya.biometric.isOptIn())
+
       } catch (e) {
           console.log("opt in error " + e)
       }
@@ -273,6 +277,7 @@ const App = (): React.ReactElement => {
     try {
       var operation = await Gigya.biometric.optOut()
       console.log("biometric operation " + operation)
+      console.log("biometric optin: " + Gigya.biometric.isOptIn())
     } catch (e) {
         console.log("opt in error " + e)
     } 
@@ -406,7 +411,7 @@ const App = (): React.ReactElement => {
         break
       }
       case Method.lockSession: {
-        lockSession()
+        getAccount()
         break
       }
       case Method.unlockSession: {
@@ -654,7 +659,7 @@ const App = (): React.ReactElement => {
             </View>
             <View style={styles.container}>
               {links.map((item, index) => {
-                if (item.show == true && !isLoggedIn) {
+                if (item.show == ShowIn.loggedIn && !isLoggedIn || item.show == ShowIn.notLogged && isLoggedIn) {
                   return null
                 }
                 return (
