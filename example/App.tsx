@@ -229,9 +229,8 @@ const App = (): React.ReactElement => {
 
   const getAccount = async () => {
     try {
-      const send = await Gigya.getSession()
-      console.log(send?.sessionSecret)
-      // console.log("getAccount: " + JSON.stringify(send));
+      const send = await Gigya.getAccount()
+      console.log("getAccount: " + JSON.stringify(send));
 
     } catch (error) {
       console.log("getAccount error:" + error);
