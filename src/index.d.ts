@@ -4,7 +4,9 @@ import { GigyaDictionary, GigyaInterruption, GigyaSocialProviders } from './Mode
 import { ResolverFactory} from './Resolvers'
 import { WebAuthnService } from './webauthn';
 
-export { GigyaInterruption }
+import { IResolver, LinkAccountResolver, PendingVerificationResolver, PendingRegistrationResolver } from './Resolvers'
+
+export { GigyaInterruption, GigyaSocialProviders, IResolver, LinkAccountResolver, PendingVerificationResolver, PendingRegistrationResolver }
 
 export class GigyaError {
     callId: string;
