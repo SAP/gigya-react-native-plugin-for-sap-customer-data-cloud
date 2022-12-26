@@ -19,7 +19,7 @@ public class GigyaSdkModule extends ReactContextBaseJavaModule {
 
     private final ReactApplicationContext reactContext;
 
-    private static GigyaSdkWrapper gigyaSdk;
+    static GigyaSdkWrapper gigyaSdk;
 
     public GigyaSdkModule(ReactApplicationContext reactContext) {
         super(reactContext);
@@ -35,7 +35,8 @@ public class GigyaSdkModule extends ReactContextBaseJavaModule {
      * Set the Core SDK custom schema object.
      * Method must be called in your implementing application class.
      */
-    public static <T extends GigyaAccount> void setSchema(@Nonnull Application application, @Nonnull Class<T> accountSchema) {
+    public static <T extends GigyaAccount> void setSchema(@Nonnull Application application,
+            @Nonnull Class<T> accountSchema) {
         gigyaSdk = new GigyaSdkWrapper<>(application, accountSchema);
     }
 

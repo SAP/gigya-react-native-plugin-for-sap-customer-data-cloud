@@ -1,6 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="com.gigyarnexample">
+  package="com.gigyarnexample">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -14,9 +13,10 @@
       <activity
         android:name=".MainActivity"
         android:label="@string/app_name"
-        android:configChanges="keyboard|keyboardHidden|orientation|screenSize|uiMode"
+        android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|screenSize|smallestScreenSize|uiMode"
         android:launchMode="singleTask"
-        android:windowSoftInputMode="adjustResize">
+        android:windowSoftInputMode="adjustResize"
+        android:exported="true">
         <intent-filter>
             <action android:name="android.intent.action.MAIN" />
             <category android:name="android.intent.category.LAUNCHER" />
@@ -35,15 +35,14 @@
             android:exported="true"
             android:launchMode="singleTask"
             android:theme="@style/Theme.AppCompat.Translucent" />
-        <!-- END: igya SDK integration -->
 
         <!-- START: Facebook integration -->
-        <activity
-            android:name="com.facebook.FacebookActivity"
-            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
-            android:label="@string/app_name"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"
-            tools:replace="android:theme" />
+<!--        <activity-->
+<!--            android:name="com.facebook.FacebookActivity"-->
+<!--            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"-->
+<!--            android:label="@string/app_name"-->
+<!--            android:theme="@android:style/Theme.Translucent.NoTitleBar"-->
+<!--            />-->
 
         <activity
             android:name="com.gigya.android.sdk.providers.sso.GigyaSSOLoginActivity"
@@ -64,10 +63,13 @@
 
             </intent-filter>
         </activity>
-        
+
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
+        <meta-data
+            android:name="com.facebook.sdk.ClientToken"
+            android:value="@string/facebook_client_token"/>
         <!-- END: Facebook integration -->
     </application>
 </manifest>

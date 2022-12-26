@@ -1,7 +1,7 @@
 {
   "name": "@sap_oss/gigya-react-native-plugin-for-sap-customer-data-cloud",
   "title": "React Native plug-in for SAP Customer Data Cloud",
-  "version": "0.0.12",
+  "version": "0.1.0",
   "description": "A React Native plugin for interfacing SAP Customer Data Cloud",
   "main": "src/index.js",
   "scripts": {
@@ -22,11 +22,14 @@
   "licenseFilename": "LICENSE",
   "readmeFilename": "README.md",
   "peerDependencies": {
-    "react": "^16.8.1",
+    "react": "^18.1.0",
     "react-native": ">=0.59.0-rc.0 <1.0.x"
   },
   "devDependencies": {
-    "react": "^16.8.3",
-    "react-native": "^0.59.10"
+    "react": "^18.1.0",
+    "react-native": "^0.70.6"
+  },
+  "dependencies": {
+    "@react-native-community/cli": "^9.3.2"
   }
 }

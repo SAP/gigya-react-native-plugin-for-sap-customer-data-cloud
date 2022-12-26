@@ -1,6 +1,7 @@
 import { NativeEventEmitter, NativeModules } from 'react-native'
 import { BiometricService } from './biometric'
 import { ResolverFactory } from './resolvers'
+import { WebAuthnService } from './webauthn'
 
 const { GigyaSdk } = NativeModules
 
@@ -10,6 +11,8 @@ export class GigyaInterface {
     resolverFactory = new ResolverFactory()
     
     biometric = new BiometricService()
+
+    webAuthn = new WebAuthnService()
 
     /**
      * Check login state.
@@ -42,8 +45,8 @@ export class GigyaInterface {
     async getSession() {
         try {
             const result = await GigyaSdk.getSession()
-            if (result === '{}') return null
-            return result
+            if (result === '{}') return null            
+            return JSON.parse(result)
         } catch (e) {
             const error = new GigyaError(e)
             throw error
@@ -61,7 +64,8 @@ export class GigyaInterface {
      */
     async setSession(token, secret, expiration) {
         try {
-            return await GigyaSdk.setSession(token, secret, expiration ?? 0)
+            const req = await GigyaSdk.setSession(token, secret, expiration ?? 0)
+            return JSON.parse(req)
         } catch (e) {
             const error = new GigyaError(e)
             throw error
@@ -78,7 +82,8 @@ export class GigyaInterface {
      */
     async send(api, params) {
         try {
-            return await GigyaSdk.send(api, JSON.stringify(params) ?? "")
+            const req = await GigyaSdk.send(api, JSON.stringify(params) ?? "")
+            return JSON.parse(req)
         } catch (e) {
             const error = new GigyaError(e)
             throw error
@@ -92,7 +97,8 @@ export class GigyaInterface {
      */
     async logout() {
         try {
-            return await GigyaSdk.logout();
+            const req = await GigyaSdk.logout();
+            return JSON.parse(req)
         } catch (e) {
             const error = new GigyaError(e)
             throw error
@@ -109,7 +115,8 @@ export class GigyaInterface {
      */
     async register(email, password, params) {
         try {
-            return await GigyaSdk.register(email, password, JSON.stringify(params) ?? "")
+            const req = await GigyaSdk.register(email, password, JSON.stringify(params) ?? "")
+            return JSON.parse(req)
         } catch (e) {
             const error = new GigyaError(e)
             throw error
@@ -125,7 +132,8 @@ export class GigyaInterface {
      */
     async login(loginId, password, params) {
         try {
-            return await GigyaSdk.login(loginId, password, JSON.stringify(params) ?? "")
+            const req = await GigyaSdk.login(loginId, password, JSON.stringify(params) ?? "")
+            return JSON.parse(req)
         } catch (e) {
             const error = new GigyaError(e)
             throw error
@@ -141,7 +149,8 @@ export class GigyaInterface {
      */
     async socialLogin(provider, params) {
         try {
-            return await GigyaSdk.socialLogin(provider, JSON.stringify(params) ?? "")
+            const req = await GigyaSdk.socialLogin(provider, JSON.stringify(params) ?? "")
+            return JSON.parse(req)
         } catch (e) {
             const error = new GigyaError(e)
             throw error
@@ -156,7 +165,8 @@ export class GigyaInterface {
      */
     async sso(params) {
         try {
-            return await GigyaSdk.sso(JSON.stringify(params) ?? "")
+            const req = await GigyaSdk.sso(JSON.stringify(params) ?? "")
+            return JSON.parse(req)
         } catch (e) {
             const error = new GigyaError(e)
             throw error
@@ -170,7 +180,8 @@ export class GigyaInterface {
      */
     async setAccount(params) {
         try {
-            return await GigyaSdk.setAccount(JSON.stringify(params) ?? "")
+            const req = await GigyaSdk.setAccount(JSON.stringify(params) ?? "")
+            return JSON.parse(req)
         } catch (e) {
             const error = new GigyaError(e)
             throw error
@@ -185,7 +196,8 @@ export class GigyaInterface {
      */
     async getAccount(params) {
         try {
-            return await GigyaSdk.getAccount(JSON.stringify(params) ?? "")
+            const req = await GigyaSdk.getAccount(JSON.stringify(params) ?? "")
+            return JSON.parse(req)
         } catch (e) {
             const error = new GigyaError(e)
             throw error
@@ -200,7 +212,8 @@ export class GigyaInterface {
      */
     async addConnection(provider, params) {
         try {
-            return await GigyaSdk.addConnection(provider ?? "", JSON.stringify(params) ?? "")
+            const req = await GigyaSdk.addConnection(provider ?? "", JSON.stringify(params) ?? "")
+            return JSON.parse(req)
         } catch (e) {
             const error = new GigyaError(e)
             throw error
@@ -215,7 +228,8 @@ export class GigyaInterface {
      */
     async removeConnection(provider) {
         try {
-            return await GigyaSdk.removeConnection(provider ?? "")
+            const req = await GigyaSdk.removeConnection(provider ?? "")
+            return JSON.parse(req)
         } catch (e) {
             const error = new GigyaError(e)
             throw error

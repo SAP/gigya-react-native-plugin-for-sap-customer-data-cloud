@@ -48,6 +48,7 @@ example/android/.project
 
 .vscode/
 
+example/vendor/
 example/android/app/.project
 
 example/android/.settings/
