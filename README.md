@@ -264,6 +264,73 @@ GigyaSdkBiometricModule.setBiometricPromptInfo(new GigyaPromptInfo( "title", "su
 
 If no prompt info is specified, the prompt window uses default English texts.
 
+
+## FIDO/WebAuthn Authentication
+
+FIDO is a passwordless authentication method that allows password-only logins to be replaced with secure and fast login experiences across websites and apps.
+Our SDK provides an interface to register a passkey or login, revoke passkeys created using FIDO/Passkeys and is backed by our WebAuthn service.
+
+Follow the platform implementation guides:
+[Swift](https://sap.github.io/gigya-swift-sdk/GigyaSwift/#fidowebauthn-authentication)
+[Android](https://sap.github.io/gigya-android-sdk/sdk-core/#fidowebauthn-authentication)
+
+**Additional setup for Android:**
+To correctly integrate Android with the FIDO library, do the following:
+
+1. Add the following code snippet to your MainActivity class:
+```
+private ActivityResultLauncher<IntentSenderRequest> resultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartIntentSenderForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    Gigya.getInstance().WebAuthn().handleFidoResult(result);
+                }
+            }
+    );
+```
+
+2. Reference the "***resultLauncher***" class within the "onCreate" method of the activity.
+```
+@Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        GigyaWebAuthnModule.resultLauncher = resultLauncher;
+    }
+```
+The "***resultLauncher***" object is required for intercommunicating with the FIDO library.
+
+**Usage example**
+Login with FIDO/WebAuthn passkey:
+```
+try {
+      var operation = await Gigya.webAuthn.login()
+      console.log("webAuthnLogin success " + operation)
+      // Update login state.
+    } catch (e) {
+        console.log("webAuthnLogin error " + e)
+    }
+```
+Register a new FIDO/WebAuthn passkey:
+```
+try {
+      var operation = await Gigya.webAuthn.register()
+      console.log("webAuthnRegister success " + operation)
+    } catch (e) {
+        console.log("webAuthnRegister error " + e)
+    } 
+```
+Revoke an existing FIDO/WebAuthn passkey:
+```
+try {
+      var operation = await Gigya.webAuthn.revoke()
+      console.log("webAuthnRevoke success " + operation)
+      // Update login state.
+    } catch (e) {
+        console.log("webAuthnRevoke error " + e)
+    }
+ ```
+
 ## Known Issues
 None
 
