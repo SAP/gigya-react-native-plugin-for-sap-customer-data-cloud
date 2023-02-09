@@ -1,7 +1,6 @@
 package com.sap.gigya_rn_plugin;
 
 import android.app.Application;
-import android.content.pm.PackageInfo;
 
 import androidx.annotation.NonNull;
 
@@ -18,8 +17,6 @@ import com.gigya.android.sdk.api.GigyaApiResponse;
 import com.gigya.android.sdk.api.IApiRequestFactory;
 import com.gigya.android.sdk.interruption.IPendingRegistrationResolver;
 import com.gigya.android.sdk.interruption.link.ILinkAccountsResolver;
-import com.gigya.android.sdk.interruption.tfa.TFAResolverFactory;
-import com.gigya.android.sdk.interruption.tfa.models.TFAProviderModel;
 import com.gigya.android.sdk.network.GigyaError;
 import com.gigya.android.sdk.session.SessionInfo;
 import com.gigya.android.sdk.ui.plugin.GigyaPluginEvent;
@@ -30,7 +27,6 @@ import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Nonnull;
@@ -384,7 +380,7 @@ public class GigyaSdkWrapper<T extends GigyaAccount> {
         }
     }
 
-    void showScreenSet(@Nonnull String name, @Nonnull String jsonParameters, @Nonnull ReactApplicationContext rnContext) {
+    void showScreenSet(@Nonnull String name, @Nonnull String jsonParameters, @Nonnull final ReactApplicationContext rnContext) {
         GigyaSdkRNLogger.log("show screen-sets : called");
         gigyaInstance.showScreenSet(name, true, mapParams(jsonParameters), new GigyaPluginCallback<T>() {
             @Override

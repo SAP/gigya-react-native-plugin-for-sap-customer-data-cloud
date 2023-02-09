@@ -2,15 +2,11 @@ package com.sap.gigya_rn_plugin;
 
 import android.app.Application;
 
-import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
-import com.facebook.react.bridge.ReadableMap;
 import com.gigya.android.sdk.account.models.GigyaAccount;
-
-import java.util.HashMap;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;

@@ -265,7 +265,7 @@ const App = (): React.ReactElement => {
       try {
         var operation = await Gigya.biometric.optIn()
         console.log("biometric operation " + operation)
-        console.log("biometric optin: " + Gigya.biometric.isOptIn())
+        console.log("biometric isOptIn: " + Gigya.biometric.isOptIn())
 
       } catch (e) {
           console.log("opt in error " + e)
@@ -276,9 +276,9 @@ const App = (): React.ReactElement => {
     try {
       var operation = await Gigya.biometric.optOut()
       console.log("biometric operation " + operation)
-      console.log("biometric optin: " + Gigya.biometric.isOptIn())
+      console.log("biometric isOptIn: " + Gigya.biometric.isOptIn())
     } catch (e) {
-        console.log("opt in error " + e)
+        console.log("opt out error " + e)
     } 
   }
 
@@ -288,7 +288,7 @@ const App = (): React.ReactElement => {
       console.log("biometric operation " + operation)
       updateIsLoggedIn(Gigya.isLoggedIn())
     } catch (e) {
-        console.log("opt in error " + e)
+        console.log("lock session error " + e)
     } 
   }
 
@@ -298,7 +298,7 @@ const App = (): React.ReactElement => {
       console.log("biometric operation " + operation)
       updateIsLoggedIn(Gigya.isLoggedIn())
     } catch (e) {
-        console.log("opt in error " + e)
+        console.log("unlock session error " + e)
     } 
   }
 
@@ -390,7 +390,7 @@ const App = (): React.ReactElement => {
       }
       case Method.setAccount: {
         setVisibleAccount(true)
-        setAccount()
+        getAccount()
         break
       }
       case Method.sso: {
@@ -410,7 +410,7 @@ const App = (): React.ReactElement => {
         break
       }
       case Method.lockSession: {
-        getAccount()
+        lockSession()
         break
       }
       case Method.unlockSession: {

@@ -48,7 +48,7 @@ public class GigyaSdkBiometricWrapper<T extends GigyaAccount> {
         return gigyaBiometricInstance.isOptIn();
     }
 
-    void optIn(Activity activity, Promise promise) {
+    void optIn(Activity activity, final Promise promise) {
         gigyaBiometricInstance.optIn(activity, promptInfo,
                 new IGigyaBiometricCallback() {
                     @Override
@@ -58,19 +58,19 @@ public class GigyaSdkBiometricWrapper<T extends GigyaAccount> {
 
                     @Override
                     public void onBiometricOperationSuccess(@NonNull GigyaBiometric.Action action) {
-                        if (action.equals(GigyaBiometric.Action.OPT_IN))
+                        if (action.equals(GigyaBiometric.Action.OPT_IN)) {
                             promise.resolve(true);
-
+                        }
                     }
 
                     @Override
                     public void onBiometricOperationFailed(String s) {
-                        promise.reject("opt in failed");
+                        promise.reject(s);
                     }
                 });
     }
 
-    void optOut(Activity activity, Promise promise) {
+    void optOut(Activity activity, final Promise promise) {
         gigyaBiometricInstance.optOut(activity, promptInfo,
                 new IGigyaBiometricCallback() {
                     @Override
@@ -80,18 +80,20 @@ public class GigyaSdkBiometricWrapper<T extends GigyaAccount> {
 
                     @Override
                     public void onBiometricOperationSuccess(@NonNull GigyaBiometric.Action action) {
-                        if (action.equals(GigyaBiometric.Action.OPT_OUT))
+                        if (action.equals(GigyaBiometric.Action.OPT_OUT)) {
                             promise.resolve(true);
+                        }
+                       
                     }
 
                     @Override
                     public void onBiometricOperationFailed(String s) {
-                        promise.reject("Opt out failed");
+                        promise.reject(s);
                     }
                 });
     }
 
-    void lockSession(Promise promise) {
+    void lockSession(final Promise promise) {
         gigyaBiometricInstance.lock(new IGigyaBiometricCallback() {
 
             @Override
@@ -101,19 +103,21 @@ public class GigyaSdkBiometricWrapper<T extends GigyaAccount> {
 
             @Override
             public void onBiometricOperationSuccess(@NonNull GigyaBiometric.Action action) {
-                if (action.equals(GigyaBiometric.Action.LOCK))
+                if (action.equals(GigyaBiometric.Action.LOCK)) {
                     promise.resolve(true);
+                }
+                
             }
 
             @Override
             public void onBiometricOperationFailed(String s) {
-                promise.reject("Lock session failed");
+                promise.reject(s);
             }
         });
 
     }
 
-    void unlockSession(Activity activity, Promise promise) {
+    void unlockSession(Activity activity, final Promise promise) {
         gigyaBiometricInstance.unlock(activity, promptInfo,
                 new IGigyaBiometricCallback() {
                     @Override
@@ -123,13 +127,15 @@ public class GigyaSdkBiometricWrapper<T extends GigyaAccount> {
 
                     @Override
                     public void onBiometricOperationSuccess(@NonNull GigyaBiometric.Action action) {
-                        if (action.equals(GigyaBiometric.Action.UNLOCK))
+                        if (action.equals(GigyaBiometric.Action.UNLOCK)) {
                             promise.resolve(true);
+                        }
+                        
                     }
 
                     @Override
                     public void onBiometricOperationFailed(String s) {
-                        promise.reject("Unlock session failed");
+                        promise.reject(s);
                     }
                 });
     }
