@@ -20,7 +20,7 @@ export class BiometricService {
             const result = await GigyaBiometric.optIn()
             return result
         } catch (e) {
-            throw false
+            throw e
         }
     }
 
@@ -29,7 +29,7 @@ export class BiometricService {
             const result = await GigyaBiometric.optOut()
             return result
         } catch (e) {
-            throw false
+            throw e
         }
     }
 
@@ -47,7 +47,7 @@ export class BiometricService {
             const result = await GigyaBiometric.unlockSession()
             return result
         } catch (e) {
-            throw false
+            throw e
         }
     }
 }
