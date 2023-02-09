@@ -248,7 +248,6 @@ const App = (): React.ReactElement => {
     }
 }
 
-
   const showScreenSet = () => {
     console.log("start showScreemSet");
     Gigya.showScreenSet("Default-RegistrationLogin", (event, data) => {
@@ -347,6 +346,7 @@ const App = (): React.ReactElement => {
     logout,
     showScreenSet,
     setAccount,
+    getAccount,
     sso,
     isOptIn,
     optIn,
@@ -388,15 +388,22 @@ const App = (): React.ReactElement => {
         showScreenSet()
         break
       }
-      case Method.setAccount: {
+      case Method.getAccount: {
         setVisibleAccount(true)
         getAccount()
         break
       }
+      case Method.setAccount: {
+        setVisibleAccount(true)
+        setAccount()
+        break
+      }
+
       case Method.sso: {
         sso()
         break
       }
+    
       case Method.isOptIn: {
        Gigya.biometric.isOptIn()
         break
@@ -479,6 +486,13 @@ const App = (): React.ReactElement => {
       description:
         'Pop the Web screenset.',
         show: ShowIn.both
+    },
+    {
+      title: 'getAccount',
+      method: Method.getAccount,
+      description:
+        'Get account information',
+        show: ShowIn.loggedIn
     },
     {
       title: 'setAccount',
