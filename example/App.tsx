@@ -200,6 +200,7 @@ const App = (): React.ReactElement => {
       updateIsLoggedIn(Gigya.isLoggedIn())
     } catch (error) {
       console.log("Logout error:" + error);
+      updateIsLoggedIn(Gigya.isLoggedIn())
     }
   };
 
@@ -278,7 +279,9 @@ const App = (): React.ReactElement => {
       console.log("biometric isOptIn: " + Gigya.biometric.isOptIn())
     } catch (e) {
         console.log("opt out error " + e)
-    } 
+        console.log("session unrecoverable - logging out")
+        logout()
+      } 
   }
 
   const lockSession = async () => {
@@ -298,6 +301,8 @@ const App = (): React.ReactElement => {
       updateIsLoggedIn(Gigya.isLoggedIn())
     } catch (e) {
         console.log("unlock session error " + e)
+        console.log("session unrecoverable - logging out")
+        logout()
     } 
   }
 
