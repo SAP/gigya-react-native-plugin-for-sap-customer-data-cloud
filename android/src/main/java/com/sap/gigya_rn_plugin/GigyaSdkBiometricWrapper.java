@@ -19,6 +19,8 @@ import java.util.Map;
 
 public class GigyaSdkBiometricWrapper<T extends GigyaAccount> {
 
+    private static final String ERROR_RECOGNITION_FAILURE = "Fingerprint recognition failed";
+
     public GigyaBiometric gigyaBiometricInstance;
 
     private final Gson gson;
@@ -65,7 +67,9 @@ public class GigyaSdkBiometricWrapper<T extends GigyaAccount> {
 
                     @Override
                     public void onBiometricOperationFailed(String s) {
-                        promise.reject(s);
+                        if (rejectBiometricFailure(s)) {
+                            promise.reject(s);
+                        }
                     }
                 });
     }
@@ -88,7 +92,9 @@ public class GigyaSdkBiometricWrapper<T extends GigyaAccount> {
 
                     @Override
                     public void onBiometricOperationFailed(String s) {
-                        promise.reject(s);
+                        if (rejectBiometricFailure(s)) {
+                            promise.reject(s);
+                        }
                     }
                 });
     }
@@ -135,8 +141,15 @@ public class GigyaSdkBiometricWrapper<T extends GigyaAccount> {
 
                     @Override
                     public void onBiometricOperationFailed(String s) {
-                        promise.reject(s);
+                        if (rejectBiometricFailure(s)) {
+                            promise.reject(s);
+                        }
                     }
                 });
     }
+
+    boolean rejectBiometricFailure(String propagated) {
+        return !propagated.equals(ERROR_RECOGNITION_FAILURE);
+    }
+
 }
