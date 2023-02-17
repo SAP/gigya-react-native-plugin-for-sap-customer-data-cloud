@@ -255,7 +255,7 @@ If you also want to set a custom text in the Touch ID prompt, you can include th
 4. appropriate permissions are already requested in the library manifest: android.permission.USE _FINGERPRINT android.permission. USE _BIOMETRIC
 
 **Declaring the prompt display**.
-Andorid's biometric authentication uses a prompt display. You can customize the text displayed by declaring your own ***BiometricPromptIfo*** object.
+Andorid's biometric authentication uses a prompt display. You can customize the text displayed by declaring your own ***BiometricPromptInfo*** object.
 
 In your application class (after launching the SDK), you can add the following:
 ```java
@@ -263,6 +263,10 @@ GigyaSdkBiometricModule.setBiometricPromptInfo(new GigyaPromptInfo( "title", "su
 ```
 
 If no prompt info is specified, the prompt window uses default English texts.
+
+# Errors
+Biometric errors from version **0.2.0** will return as String values and not as Boolean values.
+This is to accomodate unique errors such as "Key invalidated", which will render the session as unrecoverable and require the user to re-authenticate.
 
 
 ## FIDO/WebAuthn Authentication
