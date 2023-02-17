@@ -200,6 +200,7 @@ const App = (): React.ReactElement => {
       updateIsLoggedIn(Gigya.isLoggedIn())
     } catch (error) {
       console.log("Logout error:" + error);
+      updateIsLoggedIn(Gigya.isLoggedIn())
     }
   };
 
@@ -248,7 +249,6 @@ const App = (): React.ReactElement => {
     }
 }
 
-
   const showScreenSet = () => {
     console.log("start showScreemSet");
     Gigya.showScreenSet("Default-RegistrationLogin", (event, data) => {
@@ -265,7 +265,7 @@ const App = (): React.ReactElement => {
       try {
         var operation = await Gigya.biometric.optIn()
         console.log("biometric operation " + operation)
-        console.log("biometric optin: " + Gigya.biometric.isOptIn())
+        console.log("biometric isOptIn: " + Gigya.biometric.isOptIn())
 
       } catch (e) {
           console.log("opt in error " + e)
@@ -276,10 +276,12 @@ const App = (): React.ReactElement => {
     try {
       var operation = await Gigya.biometric.optOut()
       console.log("biometric operation " + operation)
-      console.log("biometric optin: " + Gigya.biometric.isOptIn())
+      console.log("biometric isOptIn: " + Gigya.biometric.isOptIn())
     } catch (e) {
-        console.log("opt in error " + e)
-    } 
+        console.log("opt out error " + e)
+        console.log("session unrecoverable - logging out")
+        logout()
+      } 
   }
 
   const lockSession = async () => {
@@ -288,7 +290,7 @@ const App = (): React.ReactElement => {
       console.log("biometric operation " + operation)
       updateIsLoggedIn(Gigya.isLoggedIn())
     } catch (e) {
-        console.log("opt in error " + e)
+        console.log("lock session error " + e)
     } 
   }
 
@@ -298,7 +300,9 @@ const App = (): React.ReactElement => {
       console.log("biometric operation " + operation)
       updateIsLoggedIn(Gigya.isLoggedIn())
     } catch (e) {
-        console.log("opt in error " + e)
+        console.log("unlock session error " + e)
+        console.log("session unrecoverable - logging out")
+        logout()
     } 
   }
 
@@ -347,6 +351,7 @@ const App = (): React.ReactElement => {
     logout,
     showScreenSet,
     setAccount,
+    getAccount,
     sso,
     isOptIn,
     optIn,
@@ -388,15 +393,22 @@ const App = (): React.ReactElement => {
         showScreenSet()
         break
       }
+      case Method.getAccount: {
+        setVisibleAccount(true)
+        getAccount()
+        break
+      }
       case Method.setAccount: {
         setVisibleAccount(true)
         setAccount()
         break
       }
+
       case Method.sso: {
         sso()
         break
       }
+    
       case Method.isOptIn: {
        Gigya.biometric.isOptIn()
         break
@@ -410,7 +422,7 @@ const App = (): React.ReactElement => {
         break
       }
       case Method.lockSession: {
-        getAccount()
+        lockSession()
         break
       }
       case Method.unlockSession: {
@@ -479,6 +491,13 @@ const App = (): React.ReactElement => {
       description:
         'Pop the Web screenset.',
         show: ShowIn.both
+    },
+    {
+      title: 'getAccount',
+      method: Method.getAccount,
+      description:
+        'Get account information',
+        show: ShowIn.loggedIn
     },
     {
       title: 'setAccount',
