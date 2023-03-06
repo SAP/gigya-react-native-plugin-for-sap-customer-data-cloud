@@ -394,7 +394,6 @@ const App = (): React.ReactElement => {
         break
       }
       case Method.getAccount: {
-        setVisibleAccount(true)
         getAccount()
         break
       }
