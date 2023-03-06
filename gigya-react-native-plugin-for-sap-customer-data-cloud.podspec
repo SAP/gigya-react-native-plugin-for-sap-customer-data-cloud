@@ -20,7 +20,7 @@ Pod::Spec.new do |s|
   s.requires_arc = true
 
   s.dependency "React"
-  s.dependency 'Gigya', '~> 1.5.0'
+  s.dependency 'Gigya', '~> 1.5.1'
 
   # ...
   # s.dependency "..."
