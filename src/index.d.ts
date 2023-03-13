@@ -36,6 +36,8 @@ export namespace Gigya {
 
     function setSession(token: string, secret: string, expiration?: number): Promise<{sessionToken: string, sessionSecret: string, expirationTime: number}>;
 
+    function invalidateSession(): Promise<void>;
+
     function send(api: string, params?: Record<string, any>): Promise<GigyaDictionary>;
 
     function logout(): Promise<GigyaDictionary>;
