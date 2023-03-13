@@ -247,9 +247,11 @@ export class GigyaInterface {
         GigyaSdk.showScreenSet(name, JSON.stringify(params) ?? "")
 
         listener = GigyaSdkEvents.addListener('event', (jsonData) => {
+            console.log("eee:"+jsonData)
             const data = JSON.parse(jsonData)
             callback(data.event, data.data)
 
+            
             if( data.event == 'onCanceled' || data.event == 'onHide') {
                 listener.remove()
             }

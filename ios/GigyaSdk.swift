@@ -50,6 +50,13 @@ public class GigyaSdk: NSObject {
         GigyaSdk.gigya?.sendEvent(.setSession, params: newParams, promise: promise)
     }
 
+    @objc(invalidateSession)
+    func invalidateSession() {
+        let session = Gigya.getContainer().resolve(SessionServiceProtocol.self)
+
+        session?.clear()
+    }
+    
     @objc(send:params:resolver:rejecter:)
     func send(_ api: String, params: String, resolve: @escaping RCTPromiseResolveBlock, reject: @escaping RCTPromiseRejectBlock) -> Void {
         promise.set(promiseResolve: resolve, promiseReject: reject)

@@ -47,6 +47,14 @@ public class GigyaSdkModule extends ReactContextBaseJavaModule {
         return isLoggedIn;
     }
 
+    @ReactMethod(isBlockingSynchronousMethod = true)
+    public invalidateSession() {
+        ISessionService _sessionService = Gigya.getContainer().get(ISessionService.class);
+        _sessionService.cancelSessionCountdownTimer();
+        _sessionService.clear(true);
+        _sessionService.clearCookiesOnLogout();
+    }
+
     @ReactMethod
     public void getSession(Promise promise) {
         gigyaSdk.getSession(promise);

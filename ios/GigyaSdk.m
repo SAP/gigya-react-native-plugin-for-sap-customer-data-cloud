@@ -71,6 +71,7 @@ RCT_EXTERN_METHOD(removeConnection: (NSString *)provider
                   rejecter:(RCTPromiseRejectBlock)reject)
 
 RCT_EXTERN__BLOCKING_SYNCHRONOUS_METHOD(isLoggedIn)
+RCT_EXTERN__BLOCKING_SYNCHRONOUS_METHOD(invalidateSession)
 
 RCT_EXTERN_METHOD(initFor:(NSString *)apiKey
                   apiDomain:(NSString *)apiDomain)
