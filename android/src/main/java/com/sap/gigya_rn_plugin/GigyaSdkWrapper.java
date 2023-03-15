@@ -12,12 +12,15 @@ import com.gigya.android.sdk.GigyaCallback;
 import com.gigya.android.sdk.GigyaDefinitions;
 import com.gigya.android.sdk.GigyaLoginCallback;
 import com.gigya.android.sdk.GigyaPluginCallback;
+import com.gigya.android.sdk.account.IAccountService;
 import com.gigya.android.sdk.account.models.GigyaAccount;
 import com.gigya.android.sdk.api.GigyaApiResponse;
 import com.gigya.android.sdk.api.IApiRequestFactory;
 import com.gigya.android.sdk.interruption.IPendingRegistrationResolver;
 import com.gigya.android.sdk.interruption.link.ILinkAccountsResolver;
 import com.gigya.android.sdk.network.GigyaError;
+import com.gigya.android.sdk.session.ISessionService;
+import com.gigya.android.sdk.session.ISessionVerificationService;
 import com.gigya.android.sdk.session.SessionInfo;
 import com.gigya.android.sdk.ui.plugin.GigyaPluginEvent;
 import com.gigya.android.sdk.utils.CustomGSONDeserializer;
@@ -340,6 +343,27 @@ public class GigyaSdkWrapper<T extends GigyaAccount> {
                 promiseWrapper.reject(gigyaError);
             }
         });
+    }
+
+    void invalidateSession(Promise promise) {
+        GigyaSdkRNLogger.log("invalidate session: called");
+        promiseWrapper.promise = promise;
+        try {
+            ISessionService _sessionService = Gigya.getContainer().get(ISessionService.class);
+            _sessionService.cancelSessionCountdownTimer();
+            _sessionService.clear(true);
+            _sessionService.clearCookiesOnLogout();
+
+            IAccountService _accountService = Gigya.getContainer().get(IAccountService.class);
+            _accountService.invalidateAccount();
+
+            ISessionVerificationService _sessionVerificationService = Gigya.getContainer().get(ISessionVerificationService.class);
+            _sessionVerificationService.stop();
+
+            promise.resolve(null);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 
     void resolve(@Nonnull String method, @Nonnull String jsonParameters, @Nonnull Promise promise) {

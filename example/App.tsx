@@ -281,7 +281,8 @@ const App = (): React.ReactElement => {
     } catch (e) {
         console.log("opt out error " + e)
         console.log("session unrecoverable - logging out")
-        logout()
+        await Gigya.invalidateSession()
+        console.log("session invalidated")
       } 
   }
 

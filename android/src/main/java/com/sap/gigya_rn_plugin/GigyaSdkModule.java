@@ -7,7 +7,6 @@ import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.gigya.android.sdk.account.models.GigyaAccount;
-import com.gigya.android.sdk.session.ISessionService;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -50,15 +49,7 @@ public class GigyaSdkModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void invalidateSession(Promise promise) {
-        try {
-            ISessionService _sessionService = Gigya.getContainer().get(ISessionService.class);
-            _sessionService.cancelSessionCountdownTimer();
-            _sessionService.clear(true);
-            _sessionService.clearCookiesOnLogout();
-            promise.resolve(null); 
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
+       gigyaSdk.invalidateSession(promise);
     }
 
     @ReactMethod
