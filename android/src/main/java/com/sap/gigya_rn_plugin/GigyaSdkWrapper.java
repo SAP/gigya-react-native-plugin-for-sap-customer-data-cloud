@@ -265,6 +265,11 @@ public class GigyaSdkWrapper<T extends GigyaAccount> {
             public void onPendingVerification(@NonNull GigyaApiResponse response, @Nullable String regToken) {
                 promiseWrapper.reject(response);
             }
+
+            @Override
+            public void onOperationCanceled() {
+                promiseWrapper.reject(GigyaError.cancelledOperation());
+            }
         });
     }
 
