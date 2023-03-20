@@ -283,6 +283,7 @@ const App = (): React.ReactElement => {
         console.log("session unrecoverable - logging out")
         await Gigya.invalidateSession()
         console.log("session invalidated")
+        updateIsLoggedIn(Gigya.isLoggedIn())
       } 
   }
 
