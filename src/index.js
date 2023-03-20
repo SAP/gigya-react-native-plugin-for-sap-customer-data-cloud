@@ -71,6 +71,21 @@ export class GigyaInterface {
             throw error
         }
     }
+
+    /**
+     * 
+     * Invalidate session.
+     * 
+     */
+    async invalidateSession() {
+        try {
+            const req = await GigyaSdk.invalidateSession()
+            return req
+        } catch (e) {
+            const error = new GigyaError(e)
+            throw error
+        }
+    }
     
     /**
      * 
@@ -247,9 +262,10 @@ export class GigyaInterface {
         GigyaSdk.showScreenSet(name, JSON.stringify(params) ?? "")
 
         listener = GigyaSdkEvents.addListener('event', (jsonData) => {
+            console.log("eee:"+jsonData)
             const data = JSON.parse(jsonData)
             callback(data.event, data.data)
-
+            
             if( data.event == 'onCanceled' || data.event == 'onHide') {
                 listener.remove()
             }

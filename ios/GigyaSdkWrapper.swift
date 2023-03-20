@@ -312,7 +312,7 @@ class GigyaSdkWrapper<T: GigyaAccountProtocol>: GigyaSdkWrapperProtocol {
                 GigyaSdkEvents.emitter.sendEvent(withName: "event", body: GigyaSdk.toJsonString(data: data))
             case .onLogin(account: let account):
                 let mapped: [String: Any] = self.accountToDic(account: account)
-                let data: [String: Any] = ["event": "onLogin", "data": GigyaSdk.toJsonString(data: mapped)]
+                let data: [String: Any] = ["event": "onLogin", "data": mapped]
 
                 GigyaSdkEvents.emitter.sendEvent(withName: "event", body: GigyaSdk.toJsonString(data: data))
             case .onLogout:

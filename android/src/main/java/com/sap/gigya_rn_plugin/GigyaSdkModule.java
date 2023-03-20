@@ -48,6 +48,11 @@ public class GigyaSdkModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
+    public void invalidateSession(Promise promise) {
+       gigyaSdk.invalidateSession(promise);
+    }
+
+    @ReactMethod
     public void getSession(Promise promise) {
         gigyaSdk.getSession(promise);
     }

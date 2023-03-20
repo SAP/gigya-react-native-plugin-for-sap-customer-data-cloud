@@ -72,9 +72,9 @@ PODS:
     - FlipperKit/Core
     - FlipperKit/FlipperKitNetworkPlugin
   - fmt (6.2.1)
-  - Gigya (1.4.0)
-  - gigya-react-native-plugin-for-sap-customer-data-cloud (0.0.11):
-    - Gigya (~> 1.4.0)
+  - Gigya (1.5.1)
+  - gigya-react-native-plugin-for-sap-customer-data-cloud (0.2.0):
+    - Gigya (~> 1.5.0)
     - React
   - glog (0.3.5)
   - hermes-engine (0.70.6)
@@ -902,8 +902,8 @@ SPEC CHECKSUMS:
   Flipper-RSocket: d9d9ade67cbecf6ac10730304bf5607266dd2541
   FlipperKit: cbdee19bdd4e7f05472a66ce290f1b729ba3cb86
   fmt: ff9d55029c625d3757ed641535fd4a75fedc7ce9
-  Gigya: e1a40d775051b7d2067cc581549ed75f0d2b30c6
-  gigya-react-native-plugin-for-sap-customer-data-cloud: bd50c5b52785d56b0b5dee58c251c4fc98ee197f
+  Gigya: 535b3dc1b4c635f2a95ae058049b012fa1fa3e94
+  gigya-react-native-plugin-for-sap-customer-data-cloud: 12f8b696cbadc18e29cc962a3f9d5637d74fa96b
   glog: 04b94705f318337d7ead9e6d17c019bd9b1f6b1b
   hermes-engine: 2af7b7a59128f250adfd86f15aa1d5a2ecd39995
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
@@ -947,4 +947,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: d6ba4ed45e5b434082cf15e2ea931165733cf3c5
 
-COCOAPODS: 1.11.3
+COCOAPODS: 1.12.0

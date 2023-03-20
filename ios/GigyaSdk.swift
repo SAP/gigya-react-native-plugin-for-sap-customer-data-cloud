@@ -49,6 +49,17 @@ public class GigyaSdk: NSObject {
         let newParams: [String : Any] = ["token": token, "secret": secret, "expiration": expiration];
         GigyaSdk.gigya?.sendEvent(.setSession, params: newParams, promise: promise)
     }
+    
+    @objc(invalidateSession:rejecter:)
+    func invalidateSession(_ resolve: @escaping RCTPromiseResolveBlock, reject: @escaping RCTPromiseRejectBlock) -> Void {
+        promise.set(promiseResolve: resolve, promiseReject: reject)
+
+        let session = Gigya.getContainer().resolve(SessionServiceProtocol.self)
+
+        session?.clear { [weak self] in
+            self?.promise.resolve(result: {})
+        }
+    }
 
     @objc(send:params:resolver:rejecter:)
     func send(_ api: String, params: String, resolve: @escaping RCTPromiseResolveBlock, reject: @escaping RCTPromiseRejectBlock) -> Void {

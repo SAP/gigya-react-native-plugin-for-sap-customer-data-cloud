@@ -25,6 +25,9 @@ RCT_EXTERN_METHOD(setSession:(NSString *)token
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 
+RCT_EXTERN_METHOD(invalidateSession:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject)
+
 RCT_EXTERN_METHOD(send:(NSString *)api
                   params:(NSString *)params
                   resolver:(RCTPromiseResolveBlock)resolve

@@ -195,8 +195,9 @@ const App = (): React.ReactElement => {
 
   const logout = async () => {
     try {
-      const senddd = await Gigya.logout()
-      console.log("logout: " + JSON.stringify(senddd));
+      // const senddd = await Gigya.logout()
+      const senddd = await Gigya.invalidateSession()
+      console.log("logout: " + JSON.stringify("senddd"));
       updateIsLoggedIn(Gigya.isLoggedIn())
     } catch (error) {
       console.log("Logout error:" + error);
@@ -280,7 +281,9 @@ const App = (): React.ReactElement => {
     } catch (e) {
         console.log("opt out error " + e)
         console.log("session unrecoverable - logging out")
-        logout()
+        await Gigya.invalidateSession()
+        console.log("session invalidated")
+        updateIsLoggedIn(Gigya.isLoggedIn())
       } 
   }
 
