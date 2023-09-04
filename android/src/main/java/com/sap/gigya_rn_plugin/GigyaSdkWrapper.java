@@ -61,6 +61,10 @@ public class GigyaSdkWrapper<T extends GigyaAccount> {
         }
     }
 
+    void setExternalProvidersPath(String path) {
+        gigyaInstance.setExternalProvidersPath(path);
+    } 
+
     void initFor(@Nonnull String apikey, @Nullable String apiDomain) {
         if (apiDomain == null) {
             gigyaInstance.init(apikey);
