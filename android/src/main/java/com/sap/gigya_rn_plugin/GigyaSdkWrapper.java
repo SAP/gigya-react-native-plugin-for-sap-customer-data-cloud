@@ -253,6 +253,20 @@ public class GigyaSdkWrapper<T extends GigyaAccount> {
                 GigyaSdkRNLogger.log("social login : error with message: " + gigyaError.getLocalizedMessage());
                 promiseWrapper.reject(gigyaError);
             }
+            
+            @Override
+            public void onOperationCanceled() {
+                GigyaSdkRNLogger.log("sso login : canceled");
+                resolverHelper.clear();
+                promiseWrapper.reject(
+                        new GigyaError(
+                                "",
+                                200001,
+                                "Operation canceled",
+                                null
+                        )
+                );
+            }
 
             @Override
             public void onConflictingAccounts(@NonNull GigyaApiResponse response, @NonNull ILinkAccountsResolver resolver) {
@@ -290,6 +304,20 @@ public class GigyaSdkWrapper<T extends GigyaAccount> {
             public void onError(GigyaError gigyaError) {
                 GigyaSdkRNLogger.log("social login : error with message: " + gigyaError.getLocalizedMessage());
                 promiseWrapper.reject(gigyaError);
+            }
+
+            @Override
+            public void onOperationCanceled() {
+                GigyaSdkRNLogger.log("sso login : canceled");
+                resolverHelper.clear();
+                promiseWrapper.reject(
+                        new GigyaError(
+                                "",
+                                200001,
+                                "Operation canceled",
+                                null
+                        )
+                );
             }
 
             @Override
