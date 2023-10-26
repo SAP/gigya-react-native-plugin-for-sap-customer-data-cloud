@@ -6,7 +6,7 @@ A React Native plugin for interfacing with SAP Customer Data Cloud. This plugin 
 
 
 ## Requirements
-Android SDK support requires Android SDK 14 and above.
+Android SDK support requires Android SDK 23 and above (For Biometric capabilities, SDK 23 and above is required).
 iOS support requires iOS 10 and above.
 
 ## Download and Installation
