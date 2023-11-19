@@ -258,14 +258,7 @@ public class GigyaSdkWrapper<T extends GigyaAccount> {
             public void onOperationCanceled() {
                 GigyaSdkRNLogger.log("sso login : canceled");
                 resolverHelper.clear();
-                promiseWrapper.reject(
-                        new GigyaError(
-                                "",
-                                200001,
-                                "Operation canceled",
-                                null
-                        )
-                );
+                promiseWrapper.reject(GigyaError.cancelledOperation());
             }
 
             @Override
@@ -287,10 +280,6 @@ public class GigyaSdkWrapper<T extends GigyaAccount> {
                 promiseWrapper.reject(response);
             }
 
-            @Override
-            public void onOperationCanceled() {
-                promiseWrapper.reject(GigyaError.cancelledOperation());
-            }
         });
     }
 
