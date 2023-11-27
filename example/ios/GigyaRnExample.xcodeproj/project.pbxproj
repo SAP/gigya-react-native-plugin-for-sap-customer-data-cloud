@@ -15,6 +15,7 @@
 		7699B88040F8A987B510C191 /* libPods-GigyaRnExample-GigyaRnExampleTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F6CBCC0A4E27FBF8BF4A61 /* libPods-GigyaRnExample-GigyaRnExampleTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		E794999F2933B09000D3FB98 /* GigyaExtenstion.swift in Sources */ = {isa = PBXBuildFile; fileRef = E794999E2933B09000D3FB98 /* GigyaExtenstion.swift */; };
+		E7AC8DB42ADBED7600FC3D44 /* FacebookWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7AC8DB32ADBED7600FC3D44 /* FacebookWrapper.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,7 +48,7 @@
 		E75DE0D529488D6100EB5885 /* GigyaRnExample.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = GigyaRnExample.entitlements; path = GigyaRnExample/GigyaRnExample.entitlements; sourceTree = "<group>"; };
 		E794999D2933B09000D3FB98 /* GigyaRnExample-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "GigyaRnExample-Bridging-Header.h"; sourceTree = "<group>"; };
 		E794999E2933B09000D3FB98 /* GigyaExtenstion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GigyaExtenstion.swift; sourceTree = "<group>"; };
-		E79499A02933B5DD00D3FB98 /* FacebookWrapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FacebookWrapper.swift; path = ../../example1/ios/GigyaRnExample/FacebookWrapper.swift; sourceTree = "<group>"; };
+		E7AC8DB32ADBED7600FC3D44 /* FacebookWrapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FacebookWrapper.swift; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -92,7 +93,7 @@
 			isa = PBXGroup;
 			children = (
 				E75DE0D529488D6100EB5885 /* GigyaRnExample.entitlements */,
-				E79499A02933B5DD00D3FB98 /* FacebookWrapper.swift */,
+				E7AC8DB32ADBED7600FC3D44 /* FacebookWrapper.swift */,
 				E794999E2933B09000D3FB98 /* GigyaExtenstion.swift */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.mm */,
@@ -424,6 +425,7 @@
 				E794999F2933B09000D3FB98 /* GigyaExtenstion.swift in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
+				E7AC8DB42ADBED7600FC3D44 /* FacebookWrapper.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

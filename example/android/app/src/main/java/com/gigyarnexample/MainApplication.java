@@ -66,7 +66,7 @@ public class MainApplication extends Application implements ReactApplication {
     GigyaSdkBiometricModule.setBiometricPromptInfo(new GigyaPromptInfo(
             "Biometric Auth", "Place finger on sensor to authenticate", ""
     ));
-
+    GigyaSdkModule.setExternalProvidersPath("com.gigyarnexample.gigya.providers");
   }
 
   /**

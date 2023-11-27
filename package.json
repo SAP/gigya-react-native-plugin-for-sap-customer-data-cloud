@@ -29,8 +29,5 @@
     "jetifier": "^2.0.0",
     "react": "^18.1.0",
     "react-native": "^0.70.6"
-  },
-  "dependencies": {
-    "@react-native-community/cli": "^9.3.2"
   }
 }

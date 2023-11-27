@@ -6,7 +6,7 @@ A React Native plugin for interfacing with SAP Customer Data Cloud. This plugin 
 
 
 ## Requirements
-Android SDK support requires Android SDK 14 and above.
+Android SDK support requires Android SDK 23 and above (For Biometric capabilities, SDK 23 and above is required).
 iOS support requires iOS 10 and above.
 
 ## Download and Installation
@@ -15,6 +15,10 @@ Add the plugin in your **package.json** file.
 ## Setup & Gigya core integration
 
 ### Android setup
+
+## Android v7 upgrade
+Plugin version 0.2.4+ will depend on Android SDK core v7.
+Required changes to your plugin based on Android SDK core v7 are documented in the [Android core documentation](https://sap.github.io/gigya-android-sdk/sdk-core/#upgrading-to-v7)
 
 Add the following to your *MainApplication.java* file:
 
@@ -117,6 +121,10 @@ const send = await Gigya.socialLogin("facebook");
 ```
 
 ## Embedded social providers
+
+# Android v7 upgrade
+Plugin version 0.2.4+ will depend on Android SDK core v7.
+Please view the changes required to be made to yours applicationin the [Android code documentation](https://sap.github.io/gigya-android-sdk/sdk-core/#configuring-native-login) for updateing to external providers usage. 
 
 Specific social providers (Facebook, Google) require additional setup. This is due to their requirement for specific (embedded native) SDKs.
 

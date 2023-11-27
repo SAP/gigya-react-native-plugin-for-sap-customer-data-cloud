@@ -48,6 +48,13 @@ public class GigyaSdkModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
+    public static void setExternalProvidersPath(String path) {
+        if (gigyaSdk != null) {
+            gigyaSdk.setExternalProvidersPath(path);
+        }
+    }
+
+    @ReactMethod
     public void invalidateSession(Promise promise) {
        gigyaSdk.invalidateSession(promise);
     }

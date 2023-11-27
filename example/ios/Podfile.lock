@@ -2,6 +2,8 @@ PODS:
   - boost (1.76.0)
   - CocoaAsyncSocket (7.6.5)
   - DoubleConversion (1.1.6)
+  - FBAEMKit (16.1.3):
+    - FBSDKCoreKit_Basics (= 16.1.3)
   - FBLazyVector (0.70.6)
   - FBReactNativeSpec (0.70.6):
     - RCT-Folly (= 2021.07.22.00)
@@ -10,6 +12,18 @@ PODS:
     - React-Core (= 0.70.6)
     - React-jsi (= 0.70.6)
     - ReactCommon/turbomodule/core (= 0.70.6)
+  - FBSDKCoreKit (16.1.3):
+    - FBAEMKit (= 16.1.3)
+    - FBSDKCoreKit_Basics (= 16.1.3)
+  - FBSDKCoreKit_Basics (16.1.3)
+  - FBSDKGamingServicesKit (16.1.3):
+    - FBSDKCoreKit (= 16.1.3)
+    - FBSDKCoreKit_Basics (= 16.1.3)
+    - FBSDKShareKit (= 16.1.3)
+  - FBSDKLoginKit (16.1.3):
+    - FBSDKCoreKit (= 16.1.3)
+  - FBSDKShareKit (16.1.3):
+    - FBSDKCoreKit (= 16.1.3)
   - Flipper (0.125.0):
     - Flipper-Folly (~> 2.6)
     - Flipper-RSocket (~> 1.4)
@@ -73,8 +87,8 @@ PODS:
     - FlipperKit/FlipperKitNetworkPlugin
   - fmt (6.2.1)
   - Gigya (1.5.1)
-  - gigya-react-native-plugin-for-sap-customer-data-cloud (0.2.0):
-    - Gigya (~> 1.5.0)
+  - gigya-react-native-plugin-for-sap-customer-data-cloud (0.2.3):
+    - Gigya (~> 1.5.1)
     - React
   - glog (0.3.5)
   - hermes-engine (0.70.6)
@@ -629,6 +643,21 @@ PODS:
   - React-jsinspector (0.70.6)
   - React-logger (0.70.6):
     - glog
+  - react-native-fbsdk-next (12.1.0):
+    - React-Core
+    - react-native-fbsdk-next/Core (= 12.1.0)
+    - react-native-fbsdk-next/Login (= 12.1.0)
+    - react-native-fbsdk-next/Share (= 12.1.0)
+  - react-native-fbsdk-next/Core (12.1.0):
+    - FBSDKCoreKit (~> 16.1.3)
+    - React-Core
+  - react-native-fbsdk-next/Login (12.1.0):
+    - FBSDKLoginKit (~> 16.1.3)
+    - React-Core
+  - react-native-fbsdk-next/Share (12.1.0):
+    - FBSDKGamingServicesKit (~> 16.1.3)
+    - FBSDKShareKit (~> 16.1.3)
+    - React-Core
   - react-native-simple-toast (2.0.0):
     - RCT-Folly
     - RCTRequired
@@ -767,6 +796,7 @@ DEPENDENCIES:
   - React-jsiexecutor (from `../node_modules/react-native/ReactCommon/jsiexecutor`)
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector`)
   - React-logger (from `../node_modules/react-native/ReactCommon/logger`)
+  - react-native-fbsdk-next (from `../node_modules/react-native-fbsdk-next`)
   - react-native-simple-toast (from `../node_modules/react-native-simple-toast`)
   - React-perflogger (from `../node_modules/react-native/ReactCommon/reactperflogger`)
   - React-RCTActionSheet (from `../node_modules/react-native/Libraries/ActionSheetIOS`)
@@ -787,6 +817,12 @@ DEPENDENCIES:
 SPEC REPOS:
   trunk:
     - CocoaAsyncSocket
+    - FBAEMKit
+    - FBSDKCoreKit
+    - FBSDKCoreKit_Basics
+    - FBSDKGamingServicesKit
+    - FBSDKLoginKit
+    - FBSDKShareKit
     - Flipper
     - Flipper-Boost-iOSX
     - Flipper-DoubleConversion
@@ -853,6 +889,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/jsinspector"
   React-logger:
     :path: "../node_modules/react-native/ReactCommon/logger"
+  react-native-fbsdk-next:
+    :path: "../node_modules/react-native-fbsdk-next"
   react-native-simple-toast:
     :path: "../node_modules/react-native-simple-toast"
   React-perflogger:
@@ -890,8 +928,14 @@ SPEC CHECKSUMS:
   boost: a7c83b31436843459a1961bfd74b96033dc77234
   CocoaAsyncSocket: 065fd1e645c7abab64f7a6a2007a48038fdc6a99
   DoubleConversion: 5189b271737e1565bdce30deb4a08d647e3f5f54
+  FBAEMKit: af2972f39bb0f3f7c45998f435b007833c32ffb2
   FBLazyVector: 48289402952f4f7a4e235de70a9a590aa0b79ef4
   FBReactNativeSpec: d7fd4a44f734e237a47d9dc9fc36d82592dafecc
+  FBSDKCoreKit: 19e2e18b3be578d7a51fed8fdd8c152bef0b9511
+  FBSDKCoreKit_Basics: dd9826ce3c9fd9f8cdf8dbbd0ef0a53e6c0c9e7e
+  FBSDKGamingServicesKit: 791d9b1de6da359e92da3b1ba3459f36b0aa604f
+  FBSDKLoginKit: c395c63a1a6cf4a8a1e6103fd94b8c46329ee81c
+  FBSDKShareKit: de5c291ad414ec07048ab09bae1b1b74b3ed92fe
   Flipper: 26fc4b7382499f1281eb8cb921e5c3ad6de91fe0
   Flipper-Boost-iOSX: fd1e2b8cbef7e662a122412d7ac5f5bea715403c
   Flipper-DoubleConversion: 2dc99b02f658daf147069aad9dbd29d8feb06d30
@@ -903,7 +947,7 @@ SPEC CHECKSUMS:
   FlipperKit: cbdee19bdd4e7f05472a66ce290f1b729ba3cb86
   fmt: ff9d55029c625d3757ed641535fd4a75fedc7ce9
   Gigya: 535b3dc1b4c635f2a95ae058049b012fa1fa3e94
-  gigya-react-native-plugin-for-sap-customer-data-cloud: 12f8b696cbadc18e29cc962a3f9d5637d74fa96b
+  gigya-react-native-plugin-for-sap-customer-data-cloud: 5a5f4ff96aa0808c9b2a2b2fdf40830c88d52690
   glog: 04b94705f318337d7ead9e6d17c019bd9b1f6b1b
   hermes-engine: 2af7b7a59128f250adfd86f15aa1d5a2ecd39995
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
@@ -925,6 +969,7 @@ SPEC CHECKSUMS:
   React-jsiexecutor: b4a65947391c658450151275aa406f2b8263178f
   React-jsinspector: 60769e5a0a6d4b32294a2456077f59d0266f9a8b
   React-logger: 1623c216abaa88974afce404dc8f479406bbc3a0
+  react-native-fbsdk-next: 776f49479d36a1e72a1a367baadcc8391cd24374
   react-native-simple-toast: 222daddb7c38070d14eaa90b10b36e3d4bc54a88
   React-perflogger: 8c79399b0500a30ee8152d0f9f11beae7fc36595
   React-RCTActionSheet: 7316773acabb374642b926c19aef1c115df5c466
@@ -947,4 +992,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: d6ba4ed45e5b434082cf15e2ea931165733cf3c5
 
-COCOAPODS: 1.12.0
+COCOAPODS: 1.13.0
