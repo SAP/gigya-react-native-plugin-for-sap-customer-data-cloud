@@ -16,7 +16,7 @@ Add the plugin in your **package.json** file.
 
 ### Android setup
 
-## Android v7 upgrade
+### Android v7 upgrade
 Plugin version 0.3.0+ will depend on Android SDK core v7.
 Required changes to your plugin based on Android SDK core v7 are documented in the [Android core documentation](https://sap.github.io/gigya-android-sdk/sdk-core/#upgrading-to-v7)
 
