@@ -1,6 +1,6 @@
 {
   "name": "GigyaRnExample",
-  "version": "0.2.3",
+  "version": "0.3.0",
   "private": true,
   "scripts": {
     "android": "react-native run-android",
@@ -14,6 +14,7 @@
     "react": "18.1.0",
     "react-native": "0.70.6",
     "react-native-dialog": "^9.3.0",
+    "react-native-fbsdk-next": "^12.1.0",
     "react-native-simple-toast": "^2.0.0"
   },
   "devDependencies": {

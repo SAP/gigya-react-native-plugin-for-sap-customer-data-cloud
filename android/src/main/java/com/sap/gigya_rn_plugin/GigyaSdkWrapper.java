@@ -55,11 +55,15 @@ public class GigyaSdkWrapper<T extends GigyaAccount> {
 
         try {
             IApiRequestFactory ref = Gigya.getContainer().get(IApiRequestFactory.class);
-            ref.setSDK("react_native_" + "0.2.3" + "_android_" + Gigya.VERSION);
+            ref.setSDK("react_native_" + "0.3.0" + "_android_" + Gigya.VERSION);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
+
+    void setExternalProvidersPath(String path) {
+        gigyaInstance.setExternalProvidersPath(path);
+    } 
 
     void initFor(@Nonnull String apikey, @Nullable String apiDomain) {
         if (apiDomain == null) {
@@ -249,6 +253,13 @@ public class GigyaSdkWrapper<T extends GigyaAccount> {
                 GigyaSdkRNLogger.log("social login : error with message: " + gigyaError.getLocalizedMessage());
                 promiseWrapper.reject(gigyaError);
             }
+            
+            @Override
+            public void onOperationCanceled() {
+                GigyaSdkRNLogger.log("sso login : canceled");
+                resolverHelper.clear();
+                promiseWrapper.reject(GigyaError.cancelledOperation());
+            }
 
             @Override
             public void onConflictingAccounts(@NonNull GigyaApiResponse response, @NonNull ILinkAccountsResolver resolver) {
@@ -268,6 +279,7 @@ public class GigyaSdkWrapper<T extends GigyaAccount> {
             public void onPendingVerification(@NonNull GigyaApiResponse response, @Nullable String regToken) {
                 promiseWrapper.reject(response);
             }
+
         });
     }
 
@@ -286,6 +298,20 @@ public class GigyaSdkWrapper<T extends GigyaAccount> {
             public void onError(GigyaError gigyaError) {
                 GigyaSdkRNLogger.log("social login : error with message: " + gigyaError.getLocalizedMessage());
                 promiseWrapper.reject(gigyaError);
+            }
+
+            @Override
+            public void onOperationCanceled() {
+                GigyaSdkRNLogger.log("sso login : canceled");
+                resolverHelper.clear();
+                promiseWrapper.reject(
+                        new GigyaError(
+                                "",
+                                200001,
+                                "Operation canceled",
+                                null
+                        )
+                );
             }
 
             @Override

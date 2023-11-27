@@ -68,7 +68,7 @@ class GigyaSdkWrapper<T: GigyaAccountProtocol>: GigyaSdkWrapperProtocol {
     var currentResolver: GigyaResolverModelProtocol?
 
     init(accountSchema: T.Type) {
-        GigyaDefinitions.versionPrefix = "react_native_0.2.3_"
+        GigyaDefinitions.versionPrefix = "react_native_0.3.0_"
         gigya = Gigya.sharedInstance(accountSchema)
     }
 
