@@ -55,7 +55,7 @@ public class GigyaSdkWrapper<T extends GigyaAccount> {
 
         try {
             IApiRequestFactory ref = Gigya.getContainer().get(IApiRequestFactory.class);
-            ref.setSDK("react_native_" + "0.2.3" + "_android_" + Gigya.VERSION);
+            ref.setSDK("react_native_" + "0.3.0" + "_android_" + Gigya.VERSION);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
