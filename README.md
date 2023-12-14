@@ -187,6 +187,9 @@ To initiate the flow run the following snippet.
  const send = await Gigya.sso();
  });
 ```
+**Note:**
+When using mobile SSO (single sign-on using the central login page), logging out using the SDK's logout method will only log the user out of the current API key used.
+The user will not be logged out of the other group sites.
 
 ## Resolving interruptions
 
