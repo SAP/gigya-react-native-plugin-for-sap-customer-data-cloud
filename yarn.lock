@@ -1027,7 +1027,7 @@
   dependencies:
     joi "^17.2.1"
 
-"@react-native-community/cli@9.3.2", "@react-native-community/cli@^9.3.2":
+"@react-native-community/cli@9.3.2":
   version "9.3.2"
   resolved "https://registry.yarnpkg.com/@react-native-community/cli/-/cli-9.3.2.tgz#81761880af00c1894d85380d8c9a358659865204"
   integrity sha512-IAW4X0vmX/xozNpp/JVZaX7MrC85KV0OP2DF4o7lNGOfpUhzJAEWqTfkxFYS+VsRjZHDve4wSTiGIuXwE7FG1w==
