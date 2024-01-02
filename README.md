@@ -16,8 +16,8 @@ Add the plugin in your **package.json** file.
 
 ### Android setup
 
-## Android v7 upgrade
-Plugin version 0.2.4+ will depend on Android SDK core v7.
+### Android v7 upgrade
+Plugin version 0.3.0+ will depend on Android SDK core v7.
 Required changes to your plugin based on Android SDK core v7 are documented in the [Android core documentation](https://sap.github.io/gigya-android-sdk/sdk-core/#upgrading-to-v7)
 
 Add the following to your *MainApplication.java* file:
@@ -123,7 +123,7 @@ const send = await Gigya.socialLogin("facebook");
 ## Embedded social providers
 
 # Android v7 upgrade
-Plugin version 0.2.4+ will depend on Android SDK core v7.
+Plugin version 0.3.0+ will depend on Android SDK core v7.
 Please view the changes required to be made to yours applicationin the [Android code documentation](https://sap.github.io/gigya-android-sdk/sdk-core/#configuring-native-login) for updateing to external providers usage. 
 
 Specific social providers (Facebook, Google) require additional setup. This is due to their requirement for specific (embedded native) SDKs.
@@ -187,6 +187,9 @@ To initiate the flow run the following snippet.
  const send = await Gigya.sso();
  });
 ```
+**Note:**
+When using mobile SSO (single sign-on using the central login page), logging out using the SDK's logout method will only log the user out of the current API key used.
+The user will not be logged out of the other group sites.
 
 ## Resolving interruptions
 
