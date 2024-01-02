@@ -1315,7 +1315,7 @@
   dependencies:
     joi "^17.2.1"
 
-"@react-native-community/cli@9.3.2", "@react-native-community/cli@^9.3.2":
+"@react-native-community/cli@9.3.2":
   version "9.3.2"
   resolved "https://registry.yarnpkg.com/@react-native-community/cli/-/cli-9.3.2.tgz#81761880af00c1894d85380d8c9a358659865204"
   integrity sha512-IAW4X0vmX/xozNpp/JVZaX7MrC85KV0OP2DF4o7lNGOfpUhzJAEWqTfkxFYS+VsRjZHDve4wSTiGIuXwE7FG1w==
@@ -1384,7 +1384,7 @@
   dependencies:
     "@hapi/hoek" "^9.0.0"
 
-"@sideway/formula@^3.0.1":
+"@sideway/formula@^3.0.0":
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/@sideway/formula/-/formula-3.0.1.tgz#80fcbcbaf7ce031e0ef2dd29b1bfc7c3f583611f"
   integrity sha512-/poHZJJVjx3L+zVD6g9KgHfYnb443oi7wLu/XKojDviHy6HOEOA6z1Trk5aR1dGcmPenJEgb2sK2I80LeS3MIg==
@@ -3435,9 +3435,7 @@ get-value@^2.0.3, get-value@^2.0.6:
   integrity sha512-Ln0UQDlxH1BapMu3GPtf7CuYNwRZf2gwCuPqbyG6pB8WfmFpzqcy4xtAaAMUhnNqjMKTiCPZG2oMT3YSx8U2NA==
 
 "gigya-react-native-plugin-for-sap-customer-data-cloud@file:..":
-  version "0.2.3"
-  dependencies:
-    "@react-native-community/cli" "^9.3.2"
+  version "0.3.0"
 
 glob-parent@^5.1.2:
   version "5.1.2"
@@ -4472,7 +4470,7 @@ joi@^17.2.1:
     "@hapi/hoek" "^9.0.0"
     "@hapi/topo" "^5.0.0"
     "@sideway/address" "^4.1.3"
-    "@sideway/formula" "^3.0.1"
+    "@sideway/formula" "^3.0.0"
     "@sideway/pinpoint" "^2.0.0"
 
 "js-tokens@^3.0.0 || ^4.0.0", js-tokens@^4.0.0:
