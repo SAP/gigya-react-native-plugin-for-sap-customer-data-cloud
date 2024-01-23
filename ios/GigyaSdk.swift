@@ -149,11 +149,11 @@ public class GigyaSdk: NSObject {
         GigyaSdk.gigya?.sendEvent(.removeConnection, params: newParams, promise: promise)
     }
 
-    @objc(showScreenSet:params:)
-    func showScreenSet(name: String, params: String) {
+    @objc(showScreenSet:params:isModal:)
+    func showScreenSet(name: String, params: String, isModal: Bool) {
         let jsonToParams = GigyaSdk.toJson(data: params)
 
-        GigyaSdk.gigya?.showScreenSet(name: name, params: jsonToParams)
+        GigyaSdk.gigya?.showScreenSet(name: name, params: jsonToParams, isModal: isModal)
     }
 
     @objc(logout:rejecter:)
