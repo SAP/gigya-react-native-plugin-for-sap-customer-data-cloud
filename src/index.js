@@ -251,6 +251,21 @@ export class GigyaInterface {
         }
     }
 
+     /**
+     * Get authentication code required for web session exchange.
+     *  
+     * @returns Response promise.
+     */
+     async getAuthCode() {
+        try {
+            const code = await GigyaSdk.getAuthCode();
+            return code
+        } catch (e) {
+            const error = new GigyaError(e)
+            throw error
+        }
+    }
+
     /**
      * Show screen-set with params.
      * 
