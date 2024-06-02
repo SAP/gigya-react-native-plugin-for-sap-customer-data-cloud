@@ -129,6 +129,13 @@ public class GigyaSdk: NSObject {
         GigyaSdk.gigya?.sendEvent(.sso, params: newParmas, promise: promise)
     }
 
+    @objc(getAuthCode:rejecter:)
+    func getAuthCode(_ resolve: @escaping RCTPromiseResolveBlock, reject: @escaping RCTPromiseRejectBlock) -> Void {
+        promise.set(promiseResolve: resolve, promiseReject: reject)
+
+        GigyaSdk.gigya?.sendEvent(.getAuthCode, params: [:], promise: promise)
+    }
+
     @objc(addConnection:resolver:rejecter:)
     func addConnection(_ params: String, resolve: @escaping RCTPromiseResolveBlock, reject: @escaping RCTPromiseRejectBlock) -> Void {
         promise.set(promiseResolve: resolve, promiseReject: reject)
