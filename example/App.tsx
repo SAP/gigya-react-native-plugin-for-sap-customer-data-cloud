@@ -346,6 +346,15 @@ const App = (): React.ReactElement => {
     } 
   }
 
+  const getAuthCode = async () => {
+    try {
+      var code = await Gigya.getAuthCode()
+      console.log("getAuthCode code: " + code)
+    } catch (e) {
+      console.log("opt in error " + e)
+    } 
+  }
+
   enum Method {
     init,
     login,
@@ -363,7 +372,8 @@ const App = (): React.ReactElement => {
     unlockSession,
     webAuthnLogin,
     webAuthnRegister,
-    webAuthnRevoke
+    webAuthnRevoke,
+    getAuthCode
   }
 
   const [activeMethod, setActiveMethod] = useState(Method.init);
@@ -441,6 +451,10 @@ const App = (): React.ReactElement => {
       }
       case Method.webAuthnRevoke: {
         webAuthnRevoke()
+        break
+      }
+      case Method.getAuthCode: {
+        getAuthCode()
         break
       }
     }
@@ -572,6 +586,13 @@ const App = (): React.ReactElement => {
         'WebAuthn Revoke',
         show: ShowIn.loggedIn
     },
+    {
+      title: 'Get AuthCode',
+      method: Method.getAuthCode,
+      description:
+        'Get AuthCode',
+        show: ShowIn.loggedIn
+    }, 
     {
       title: 'logout',
       method: Method.logout,
