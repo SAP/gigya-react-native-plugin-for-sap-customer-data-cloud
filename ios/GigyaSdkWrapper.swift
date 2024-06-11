@@ -33,6 +33,7 @@ enum GigyaMethods: String {
     case webAuthnLogin
     case webAuthnRegister
     case webAuthnRevoke
+    case getAuthCode
 }
 
 enum GigyaInterruptionsSupported: String {
@@ -68,7 +69,7 @@ class GigyaSdkWrapper<T: GigyaAccountProtocol>: GigyaSdkWrapperProtocol {
     var currentResolver: GigyaResolverModelProtocol?
 
     init(accountSchema: T.Type) {
-        GigyaDefinitions.versionPrefix = "react_native_0.3.2_"
+        GigyaDefinitions.versionPrefix = "react_native_0.3.3_"
         gigya = Gigya.sharedInstance(accountSchema)
     }
 
@@ -122,6 +123,8 @@ class GigyaSdkWrapper<T: GigyaAccountProtocol>: GigyaSdkWrapperProtocol {
             self.webAuthnRegister()
         case .webAuthnRevoke:
             self.webAuthnRevoke()
+        case .getAuthCode:
+            self.getAuthCode()
         default:
             break
         }
@@ -272,6 +275,17 @@ class GigyaSdkWrapper<T: GigyaAccountProtocol>: GigyaSdkWrapperProtocol {
 
                 self.promise?.reject(error: error.error)
             }
+        }
+    }
+
+    func getAuthCode() {
+        gigya.getAuthCode() { (result) in
+            switch result {
+               case .success(let code):
+                    self.promise?.resolve(string: code)
+               case .failure(let error):
+                    self.promise?.reject(error: error)
+               }
         }
     }
     

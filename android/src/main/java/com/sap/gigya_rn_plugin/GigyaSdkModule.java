@@ -120,6 +120,11 @@ public class GigyaSdkModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
+    public void getAuthCode(Promise promise) {
+        gigyaSdk.getAuthCode(promise);
+    } 
+
+    @ReactMethod
     public void resolve(@Nonnull String method, @Nonnull String params, Promise promise) {
         gigyaSdk.resolve(method, params, promise);
     }
