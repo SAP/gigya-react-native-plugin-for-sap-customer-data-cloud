@@ -62,5 +62,7 @@ export namespace Gigya {
 
     function showScreenSetWithParams(name: string, params: Record<string, any>, callback: (event: string, data: GigyaDictionary) => void): void;
 
+    function getAuthCode() : Promise<String>;
+
 }
 

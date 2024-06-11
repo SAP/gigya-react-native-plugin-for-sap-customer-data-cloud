@@ -379,6 +379,24 @@ public class GigyaSdkWrapper<T extends GigyaAccount> {
         });
     }
 
+    void getAuthCode(Promise promise) {
+        GigyaSdkRNLogger.log("getAuthCode: called");
+        promiseWrapper.promise = promise;
+        gigyaInstance.getAuthCode(new GigyaCallback<String>() {
+            @Override
+            public void onSuccess(String code) {
+                GigyaSdkRNLogger.log("getAuthCode : success");
+                promiseWrapper.resolve(code);
+            }
+
+            @Override
+            public void onError(GigyaError gigyaError) {
+                GigyaSdkRNLogger.log("getAuthCode : error with message: " + gigyaError.getLocalizedMessage());
+                promiseWrapper.reject(gigyaError);
+            }
+        });
+    }
+
     void invalidateSession(Promise promise) {
         GigyaSdkRNLogger.log("invalidate session: called");
         promiseWrapper.promise = promise;
