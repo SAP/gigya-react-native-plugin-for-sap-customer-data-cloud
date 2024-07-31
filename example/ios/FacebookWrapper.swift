@@ -11,13 +11,15 @@ import FBSDKCoreKit
 import FBSDKLoginKit
 import Gigya
 
+// MARK: - for Gigya v1.7.0+
+
 class FacebookWrapper: ProviderWrapperProtocol {
 
     private var completionHandler: (_ jsonData: [String: Any]?, _ error: String?) -> Void = { _, _  in }
 
     var clientID: String?
 
-    private let defaultReadPermissions = ["email"]
+    private let defaultReadPermissions = ["email", "user_birthday", "user_gender", "user_hometown", "user_location"]
 
     lazy var fbLogin: LoginManager = {
         return LoginManager()
@@ -33,7 +35,7 @@ class FacebookWrapper: ProviderWrapperProtocol {
         
         fbLogin.logIn(permissions: defaultReadPermissions, from: viewController) { (result, error) in
             if result?.isCancelled != false {
-                completion(nil, "cancelled")
+                completion(nil, "canceled")
                 return
             }
 
@@ -41,8 +43,8 @@ class FacebookWrapper: ProviderWrapperProtocol {
                 completion(nil, error.localizedDescription)
             }
 
-            let jsonData: [String: Any] = ["accessToken": result?.token?.tokenString ?? "", "tokenExpiration": result?.token?.expirationDate.timeIntervalSince1970 ?? 0]
-
+            let jsonData: [String: Any] = ["authToken": result?.token?.tokenString ?? "", "idToken": result?.authenticationToken?.tokenString ?? "", "tokenExpiration": Int32(result?.token?.expirationDate.timeIntervalSince1970 ?? 0)]
+                
             completion(jsonData, nil)
         }
     }
