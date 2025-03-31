@@ -6,7 +6,8 @@
  * @flow
  */
 
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
+
 import {
   SafeAreaView,
   StyleSheet,
@@ -15,7 +16,8 @@ import {
   Text,
   StatusBar,
   TouchableOpacity,
-  Alert
+  Alert,
+  AppState
 } from 'react-native';
 
 import Dialog from "react-native-dialog";
@@ -42,14 +44,42 @@ const App = (): React.ReactElement => {
   const [visibleLink, setVisibleLink] = useState(false);
   const [visibleAccount, setVisibleAccount] = useState(false);
 
-  console.log("is: " + Gigya.isLoggedIn())
+  console.log("logged in state =  " + Gigya.isLoggedIn())
+  console.log("biometric supported =  " + Gigya.biometric.isSupported())
+  console.log("biometric locked = " + Gigya.biometric.isLocked())
+  console.log("biometric opt-in =  " + Gigya.biometric.isOptIn())
 
-  console.log("biometric: " + Gigya.biometric.isSupported())
-  console.log("biometric lock: " + Gigya.biometric.isLocked())
-  console.log("biometric optin: " + Gigya.biometric.isOptIn())
+  //START -  Foreground/Background app state tracker.
+  const appState = useRef(AppState.currentState);
+  const [appStateVisible, setAppStateVisible] = useState(appState.current);
 
+  useEffect(() => {
+    const subscription = AppState.addEventListener('change', nextAppState => {
+      if (
+        appState.current.match(/inactive|background/) &&
+        nextAppState === 'active'
+      ) {
+        console.log('App has come to the foreground!');
+        if (Gigya.biometric.isLocked()) {
+          console.log("biometric state =  isLocked. calling unlockSession");
+          unlockSession()
+        } else if (Gigya.biometric.isOptIn()) {
+          console.log("biometric state = opt-in but not locked. Idle");
+        }
+      }
 
-  Gigya.initFor("4_pdQIHqnYLk6LBvkVPAr_tQ");
+      appState.current = nextAppState;
+      setAppStateVisible(appState.current);
+      console.log('AppState', appState.current);
+    });
+
+    return () => {
+      subscription.remove();
+    };
+  }, []);
+  //END -  Foreground/Background app state tracker.
+
+  Gigya.initFor("4_XxTkjQ87Kzp8xXGhrNjH0Q");
 
   const sendApi = async () => {
     try {
@@ -59,7 +89,6 @@ const App = (): React.ReactElement => {
       console.log("errorSend:" + error);
     }
   };
-
 
   const socialLogin = async () => {
     try {
@@ -112,12 +141,8 @@ const App = (): React.ReactElement => {
   };
 
   const sso = async () => {
-    try {      const senddd = await Gigya.send("accounts.getAccountInfo"); 
-      console.log("send: " + JSON.stringify(senddd));    } 
-      catch (error) {   
-           console.log("errorSendaaa:" + JSON.stringify(error));  
-            }
     try {
+      console.log("sso sent")
       const senddd = await Gigya.sso();
 
       console.log("sso: " + JSON.stringify(senddd));
