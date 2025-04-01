@@ -43,12 +43,10 @@ const App = (): React.ReactElement => {
   const [visibleLink, setVisibleLink] = useState(false);
   const [visibleAccount, setVisibleAccount] = useState(false);
 
-  console.log("App state - RE-RENDER START ---------------")
+  console.log("RE-RENDER START ---------------")
   console.log("logged in state =  " + Gigya.isLoggedIn())
-  console.log("biometric supported =  " + Gigya.biometric.isSupported())
-  console.log("biometric locked = " + Gigya.biometric.isLocked())
-  console.log("biometric opt-in =  " + Gigya.biometric.isOptIn())
-  console.log("App state - RE-RENDER END -----------------")
+  console.log("biometric supported = " + Gigya.biometric.isSupported() + ", biometric opt-in =  " + Gigya.biometric.isOptIn() + ", biometric locked = " + Gigya.biometric.isLocked())
+  console.log("RE-RENDER END -----------------")
 
   //START -  Foreground/Background app state tracker.
   const appState = useRef(AppState.currentState);
@@ -61,11 +59,12 @@ const App = (): React.ReactElement => {
         nextAppState === 'active'
       ) {
         console.log('App has come to the foreground!');
+        // Check biometric state on forground change.
         if (Gigya.biometric.isLocked()) {
-          console.log("biometric state =  isLocked. calling unlockSession");
+          console.log("biometric state on forground change =  isLocked. calling unlockSession");
           unlockSession()
         } else if (Gigya.biometric.isOptIn()) {
-          console.log("biometric state = opt-in but not locked. Idle");
+          console.log("biometric state on forground change = opt-in but not locked. Idle");
         }
       } else {
         if (Gigya.biometric.isOptIn() && !Gigya.biometric.isLocked()) {
@@ -181,7 +180,6 @@ const App = (): React.ReactElement => {
           console.log(JSON.stringify(accounts))
 
           setVisibleLink(true);
-
         }
       }
     }
@@ -202,6 +200,7 @@ const App = (): React.ReactElement => {
 
           console.log("login interruption: pending registration");
 
+          // Test should continue using regToken when site is configured.
           const resolver = Gigya.resolverFactory.getResolver(e) as PendingRegistrationResolver;
           console.log(resolver.regToken)
 
@@ -242,10 +241,9 @@ const App = (): React.ReactElement => {
 
           console.log("register interruption: conflictingAccounts");
 
+          // Test should continue link flow when configured.
           const resolver = Gigya.resolverFactory.getResolver(e) as LinkAccountResolver;
           console.log(resolver.regToken)
-
-          console.log("link:")
 
           break
         }
@@ -282,6 +280,8 @@ const App = (): React.ReactElement => {
   // Show screenset test implementation. Currently using defualt site default created screen-set.
   const showScreenSet = () => {
     Gigya.showScreenSet("Default-RegistrationLogin", (event, data) => {
+
+      // Test app currently only listening to login event on stream. Add relevant event callbacks if needed.
       console.log(`event: ${event} ${data}`);
       if (event == "onLogin") {
         updateIsLoggedIn(Gigya.isLoggedIn())
@@ -295,7 +295,7 @@ const App = (): React.ReactElement => {
   const optIn = async () => {
     try {
       var operation = await Gigya.biometric.optIn()
-      console.log("Biometric Opt-In:\n" + JSON.stringify(operation))
+      console.log("Biometric Opt-In: " + JSON.stringify(operation))
       console.log("Biometric Opt-In state = " + Gigya.biometric.isOptIn())
 
     } catch (error) {
@@ -308,7 +308,7 @@ const App = (): React.ReactElement => {
   const optOut = async () => {
     try {
       var operation = await Gigya.biometric.optOut()
-      console.log("Biometric Opt-Out:\n" + JSON.stringify(operation))
+      console.log("Biometric Opt-Out: " + JSON.stringify(operation))
       console.log("Biometric Opt-In state = " + Gigya.biometric.isOptIn())
     } catch (error) {
       const e = error as GigyaError
@@ -324,7 +324,7 @@ const App = (): React.ReactElement => {
   const lockSession = async () => {
     try {
       var operation = await Gigya.biometric.lockSession()
-      console.log("Biometric lock session " + JSON.stringify(operation))
+      console.log("Biometric lock session: " + JSON.stringify(operation))
       updateIsLoggedIn(Gigya.isLoggedIn())
     } catch (error) {
       // This case actually is redundant because SDK logic to lock the session is just to remove the session date from the heap.
@@ -337,7 +337,7 @@ const App = (): React.ReactElement => {
   const unlockSession = async () => {
     try {
       var operation = await Gigya.biometric.unlockSession()
-      console.log("Biometric unlock session " + JSON.stringify(operation))
+      console.log("Biometric unlock session: " + JSON.stringify(operation))
       updateIsLoggedIn(Gigya.isLoggedIn())
     } catch (error) {
       const e = error as GigyaError
@@ -372,7 +372,7 @@ const App = (): React.ReactElement => {
       Toast.show('WebAuthn registration success', Toast.SHORT);
     } catch (error) {
       const e = error as GigyaError
-      console.log("webAuthnRegister error:\n" +  JSON.stringify(e))
+      console.log("webAuthnRegister error:\n" + JSON.stringify(e))
     }
   }
 
@@ -517,6 +517,9 @@ const App = (): React.ReactElement => {
     description: string,
     show: ShowIn
   };
+
+
+  // UI widget mapping.
 
   const links: (Link)[] = [
     {
