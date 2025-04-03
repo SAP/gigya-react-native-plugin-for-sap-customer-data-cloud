@@ -6,7 +6,8 @@
  * @flow
  */
 
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
+
 import {
   SafeAreaView,
   StyleSheet,
@@ -15,7 +16,8 @@ import {
   Text,
   StatusBar,
   TouchableOpacity,
-  Alert
+  Alert,
+  AppState
 } from 'react-native';
 
 import Dialog from "react-native-dialog";
@@ -33,55 +35,84 @@ import { Button } from 'react-native';
 import { IResolver, LinkAccountResolver, PendingVerificationResolver } from 'gigya-react-native-plugin-for-sap-customer-data-cloud/src/resolvers';
 import { PendingRegistrationResolver } from 'gigya-react-native-plugin-for-sap-customer-data-cloud/src/resolvers';
 
-let linkResolver: LinkAccountResolver | null = null; 
+let linkResolver: LinkAccountResolver | null = null;
 
 const App = (): React.ReactElement => {
-  const [isLoggedIn, updateIsLoggedIn] = useState(Gigya.isLoggedIn());
 
   const [visible, setVisible] = useState(false);
   const [visibleLink, setVisibleLink] = useState(false);
   const [visibleAccount, setVisibleAccount] = useState(false);
 
-  console.log("is: " + Gigya.isLoggedIn())
+  console.log("RE-RENDER START ---------------")
+  console.log("logged in state =  " + Gigya.isLoggedIn())
+  console.log("biometric supported = " + Gigya.biometric.isSupported() + ", biometric opt-in =  " + Gigya.biometric.isOptIn() + ", biometric locked = " + Gigya.biometric.isLocked())
+  console.log("RE-RENDER END -----------------")
 
-  console.log("biometric: " + Gigya.biometric.isSupported())
-  console.log("biometric lock: " + Gigya.biometric.isLocked())
-  console.log("biometric optin: " + Gigya.biometric.isOptIn())
+  //START -  Foreground/Background app state tracker.
+  const appState = useRef(AppState.currentState);
+  const [appStateVisible, setAppStateVisible] = useState(appState.current);
 
+  useEffect(() => {
+    const subscription = AppState.addEventListener('change', nextAppState => {
+      if (
+        appState.current.match(/inactive|background/) &&
+        nextAppState === 'active'
+      ) {
+        console.log('App has come to the foreground!');
+        // Check biometric state on forground change.
+        if (Gigya.biometric.isLocked()) {
+          console.log("biometric state on forground change =  isLocked. calling unlockSession");
+          unlockSession()
+        } else if (Gigya.biometric.isOptIn()) {
+          console.log("biometric state on forground change = opt-in but not locked. Idle");
+        }
+      } else {
+        if (Gigya.biometric.isOptIn() && !Gigya.biometric.isLocked()) {
+          // This code snippet can be commented in if automatic biometric lock is required for testing.
+          //console.log("biometric state = opt-in - locking session automatically on background transition");
+          //lockSession()
+        }
+      }
 
-  Gigya.initFor("4_pdQIHqnYLk6LBvkVPAr_tQ");
+      appState.current = nextAppState;
+      setAppStateVisible(appState.current);
+      console.log('AppState', appState.current);
+    });
 
-  const sendApi = async () => {
-    try {
-      const senddd = await Gigya.send("socialize.getSDKConfig");
-      console.log("send: " + JSON.stringify(senddd));
-    } catch (error) {
-      console.log("errorSend:" + error);
-    }
-  };
+    return () => {
+      subscription.remove();
+    };
+  }, []);
+  //END -  Foreground/Background app state tracker.
 
+  Gigya.initFor("4_XxTkjQ87Kzp8xXGhrNjH0Q");
 
+  // Login state constant needs to be set only after SDK initialization!
+  const [isLoggedIn, updateIsLoggedIn] = useState(Gigya.isLoggedIn());
+
+  // Social login test implementation - currently testing web provider "linkedIn"
   const socialLogin = async () => {
     try {
-      const senddd = await Gigya.socialLogin("facebook");
+      const request = await Gigya.socialLogin("linkedin");
+      console.log("Social login success:\n" + JSON.stringify(request));
 
-      console.log("socialLogin: " + JSON.stringify(senddd));
-
-      
+      // update logged in state
       updateIsLoggedIn(Gigya.isLoggedIn())
-    } catch (error) {
-      const e = error as GigyaError
-      console.log("errorSend:" + JSON.stringify(e));
 
-      console.log("socialLogin interruption");
-      
+    } catch (error) {
+
+      const e = error as GigyaError
+      console.log("Social login error:\n" + JSON.stringify(e));
+
       switch (e.getInterruption()) {
         case GigyaInterruption.pendingRegistration: {
-          const resolver = Gigya.resolverFactory.getResolver(e) as PendingRegistrationResolver;
 
-          console.log("pendingRegistration:")
+          console.log("socialLogin interruption: pending registration");
+
+          const resolver = Gigya.resolverFactory.getResolver(e) as PendingRegistrationResolver;
           console.log(resolver.regToken)
 
+          // Test resolving using missing fields. This is relevant only for specific test site configuration.
           try {
             const setAccount = await resolver.setAccount({ "profile": { "zip": "34234" } })
             console.log("setAccount: " + JSON.stringify(setAccount));
@@ -90,53 +121,44 @@ const App = (): React.ReactElement => {
             console.log("setAccount error:" + e);
           }
 
-
-
           break
         }
         case GigyaInterruption.conflictingAccounts: {
-          console.log("conflictingAccounts start")
-          linkResolver = Gigya.resolverFactory.getResolver(e) as LinkAccountResolver;
+          console.log("socialLogin interruption: conflictingAccounts");
 
+          linkResolver = Gigya.resolverFactory.getResolver(e) as LinkAccountResolver;
           console.log("link:")
           console.log(linkResolver.regToken)
           const accounts = await linkResolver.getConflictingAccount()
           console.log("account:")
           console.log(JSON.stringify(accounts))
-
           setVisibleLink(true);
-
         }
       }
     }
   };
 
+  // SSO (Single Sign-On) test implementation. This SSO method does not use WebViews!!
   const sso = async () => {
-    try {      const senddd = await Gigya.send("accounts.getAccountInfo"); 
-      console.log("send: " + JSON.stringify(senddd));    } 
-      catch (error) {   
-           console.log("errorSendaaa:" + JSON.stringify(error));  
-            }
     try {
-      const senddd = await Gigya.sso();
+      console.log("sso sent")
+      const request = await Gigya.sso();
 
-      console.log("sso: " + JSON.stringify(senddd));
-
-      
+      console.log("sso succcess:\n" + JSON.stringify(request));
       updateIsLoggedIn(Gigya.isLoggedIn())
+
     } catch (error) {
       const e = error as GigyaError
-      console.log("errorSend:" + JSON.stringify(e));
+      console.log("sso error:\n" + JSON.stringify(e));
 
-      console.log("sso interruption");
-      
       switch (e.getInterruption()) {
         case GigyaInterruption.pendingRegistration: {
-          const resolver = Gigya.resolverFactory.getResolver(e) as PendingRegistrationResolver;
 
-          console.log("pendingRegistration:")
+          console.log("sso interruption: pending registration");
+          const resolver = Gigya.resolverFactory.getResolver(e) as PendingRegistrationResolver;
           console.log(resolver.regToken)
 
+          // Test resolving using missing fields. This is relevant only for specific test site configuration.
           try {
             const setAccount = await resolver.setAccount({ "profile": { "zip": "34234" } })
             console.log("setAccount: " + JSON.stringify(setAccount));
@@ -145,12 +167,10 @@ const App = (): React.ReactElement => {
             console.log("setAccount error:" + e);
           }
 
-
-
           break
         }
         case GigyaInterruption.conflictingAccounts: {
-          console.log("conflictingAccounts start")
+          console.log("sso interruption: conflictingAccounts");
           linkResolver = Gigya.resolverFactory.getResolver(e) as LinkAccountResolver;
 
           console.log("link:")
@@ -160,66 +180,69 @@ const App = (): React.ReactElement => {
           console.log(JSON.stringify(accounts))
 
           setVisibleLink(true);
-
         }
       }
     }
   };
 
+  // Login test implementation using credentials pair.
   const login = async (login: string, password: string) => {
-    console.log("start login");
     try {
-      const send = await Gigya.login(login, password);
-      console.log("login: " + send);
+      const request = await Gigya.login(login, password);
+      console.log("login success:\n" + request);
       updateIsLoggedIn(Gigya.isLoggedIn());
-      console.log("login status: "+Gigya.isLoggedIn());
     } catch (error) {
       const e = error as GigyaError
-      console.log("login error:" + e);
-          
+      console.log("login error:\n" + JSON.stringify(e));
+
       switch (e.getInterruption()) {
         case GigyaInterruption.pendingRegistration: {
-          const resolver = Gigya.resolverFactory.getResolver(e) as PendingRegistrationResolver;
 
-          console.log("pendingRegistration:")
+          console.log("login interruption: pending registration");
+
+          // Test should continue using regToken when site is configured.
+          const resolver = Gigya.resolverFactory.getResolver(e) as PendingRegistrationResolver;
           console.log(resolver.regToken)
 
           break
         }
       }
-
-      console.log("errorSend:" + e.errorCode);
-
     }
   };
 
+  // Logout test implementation.
   const logout = async () => {
     try {
-      // const senddd = await Gigya.logout()
-      const senddd = await Gigya.invalidateSession()
-      console.log("logout: " + JSON.stringify("senddd"));
+      const request = await Gigya.logout()
+      // Option to test invalidate session method directly instead of login.
+      //const request = await Gigya.invalidateSession()
+      console.log("logout:\n " + JSON.stringify(request));
       updateIsLoggedIn(Gigya.isLoggedIn())
     } catch (error) {
-      console.log("Logout error:" + error);
+      const e = error as GigyaError
+      console.log("Logout error:" + JSON.stringify(e));
       updateIsLoggedIn(Gigya.isLoggedIn())
     }
   };
 
+  // Register test implementation using credentials pair.
   const register = async (login: string, password: string) => {
     try {
-      const senddd = await Gigya.register(login, password, { 'sessionExpiration': 0 });
-      console.log("register: " + JSON.stringify(senddd));
+      const request = await Gigya.register(login, password, { 'sessionExpiration': 0 });
+      console.log("register\n: " + JSON.stringify(request));
       updateIsLoggedIn(Gigya.isLoggedIn())
 
     } catch (error) {
       const e = error as GigyaError
-      console.log("register error:" + e);
+      console.log("register error:\n" + JSON.stringify(e));
 
       switch (e.getInterruption()) {
         case GigyaInterruption.conflictingAccounts: {
-          const resolver = Gigya.resolverFactory.getResolver(e) as LinkAccountResolver;
 
-          console.log("link:")
+          console.log("register interruption: conflictingAccounts");
+
+          // Test should continue link flow when configured.
+          const resolver = Gigya.resolverFactory.getResolver(e) as LinkAccountResolver;
           console.log(resolver.regToken)
 
           break
@@ -229,30 +252,36 @@ const App = (): React.ReactElement => {
     }
   };
 
+  // Get account info test implementation. Currently used to log response only. no effect in test application structure.
   const getAccount = async () => {
     try {
-      const send = await Gigya.getAccount()
-      console.log("getAccount: " + JSON.stringify(send));
+      const request = await Gigya.getAccount()
+      console.log("getAccount:\n " + JSON.stringify(request));
 
     } catch (error) {
-      console.log("getAccount error:" + error);
+      const e = error as GigyaError
+      console.log("getAccount error:\n" + JSON.stringify(e));
     }
   };
 
+  // Set account info test implementation.
   const setAccount = async () => {
-    console.log("setAccount called");
     try {
       // Update your example parameters here.
-      const send = Gigya.setAccount({profile: { zip: 555555}});
-    } catch(error) {
-      const e = error as GigyaError
-      console.log("setAccount error:" + e);
-    }
-}
+      const request = await Gigya.setAccount({ profile: { zip: 555555 } });
+      console.log("setAccount:\n " + JSON.stringify(request));
 
+    } catch (error) {
+      const e = error as GigyaError
+      console.log("setAccount error:\n" + JSON.stringify(e));
+    }
+  }
+
+  // Show screenset test implementation. Currently using defualt site default created screen-set.
   const showScreenSet = () => {
-    console.log("start showScreemSet");
     Gigya.showScreenSet("Default-RegistrationLogin", (event, data) => {
+
+      // Test app currently only listening to login event on stream. Add relevant event callbacks if needed.
       console.log(`event: ${event} ${data}`);
       if (event == "onLogin") {
         updateIsLoggedIn(Gigya.isLoggedIn())
@@ -260,101 +289,120 @@ const App = (): React.ReactElement => {
     })
   };
 
-  // START: Biometric operations
+  //START - Biometric operations
 
+  // Biometric opt-in test implementation.
   const optIn = async () => {
-      try {
-        var operation = await Gigya.biometric.optIn()
-        console.log("biometric operation " + operation)
-        console.log("biometric isOptIn: " + Gigya.biometric.isOptIn())
-
-      } catch (e) {
-          console.log("opt in error " + e)
-      }
-  }
-
-  const optOut = async () => {
     try {
-      var operation = await Gigya.biometric.optOut()
-      console.log("biometric operation " + operation)
-      console.log("biometric isOptIn: " + Gigya.biometric.isOptIn())
-    } catch (e) {
-        console.log("opt out error " + e)
-        console.log("session unrecoverable - logging out")
-        await Gigya.invalidateSession()
-        console.log("session invalidated")
-        updateIsLoggedIn(Gigya.isLoggedIn())
-      } 
-  }
+      var operation = await Gigya.biometric.optIn()
+      console.log("Biometric Opt-In: " + JSON.stringify(operation))
+      console.log("Biometric Opt-In state = " + Gigya.biometric.isOptIn())
 
-  const lockSession = async () => {
-    try {
-      var operation = await Gigya.biometric.lockSession()
-      console.log("biometric operation " + operation)
-      updateIsLoggedIn(Gigya.isLoggedIn())
-    } catch (e) {
-        console.log("lock session error " + e)
-    } 
-  }
-
-  const unlockSession = async () => {
-    try {
-      var operation = await Gigya.biometric.unlockSession()
-      console.log("biometric operation " + operation)
-      updateIsLoggedIn(Gigya.isLoggedIn())
-    } catch (e) {
-        console.log("unlock session error " + e)
-        console.log("session unrecoverable - logging out")
-        logout()
-    } 
-  }
-
-  // END: Biometric operations
-
-    // START: WebAuthn operations
-
-  const webAuthnLogin = async () => {
-    try {
-      var operation = await Gigya.webAuthn.login()
-      console.log("webAuthnLogin start " + operation)
-      Toast.show('WebAuthn login success', Toast.SHORT);
-      updateIsLoggedIn(Gigya.isLoggedIn())
-      console.log("webAuthnLogin finish " + operation)
-    } catch (e) {
-        console.log("webAuthnLogin in error " + e)
+    } catch (error) {
+      const e = error as GigyaError
+      console.log("Biometric Opt-In operation error:\n" + JSON.stringify(e))
     }
   }
 
+  // Biometric opt-out test implementation.
+  const optOut = async () => {
+    try {
+      var operation = await Gigya.biometric.optOut()
+      console.log("Biometric Opt-Out: " + JSON.stringify(operation))
+      console.log("Biometric Opt-In state = " + Gigya.biometric.isOptIn())
+    } catch (error) {
+      const e = error as GigyaError
+      console.log("Biometric Opt-Out operation error:\n" + JSON.stringify(e))
+      console.log("Session is unrecoverable - force invalidating session")
+      await Gigya.invalidateSession()
+      console.log("Session invalidated")
+      updateIsLoggedIn(Gigya.isLoggedIn())
+    }
+  }
+
+  // Biometric lock session test implementation.
+  const lockSession = async () => {
+    try {
+      var operation = await Gigya.biometric.lockSession()
+      console.log("Biometric lock session: " + JSON.stringify(operation))
+      updateIsLoggedIn(Gigya.isLoggedIn())
+    } catch (error) {
+      // This case actually is redundant because SDK logic to lock the session is just to remove the session date from the heap.
+      const e = error as GigyaError
+      console.log("Biometric lock session error:\n" + JSON.stringify(e))
+    }
+  }
+
+  // Biometric unlock session test implementation.
+  const unlockSession = async () => {
+    try {
+      var operation = await Gigya.biometric.unlockSession()
+      console.log("Biometric unlock session: " + JSON.stringify(operation))
+      updateIsLoggedIn(Gigya.isLoggedIn())
+    } catch (error) {
+      const e = error as GigyaError
+      console.log("Biometric unlock session error:\n" + JSON.stringify(e))
+      console.log("Session is unrecoverable - force logging out session")
+      logout()
+    }
+  }
+
+  //END - Biometric operations
+
+  //START - WebAuthn operations
+
+  // FIDO/Passkey login test implementation.
+  const webAuthnLogin = async () => {
+    try {
+      var operation = await Gigya.webAuthn.login()
+      console.log("webAuthnLogin success:\n" + JSON.stringify(operation))
+      Toast.show('WebAuthn login success', Toast.SHORT);
+      updateIsLoggedIn(Gigya.isLoggedIn())
+    } catch (error) {
+      const e = error as GigyaError
+      console.log("webAuthnLogin error:\n" + JSON.stringify(e))
+    }
+  }
+
+  // FIDO/Passkey register implemntation.
   const webAuthnRegister = async () => {
     try {
       var operation = await Gigya.webAuthn.register()
-      console.log("webAuthnRegister start " + operation)
+      console.log("webAuthnRegister success:\n" + JSON.stringify(operation))
       Toast.show('WebAuthn registration success', Toast.SHORT);
-    } catch (e) {
-        console.log("webAuthnRegister in error " + e)
-    } 
+    } catch (error) {
+      const e = error as GigyaError
+      console.log("webAuthnRegister error:\n" + JSON.stringify(e))
+    }
   }
 
+  //  FIOD/Passkey revoke test implementation.
   const webAuthnRevoke = async () => {
     try {
       var operation = await Gigya.webAuthn.revoke()
-      console.log("webAuthnRevoke start " + operation)
+      console.log("webAuthnRevoke success:\n" + JSON.stringify(operation))
       Toast.show('WebAuthn revoke success', Toast.SHORT);
       updateIsLoggedIn(Gigya.isLoggedIn())
-    } catch (e) {
-        console.log("opt in error " + e)
-    } 
+    } catch (error) {
+      const e = error as GigyaError
+      console.log("webAuthnRevoke:\n" + JSON.stringify(e))
+    }
   }
 
+  //END - WebAuthn operations
+
+  // Get auth code (exchange) test implementation.
   const getAuthCode = async () => {
     try {
       var code = await Gigya.getAuthCode()
       console.log("getAuthCode code: " + code)
-    } catch (e) {
-      console.log("opt in error " + e)
-    } 
+    } catch (error) {
+      const e = error as GigyaError
+      console.log("getAuthCode error:\n" + JSON.stringify(e))
+    }
   }
 
+  // App method enumeration.
   enum Method {
     init,
     login,
@@ -377,7 +425,6 @@ const App = (): React.ReactElement => {
   }
 
   const [activeMethod, setActiveMethod] = useState(Method.init);
-
 
   const runMethod = (method: Method) => {
     switch (method) {
@@ -415,14 +462,12 @@ const App = (): React.ReactElement => {
         setAccount()
         break
       }
-
       case Method.sso: {
         sso()
         break
       }
-    
       case Method.isOptIn: {
-       Gigya.biometric.isOptIn()
+        Gigya.biometric.isOptIn()
         break
       }
       case Method.optIn: {
@@ -473,6 +518,9 @@ const App = (): React.ReactElement => {
     show: ShowIn
   };
 
+
+  // UI widget mapping.
+
   const links: (Link)[] = [
     {
       title: 'Init',
@@ -485,77 +533,77 @@ const App = (): React.ReactElement => {
       method: Method.login,
       description:
         'Login with credentials.',
-        show: ShowIn.notLogged
-      },
+      show: ShowIn.notLogged
+    },
     {
       title: 'Register',
       method: Method.register,
       description:
         'Register with user/pass.',
-        show: ShowIn.notLogged
+      show: ShowIn.notLogged
     },
     {
       title: 'Social login',
       method: Method.social,
       description:
         'Login/Register with Social provider.',
-        show: ShowIn.notLogged
+      show: ShowIn.notLogged
     },
     {
       title: 'ScreenSet',
       method: Method.showScreenSet,
       description:
         'Pop the Web screenset.',
-        show: ShowIn.both
+      show: ShowIn.both
     },
     {
       title: 'getAccount',
       method: Method.getAccount,
       description:
         'Get account information',
-        show: ShowIn.loggedIn
+      show: ShowIn.loggedIn
     },
     {
       title: 'setAccount',
       method: Method.setAccount,
       description:
         'Set account information',
-        show: ShowIn.loggedIn
+      show: ShowIn.loggedIn
     },
     {
       title: 'SSO',
       method: Method.sso,
       description:
         'Login via SSO',
-        show: ShowIn.notLogged
+      show: ShowIn.notLogged
     },
     {
       title: 'isOptIn',
       method: Method.isOptIn,
       description:
         'Is opt in',
-        show: ShowIn.both
+      show: ShowIn.both
     },
     {
       title: 'optIn',
       method: Method.optIn,
       description:
         'Opt in',
-        show: ShowIn.loggedIn
+      show: ShowIn.loggedIn
     },
     {
       title: 'optOut',
       method: Method.optOut,
       description:
         'Opt out',
-        show: ShowIn.loggedIn
+      show: ShowIn.loggedIn
     },
     {
       title: 'lockSession',
       method: Method.lockSession,
       description:
         'Lock Session',
-        show: ShowIn.loggedIn
+      show: ShowIn.loggedIn
     },
 
     {
@@ -563,115 +611,114 @@ const App = (): React.ReactElement => {
       method: Method.unlockSession,
       description:
         'unlock Session',
-        show: ShowIn.notLogged
+      show: ShowIn.notLogged
     },
     {
       title: 'WebAuthn Login',
       method: Method.webAuthnLogin,
       description:
         'WebAuthn Login',
-        show: ShowIn.notLogged
+      show: ShowIn.notLogged
     },
     {
       title: 'WebAuthn Register',
       method: Method.webAuthnRegister,
       description:
         'WebAuthn Register',
-        show: ShowIn.loggedIn
+      show: ShowIn.loggedIn
     },
     {
       title: 'WebAuthn Revoke',
       method: Method.webAuthnRevoke,
       description:
         'WebAuthn Revoke',
-        show: ShowIn.loggedIn
+      show: ShowIn.loggedIn
     },
     {
       title: 'Get AuthCode',
       method: Method.getAuthCode,
       description:
         'Get AuthCode',
-        show: ShowIn.loggedIn
-    }, 
+      show: ShowIn.loggedIn
+    },
     {
       title: 'logout',
       method: Method.logout,
       description:
         'Call Logout.',
-        show: ShowIn.loggedIn
+      show: ShowIn.loggedIn
     },
 
   ];
-
 
   type user = {
     login: string,
     password: string
   };
 
-    const handleCancel = () => {
-      setVisible(false)
-      setVisibleLink(false)
-      setVisibleAccount(false)
-      dispose()
-    };
+  const handleCancel = () => {
+    setVisible(false)
+    setVisibleLink(false)
+    setVisibleAccount(false)
+    dispose()
+  };
 
-    const handleLogin = () => {
-      setVisible(false)
-      console.log(activeMethod)
-      switch (activeMethod) {
-        case Method.login: {
-          login(userData.login, userData.password)
-          dispose()
-          break
-        }
-        case Method.register: {
-          register(userData.login, userData.password)
-          dispose()
-          break
-        }
+  const handleLogin = () => {
+    setVisible(false)
+    console.log(activeMethod)
+    switch (activeMethod) {
+      case Method.login: {
+        login(userData.login, userData.password)
+        dispose()
+        break
       }
-      dispose()
-    };
-
-    const handleSetAccount = () => {
-      setVisibleAccount(false)
-      console.log(activeMethod)
-      setAccount()
-      dispose
+      case Method.register: {
+        register(userData.login, userData.password)
+        dispose()
+        break
+      }
     }
+    dispose()
+  };
 
-    const handleSiteLink = async () => {
-      console.log(linkResolver);
-      const loginToSite = await linkResolver?.linkToSite(userData.login, userData.password);
-      console.log("link to site:");
-      console.log(JSON.stringify(loginToSite));
+  const handleSetAccount = () => {
+    setVisibleAccount(false)
+    console.log(activeMethod)
+    setAccount()
+    dispose
+  }
 
-      updateIsLoggedIn(Gigya.isLoggedIn());
-      setVisibleLink(false);
-    };
+  const handleSiteLink = async () => {
+    console.log(linkResolver);
+    const loginToSite = await linkResolver?.linkToSite(userData.login, userData.password);
+    console.log("link to site:");
+    console.log(JSON.stringify(loginToSite));
 
-    const dispose = () => {
-      userData.login = ""
-      userData.password = ""
-    };
+    updateIsLoggedIn(Gigya.isLoggedIn());
+    setVisibleLink(false);
+  };
 
-    var userData: user = {login: "", password: ""};
+  const dispose = () => {
+    userData.login = ""
+    userData.password = ""
+  };
+
+  var userData: user = { login: "", password: "" };
 
   return (
     <>
       <Dialog.Container visible={visibleLink}>
         <Dialog.Title>Link To Site</Dialog.Title>
-        <Dialog.Input label="email" onChangeText={(email : string) => userData.login = email} />
-        <Dialog.Input label="password" onChangeText={(pass : string) => userData.password = pass} />
+        <Dialog.Input label="email" onChangeText={(email: string) => userData.login = email} />
+        <Dialog.Input label="password" onChangeText={(pass: string) => userData.password = pass} />
         <Dialog.Button label="Cancel" onPress={handleCancel} />
         <Dialog.Button label="Submit" onPress={handleSiteLink} />
       </Dialog.Container>
-      
+
       <Dialog.Container visible={visible}>
         <Dialog.Title>Login/Register</Dialog.Title>
-        <Dialog.Input label="email" onChangeText={(email : string) => userData.login = email} />
-        <Dialog.Input label="password" onChangeText={(pass : string) => userData.password = pass} />
+        <Dialog.Input label="email" onChangeText={(email: string) => userData.login = email} />
+        <Dialog.Input label="password" onChangeText={(pass: string) => userData.password = pass} />
         <Dialog.Button label="Cancel" onPress={handleCancel} />
         <Dialog.Button label="Submit" onPress={handleLogin} />
       </Dialog.Container>

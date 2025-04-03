@@ -13,7 +13,7 @@ Pod::Spec.new do |s|
   s.license      = "Apache License 2.0"
   # s.license    = { :type => "Apache License 2.0", :file => "FILE_LICENSE" }
   s.authors      = { "Tal Mirmelshtein" => "tal.mirmelshtein@sap.com" , "Sagi Shmuel" => "sagi.shmuel@sap.com"}
-  s.platforms    = { :ios => "10.0" }
+  s.platforms    = { :ios => "11.0" }
   s.source       = { :git => "https://github.com/SAP/gigya-react-native-plugin-for-sap-customer-data-cloud.git", :tag => "#{s.version}" }
   s.swift_version = '5.1.3'
   s.source_files = "ios/*.{h,m,swift}", "ios/*/*.{h,m,swift}"
