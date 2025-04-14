@@ -1,4 +1,4 @@
-import { NativeEventEmitter, NativeModules } from 'react-native'
+import { NativeEventEmitter, NativeModules, Platform } from 'react-native'
 import { BiometricService } from './biometric'
 import { ResolverFactory } from './resolvers'
 import { WebAuthnService } from './webauthn'
@@ -272,9 +272,15 @@ export class GigyaInterface {
      * @param {string} name 
      * @param {map} params 
      * @param {*} callback 
+     * @param {boolean} isModal
      */
-     showScreenSetWithParams(name, params, callback) {
-        GigyaSdk.showScreenSet(name, JSON.stringify(params) ?? "")
+     showScreenSetWithParams(name, params, callback, isModal = true) {
+        const isIos = Platform.OS === 'ios';
+        if (isIos) {
+            GigyaSdk.showScreenSet(name, JSON.stringify(params) ?? "", isModal)
+        } else {
+            GigyaSdk.showScreenSet(name, JSON.stringify(params) ?? "")
+        }
 
         listener = GigyaSdkEvents.addListener('event', (jsonData) => {
             const data = JSON.parse(jsonData)
@@ -291,9 +297,10 @@ export class GigyaInterface {
      * 
      * @param {*} name 
      * @param {*} callback 
+     * @param {boolean} isModal
      */
-    showScreenSet(name, callback) {
-        this.showScreenSetWithParams(name, {}, callback)
+    showScreenSet(name, callback, isModal = true) {
+        this.showScreenSetWithParams(name, {}, callback, isModal)
     }
 }
 
