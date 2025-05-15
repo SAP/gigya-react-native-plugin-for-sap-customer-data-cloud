@@ -30,10 +30,11 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 
-import { Gigya, GigyaError, GigyaInterruption } from 'gigya-react-native-plugin-for-sap-customer-data-cloud';
+import {Gigya, GigyaError, GigyaInterruption} from 'gigya-react-native-plugin-for-sap-customer-data-cloud';
+
 import { Button } from 'react-native';
-import { IResolver, LinkAccountResolver, PendingVerificationResolver } from 'gigya-react-native-plugin-for-sap-customer-data-cloud/src/resolvers';
-import { PendingRegistrationResolver } from 'gigya-react-native-plugin-for-sap-customer-data-cloud/src/resolvers';
+
+import { IResolver, LinkAccountResolver, PendingVerificationResolver, PendingRegistrationResolver } from 'gigya-react-native-plugin-for-sap-customer-data-cloud';
 
 let linkResolver: LinkAccountResolver | null = null;
 
