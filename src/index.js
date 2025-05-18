@@ -32,8 +32,8 @@ export class GigyaInterface {
      * @param {string} apikey 
      * @param {string} domain 
      */
-    initFor(apikey, domain) {
-        GigyaSdk.initFor(apikey, domain ?? null);
+    initFor(apikey, domain, cname) {
+        GigyaSdk.initFor(apikey, domain ?? null, cname ?? null);
     }
 
     /**

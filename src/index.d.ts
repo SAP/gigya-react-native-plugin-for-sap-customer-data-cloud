@@ -30,7 +30,7 @@ export namespace Gigya {
 
     function isLoggedIn(): boolean;
 
-    function initFor(apikey: string, apiDomain?: string): void;
+    function initFor(apikey: string, apiDomain?: string, cname?: string): void;
 
     function getSession(): Promise<null | {sessionToken: string, sessionSecret: string, expirationTime: number}>;
 

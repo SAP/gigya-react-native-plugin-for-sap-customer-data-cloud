@@ -79,7 +79,8 @@ RCT_EXTERN_METHOD(removeConnection: (NSString *)provider
 RCT_EXTERN__BLOCKING_SYNCHRONOUS_METHOD(isLoggedIn)
 
 RCT_EXTERN_METHOD(initFor:(NSString *)apiKey
-                  apiDomain:(NSString *)apiDomain)
+                  apiDomain:(NSString *)apiDomain,
+                  cname:(NSString *)cname)
 
 RCT_EXTERN_METHOD(showScreenSet:(NSString *)name
                   params:(NSString *)params)
