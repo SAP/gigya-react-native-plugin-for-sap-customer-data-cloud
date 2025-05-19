@@ -38,7 +38,7 @@ public class GigyaSdkModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void initFor(String apikey, String apiDomain, @Nullable String cname) {
-        gigyaSdk.initFor(apikey, apiDomain);
+        gigyaSdk.initFor(apikey, apiDomain, cname);
     }
 
     @ReactMethod(isBlockingSynchronousMethod = true)
