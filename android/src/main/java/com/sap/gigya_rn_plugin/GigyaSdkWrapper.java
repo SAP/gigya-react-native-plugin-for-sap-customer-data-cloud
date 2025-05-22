@@ -65,12 +65,18 @@ public class GigyaSdkWrapper<T extends GigyaAccount> {
         gigyaInstance.setExternalProvidersPath(path);
     }
 
-    void initFor(@Nonnull String apikey, @Nullable String apiDomain) {
-        if (apiDomain == null) {
+    void initFor(@Nonnull String apikey, @Nullable String apiDomain, @Nullable String cname) {
+        if (apiDomain == null && cname == null) {
             gigyaInstance.init(apikey);
             return;
         }
-        gigyaInstance.init(apikey, apiDomain);
+        if (apiDomain != null && cname == null) {
+            gigyaInstance.init(apikey, apiDomain);
+            return;
+        }
+        if (apiDomain != null && cname != null) {
+            gigyaInstance.init(apikey, apiDomain, cname);
+        }
     }
 
     void getSession(Promise promise) {
