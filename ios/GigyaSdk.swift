@@ -25,9 +25,9 @@ public class GigyaSdk: NSObject {
          GigyaSdk.gigya = gigya
     }
 
-    @objc(initFor:apiDomain:)
-    func initFor(apiKey: String, apiDomain: String?) {
-         GigyaSdk.gigya?.initFor(apiKey: apiKey, domain: apiDomain)
+    @objc(initFor:apiDomain:cname:)
+    func initFor(apiKey: String, apiDomain: String?, cname: String?) {
+         GigyaSdk.gigya?.initFor(apiKey: apiKey, domain: apiDomain, cname: cname)
     }
 
     @objc(isLoggedIn)
