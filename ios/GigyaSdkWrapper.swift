@@ -52,7 +52,7 @@ protocol GigyaSdkWrapperProtocol {
 
     func isLocked() -> Bool
 
-    func initFor(apiKey: String, domain: String?)
+    func initFor(apiKey: String, domain: String?, cname: String?)
 
     func sendEvent(_ name: GigyaMethods, params: [String: Any], promise: PromiseWrapper)
 
@@ -130,8 +130,8 @@ class GigyaSdkWrapper<T: GigyaAccountProtocol>: GigyaSdkWrapperProtocol {
         }
     }
 
-    func initFor(apiKey: String, domain: String?) {
-        gigya.initFor(apiKey: apiKey, apiDomain: domain)
+    func initFor(apiKey: String, domain: String?, cname: String?) {
+        gigya.initFor(apiKey: apiKey, apiDomain: domain, cname: cname)
     }
 
     func isLoggedIn() -> Bool {
