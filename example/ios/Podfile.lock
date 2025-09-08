@@ -4,9 +4,9 @@ PODS:
   - fast_float (6.1.4)
   - FBLazyVector (0.79.2)
   - fmt (11.0.2)
-  - Gigya (1.7.5)
-  - gigya-react-native-plugin-for-sap-customer-data-cloud (0.3.6):
-    - Gigya (~> 1.7.2)
+  - Gigya (1.7.6)
+  - gigya-react-native-plugin-for-sap-customer-data-cloud (0.4.0):
+    - Gigya (~> 1.7.6)
     - React
   - glog (0.3.5)
   - hermes-engine (0.79.2):
@@ -1922,8 +1922,8 @@ SPEC CHECKSUMS:
   fast_float: 06eeec4fe712a76acc9376682e4808b05ce978b6
   FBLazyVector: 84b955f7b4da8b895faf5946f73748267347c975
   fmt: a40bb5bd0294ea969aaaba240a927bd33d878cdd
-  Gigya: 7ae1fdb9fed7f5958fb3b78d0048ca47774d0a1e
-  gigya-react-native-plugin-for-sap-customer-data-cloud: dd969f54eb0c4bfe584d612a0bb67be48be9f95f
+  Gigya: 4f318c2e24ce3f0c8bac8dc7715232bde47f9184
+  gigya-react-native-plugin-for-sap-customer-data-cloud: 61b9d2eb969bdb180edd1d1d09bcf0aff6a12977
   glog: 5683914934d5b6e4240e497e0f4a3b42d1854183
   hermes-engine: 314be5250afa5692b57b4dd1705959e1973a8ebe
   RCT-Folly: e78785aa9ba2ed998ea4151e314036f6c49e6d82

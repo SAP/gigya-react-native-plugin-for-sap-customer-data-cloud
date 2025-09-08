@@ -34,6 +34,8 @@ enum GigyaMethods: String {
     case webAuthnRegister
     case webAuthnRevoke
     case getAuthCode
+    case webAuthnRevokeId
+    case webAuthnGetCredentials
 }
 
 enum GigyaInterruptionsSupported: String {
@@ -123,8 +125,12 @@ class GigyaSdkWrapper<T: GigyaAccountProtocol>: GigyaSdkWrapperProtocol {
             self.webAuthnRegister()
         case .webAuthnRevoke:
             self.webAuthnRevoke()
+        case .webAuthnRevokeId:
+            self.webAuthnRevokeId(id: params["id"] as? String ?? "")
         case .getAuthCode:
             self.getAuthCode()
+        case .webAuthnGetCredentials:
+            self.webAuthnGetCredentials()
         default:
             break
         }
@@ -497,6 +503,46 @@ class GigyaSdkWrapper<T: GigyaAccountProtocol>: GigyaSdkWrapperProtocol {
         if #available(iOS 16.0.0, *) {
             Task {
                 let res = await gigya.webAuthn.revoke()
+                
+                switch res {
+                case .success(let data):
+                    let mapped: [String: Any] = data.mapValues { value in return value.value }
+
+                    self.promise?.resolve(result: mapped)
+                case .failure(let error):
+                    self.promise?.reject(error: error)
+                }
+            }
+        } else {
+            GigyaLogger.log(with: self, message: "not supported in this iOS version.")
+            self.promise?.reject(error: "not supported in this iOS version.")
+        }
+    }
+
+    func webAuthnRevokeId(id: String) {
+        if #available(iOS 16.0.0, *) {
+            Task {
+                let res = await gigya.webAuthn.revoke(id: id)
+                
+                switch res {
+                case .success(let data):
+                    let mapped: [String: Any] = data.mapValues { value in return value.value }
+
+                    self.promise?.resolve(result: mapped)
+                case .failure(let error):
+                    self.promise?.reject(error: error)
+                }
+            }
+        } else {
+            GigyaLogger.log(with: self, message: "not supported in this iOS version.")
+            self.promise?.reject(error: "not supported in this iOS version.")
+        }
+    }
+
+    func webAuthnGetCredentials() {
+        if #available(iOS 16.0.0, *) {
+            Task {
+                let res = await gigya.webAuthn.getCredentials()
                 
                 switch res {
                 case .success(let data):

@@ -28,5 +28,11 @@ RCT_EXTERN_METHOD(register:(RCTPromiseResolveBlock)resolve
 RCT_EXTERN_METHOD(revoke:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 
+RCT_EXTERN_METHOD(passkeyRevoke:(NSString *)keyId
+                  resolver:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject)
+
+RCT_EXTERN_METHOD(passkeyGetCredentials:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject)
 
 @end
