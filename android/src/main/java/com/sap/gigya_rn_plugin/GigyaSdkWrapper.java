@@ -47,6 +47,7 @@ public class GigyaSdkWrapper<T extends GigyaAccount> {
 
     public GigyaSdkWrapper(Application application, Class<T> accountSchema) {
         Gigya.setApplication(application);
+        System.out.println("Gigya SDK Version: " + Gigya.VERSION);
         gigyaInstance = Gigya.getInstance(accountSchema);
 
         final Type type = (new TypeToken<Map<String, Object>>() {

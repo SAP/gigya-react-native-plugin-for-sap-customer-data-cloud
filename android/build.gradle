@@ -10,10 +10,10 @@
 //   original location:
 //   - https://github.com/facebook/react-native/blob/0.58-stable/local-cli/templates/HelloWorld/android/app/build.gradle
 
-def DEFAULT_COMPILE_SDK_VERSION = 28
-def DEFAULT_BUILD_TOOLS_VERSION = '28.0.3'
-def DEFAULT_MIN_SDK_VERSION = 16
-def DEFAULT_TARGET_SDK_VERSION = 28
+def DEFAULT_COMPILE_SDK_VERSION = 35
+def DEFAULT_BUILD_TOOLS_VERSION = '35.0.0'
+def DEFAULT_MIN_SDK_VERSION = 24
+def DEFAULT_TARGET_SDK_VERSION = 35
 
 def safeExtGet(prop, fallback) {
     rootProject.ext.has(prop) ? rootProject.ext.get(prop) : fallback
@@ -27,9 +27,10 @@ buildscript {
         repositories {
             mavenCentral()
             google()
+            mavenLocal()
         }
         dependencies {
-            classpath 'com.android.tools.build:gradle:7.3.0'
+            classpath 'com.android.tools.build:gradle:8.7.3'
         }
     }
 }
@@ -37,19 +38,34 @@ buildscript {
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion safeExtGet('compileSdkVersion', DEFAULT_COMPILE_SDK_VERSION)
+    compileSdk safeExtGet('compileSdkVersion', DEFAULT_COMPILE_SDK_VERSION)
+    buildToolsVersion safeExtGet('buildToolsVersion', DEFAULT_BUILD_TOOLS_VERSION)
+    
+    namespace "com.sap.gigya_rn_plugin"
+    
     defaultConfig {
-        minSdkVersion safeExtGet('minSdkVersion', DEFAULT_MIN_SDK_VERSION)
-        targetSdkVersion safeExtGet('targetSdkVersion', DEFAULT_TARGET_SDK_VERSION)
+        minSdk safeExtGet('minSdkVersion', DEFAULT_MIN_SDK_VERSION)
+        targetSdk safeExtGet('targetSdkVersion', DEFAULT_TARGET_SDK_VERSION)
         versionCode 1
         versionName "0.0.7"
     }
-    lintOptions {
+    
+    lint {
         abortOnError false
+    }
+    
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
 }
 
 repositories {
+    // Explicitly add local Maven repository path for Gigya SDK
+    maven {
+        url "file://${System.getProperty('user.home')}/.m2/repository"
+    }
+    // Also include standard mavenLocal() as fallback
     mavenLocal()
     maven {
         // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
@@ -68,10 +84,14 @@ dependencies {
     implementation "com.facebook.react:react-native:+"  // From node_modules
 
     // Gigya implementations.
-    api 'com.sap.oss.gigya-android-sdk:sdk-core:7.1.+'
+    api 'com.sap.oss.gigya-android-sdk:sdk-core:7.+'
     api 'com.sap.oss.gigya-android-sdk:sdk-bio:2.1.+'
     api 'com.google.android.gms:play-services-fido:18.1.0'
     api 'com.google.code.gson:gson:2.8.9'
 
     api 'androidx.activity:activity:1.2.0'
+
+    // Passkeys dependencies.
+    implementation 'androidx.credentials:credentials-play-services-auth:1.2.2'
+    implementation 'com.google.android.libraries.identity.googleid:googleid:1.1.0'
 }

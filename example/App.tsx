@@ -86,7 +86,7 @@ const App = (): React.ReactElement => {
   }, []);
   //END -  Foreground/Background app state tracker.
 
-  Gigya.initFor("4_XxTkjQ87Kzp8xXGhrNjH0Q");
+  Gigya.initFor("4_mL-YkAEegR9vzt6QvHWI5Q");
 
   // Login state constant needs to be set only after SDK initialization!
   const [isLoggedIn, updateIsLoggedIn] = useState(Gigya.isLoggedIn());
@@ -355,7 +355,7 @@ const App = (): React.ReactElement => {
   // FIDO/Passkey login test implementation.
   const webAuthnLogin = async () => {
     try {
-      var operation = await Gigya.webAuthn.login()
+      var operation = await Gigya.webAuthn.passkeyLogin()
       console.log("webAuthnLogin success:\n" + JSON.stringify(operation))
       Toast.show('WebAuthn login success', Toast.SHORT);
       updateIsLoggedIn(Gigya.isLoggedIn())
@@ -368,7 +368,7 @@ const App = (): React.ReactElement => {
   // FIDO/Passkey register implemntation.
   const webAuthnRegister = async () => {
     try {
-      var operation = await Gigya.webAuthn.register()
+      var operation = await Gigya.webAuthn.passkeyRegister()
       console.log("webAuthnRegister success:\n" + JSON.stringify(operation))
       Toast.show('WebAuthn registration success', Toast.SHORT);
     } catch (error) {
@@ -380,13 +380,25 @@ const App = (): React.ReactElement => {
   //  FIOD/Passkey revoke test implementation.
   const webAuthnRevoke = async () => {
     try {
-      var operation = await Gigya.webAuthn.revoke()
+      var operation = await Gigya.webAuthn.passkeyRevoke("SE6cksXVBxJUnPvC/epe6g==")
       console.log("webAuthnRevoke success:\n" + JSON.stringify(operation))
       Toast.show('WebAuthn revoke success', Toast.SHORT);
       updateIsLoggedIn(Gigya.isLoggedIn())
     } catch (error) {
       const e = error as GigyaError
       console.log("webAuthnRevoke:\n" + JSON.stringify(e))
+    }
+  }
+
+  const webAuthnGetCredentials = async () => {
+    try {
+      var operation = await Gigya.webAuthn.passkeyGetCredentials()
+      console.log("webAuthnGetCredentials success:\n" + JSON.stringify(operation))
+      Toast.show('webAuthnGetCredentials revoke success', Toast.SHORT);
+      updateIsLoggedIn(Gigya.isLoggedIn())
+    } catch (error) {
+      const e = error as GigyaError
+      console.log("webAuthnGetCredentials:\n" + JSON.stringify(e))
     }
   }
 
@@ -422,6 +434,7 @@ const App = (): React.ReactElement => {
     webAuthnLogin,
     webAuthnRegister,
     webAuthnRevoke,
+    webAuthnGetCredentials,
     getAuthCode
   }
 
@@ -493,6 +506,10 @@ const App = (): React.ReactElement => {
       }
       case Method.webAuthnRegister: {
         webAuthnRegister()
+        break
+      }
+      case Method.webAuthnGetCredentials: {
+        webAuthnGetCredentials()
         break
       }
       case Method.webAuthnRevoke: {
@@ -626,6 +643,13 @@ const App = (): React.ReactElement => {
       method: Method.webAuthnRegister,
       description:
         'WebAuthn Register',
+      show: ShowIn.loggedIn
+    },
+    {
+      title: 'WebAuthn getCredentials',
+      method: Method.webAuthnGetCredentials,
+      description:
+        'WebAuthn getCredentials',
       show: ShowIn.loggedIn
     },
     {

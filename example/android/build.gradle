@@ -8,6 +8,11 @@ buildscript {
         kotlinVersion = "2.0.21"
     }
     repositories {
+        // Explicitly add local Maven repository path for Gigya SDK
+        maven {
+            url "file://${System.getProperty('user.home')}/.m2/repository"
+        }
+        mavenLocal()
         google()
         mavenCentral()
     }
@@ -19,3 +24,15 @@ buildscript {
 }
 
 apply plugin: "com.facebook.react.rootproject"
+
+allprojects {
+    repositories {
+        // Explicitly add local Maven repository path for Gigya SDK
+        maven {
+            url "file://${System.getProperty('user.home')}/.m2/repository"
+        }
+        mavenLocal()
+        google()
+        mavenCentral()
+    }
+}
