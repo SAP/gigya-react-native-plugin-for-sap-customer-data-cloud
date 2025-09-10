@@ -309,6 +309,8 @@ Follow the platform implementation guides:
 [Swift](https://sap.github.io/gigya-swift-sdk/GigyaSwift/#fidowebauthn-authentication)
 [Android](https://sap.github.io/gigya-android-sdk/sdk-core/#fidowebauthn-authentication)
 
+* Android solution has been updated to use both FIDO & passkeys
+
 **Additional setup for Android:**
 To correctly integrate Android with the FIDO library, do the following:
 
@@ -336,7 +338,10 @@ private ActivityResultLauncher<IntentSenderRequest> resultLauncher = registerFor
 The "***resultLauncher***" object is required for intercommunicating with the FIDO library.
 
 **Usage example**
-Login with FIDO/WebAuthn passkey:
+
+### LOGIN:
+Login with a FIDO key on Android & a passkey on iOS:
+
 ```
 try {
       var operation = await Gigya.webAuthn.login()
@@ -346,7 +351,19 @@ try {
         console.log("webAuthnLogin error " + e)
     }
 ```
-Register a new FIDO/WebAuthn passkey:
+Login with a passkey on both Android & iOS:
+```
+try {
+      var operation = await Gigya.webAuthn.passkeyLogin()
+      console.log("webAuthnLogin success " + operation)
+      // Update login state.
+    } catch (e) {
+        console.log("webAuthnLogin error " + e)
+    }
+```
+
+### REGISTER:
+Register a new FIDO key on Android & a passkey on iOS:
 ```
 try {
       var operation = await Gigya.webAuthn.register()
@@ -355,7 +372,18 @@ try {
         console.log("webAuthnRegister error " + e)
     } 
 ```
-Revoke an existing FIDO/WebAuthn passkey:
+Register a new Passkey on both Android & iOS:
+```
+try {
+      var operation = await Gigya.webAuthn.passkeyRegister()
+      console.log("webAuthnRegister success " + operation)
+    } catch (e) {
+        console.log("webAuthnRegister error " + e)
+    } 
+```
+
+### REVOKE:
+Revoke an existing FIDO key on Android and all passkeys on iOS:
 ```
 try {
       var operation = await Gigya.webAuthn.revoke()
@@ -365,6 +393,27 @@ try {
         console.log("webAuthnRevoke error " + e)
     }
  ```
+
+Revoke a specific passkey on both Android & iOS.
+```
+try {
+      var operation = await Gigya.webAuthn.passkeyRevoke("ID_TO_REVOKE")
+      console.log("webAuthnRevoke success " + operation)
+      // Update login state.
+    } catch (e) {
+        console.log("webAuthnRevoke error " + e)
+    }
+```
+***Note:*** *The key to revoke can be obtained from the new passkeyGetCredentials method available.
+```
+try {
+      var operation = await Gigya.webAuthn.passkeyGetCredentials()
+      console.log("webAuthnGetCredentials success:\n" + JSON.stringify(operation))
+    } catch (error) {
+      console.log("webAuthnGetCredentials:\n" + JSON.stringify(e))
+    }
+```
+
 
 ## Known Issues
 None
