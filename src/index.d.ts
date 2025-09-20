@@ -46,6 +46,8 @@ export namespace Gigya {
 
     function login(loginId: string, password: string, params?: Record<string, any>): Promise<GigyaDictionary>;
 
+    function loginWithCustomId(identifier: string, identifierType: string, password: string, params?: Record<string, any>): Promise<GigyaDictionary>;
+
     function socialLogin(provider: GigyaSocialProviders, params?: Record<string, any>): Promise<GigyaDictionary>;
 
     function sso(params?: Record<string, any>): Promise<GigyaDictionary>;

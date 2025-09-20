@@ -156,6 +156,24 @@ export class GigyaInterface {
     }
 
     /**
+     * Login with Custom ID.
+     * @param {*} identifier 
+     * @param {*} identifierType 
+     * @param {*} password 
+     * @param {*} params 
+     * @returns Response promise. 
+     */
+    async loginWithCustomId(identifier, identifierType, password, params) {
+        try {
+            const req = await GigyaSdk.loginWithCustomId(identifier, identifierType, password, JSON.stringify(params) ?? "")
+            return JSON.parse(req)
+        } catch (e) {
+            const error = new GigyaError(e)
+            throw error
+        }
+    }
+
+    /**
      * Social login via supported provider.
      * 
      * @param {string} provider 

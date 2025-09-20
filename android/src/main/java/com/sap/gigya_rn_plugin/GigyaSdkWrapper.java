@@ -194,6 +194,47 @@ public class GigyaSdkWrapper<T extends GigyaAccount> {
         });
     }
 
+    void loginWithCustomId(@Nonnull String identifer, @Nonnull String identiferType, @Nonnull String password, @Nonnull String jsonParameters, Promise promise) {
+        GigyaSdkRNLogger.log("loginWithCustomId: called");
+        promiseWrapper.promise = promise;
+        final Map<String, Object> params = mapParams(jsonParameters);
+        gigyaInstance.login(identifer, identiferType, password, mapParams(jsonParameters), new GigyaLoginCallback<T>() {
+            @Override
+            public void onSuccess(T account) {
+                GigyaSdkRNLogger.log("login: success with response: ");
+                resolverHelper.clear();
+                promiseWrapper.resolve(account);
+            }
+
+            @Override
+            public void onError(GigyaError gigyaError) {
+                GigyaSdkRNLogger.log("register: error with message: " + gigyaError.getLocalizedMessage());
+                promiseWrapper.reject(gigyaError);
+            }
+
+            @Override
+            public void onConflictingAccounts(@NonNull GigyaApiResponse response,
+                    @NonNull ILinkAccountsResolver resolver) {
+                resolverHelper.interrupt = "conflictingAccount";
+                resolverHelper.linkAccountsResolver = resolver;
+                promiseWrapper.reject(response);
+            }
+
+            @Override
+            public void onPendingRegistration(@NonNull GigyaApiResponse response,
+                    @NonNull IPendingRegistrationResolver resolver) {
+                resolverHelper.interrupt = "pendingRegistration";
+                resolverHelper.pendingRegistrationResolver = resolver;
+                promiseWrapper.reject(response);
+            }
+
+            @Override
+            public void onPendingVerification(@NonNull GigyaApiResponse response, @Nullable String regToken) {
+                promiseWrapper.reject(response);
+            }
+        });
+    }
+
     void logout(Promise promise) {
         GigyaSdkRNLogger.log("logout: called");
         promiseWrapper.promise = promise;

@@ -85,6 +85,11 @@ public class GigyaSdkModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
+    public void loginWithCustomId(@Nonnull String identifier, @Nonnull String identifierType, @Nonnull String password, @Nonnull String params, Promise promise) {
+        gigyaSdk.loginWithCustomId(identifier, identifierType, password, params, promise);
+    }
+
+    @ReactMethod
     public void logout(Promise promise) {
         gigyaSdk.logout(promise);
     }
