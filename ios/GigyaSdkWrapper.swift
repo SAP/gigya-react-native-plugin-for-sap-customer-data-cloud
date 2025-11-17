@@ -15,6 +15,7 @@ enum GigyaMethods: String {
     case setSession
     case send
     case login
+    case loginWithCustomId
     case register
     case logout
     case getAccount
@@ -33,6 +34,9 @@ enum GigyaMethods: String {
     case webAuthnLogin
     case webAuthnRegister
     case webAuthnRevoke
+    case getAuthCode
+    case webAuthnRevokeId
+    case webAuthnGetCredentials
 }
 
 enum GigyaInterruptionsSupported: String {
@@ -51,7 +55,7 @@ protocol GigyaSdkWrapperProtocol {
 
     func isLocked() -> Bool
 
-    func initFor(apiKey: String, domain: String?)
+    func initFor(apiKey: String, domain: String?, cname: String?)
 
     func sendEvent(_ name: GigyaMethods, params: [String: Any], promise: PromiseWrapper)
 
@@ -68,7 +72,7 @@ class GigyaSdkWrapper<T: GigyaAccountProtocol>: GigyaSdkWrapperProtocol {
     var currentResolver: GigyaResolverModelProtocol?
 
     init(accountSchema: T.Type) {
-        GigyaDefinitions.versionPrefix = "react_native_0.3.1_"
+        GigyaDefinitions.versionPrefix = "react_native_0.6.0_"
         gigya = Gigya.sharedInstance(accountSchema)
     }
 
@@ -94,6 +98,13 @@ class GigyaSdkWrapper<T: GigyaAccountProtocol>: GigyaSdkWrapperProtocol {
             }
 
             self.login(loginId: email, password: password, params: params["params"] as? [String : Any] ?? [:])
+        case .loginWithCustomId:
+            guard let identifier = params["identifier"] as? String,
+                  let identifierType = params["identifierType"] as? String,
+                  let password = params["password"] as? String else {
+                return
+            }
+            self.loginWithCustomId(identifier: identifier, identifierType: identifierType, password: password, params: params["params"] as? [String : Any] ?? [:])
         case .logout:
             self.logout()
         case .getAccount:
@@ -122,13 +133,19 @@ class GigyaSdkWrapper<T: GigyaAccountProtocol>: GigyaSdkWrapperProtocol {
             self.webAuthnRegister()
         case .webAuthnRevoke:
             self.webAuthnRevoke()
+        case .webAuthnRevokeId:
+            self.webAuthnRevokeId(id: params["id"] as? String ?? "")
+        case .getAuthCode:
+            self.getAuthCode()
+        case .webAuthnGetCredentials:
+            self.webAuthnGetCredentials()
         default:
             break
         }
     }
 
-    func initFor(apiKey: String, domain: String?) {
-        gigya.initFor(apiKey: apiKey, apiDomain: domain)
+    func initFor(apiKey: String, domain: String?, cname: String?) {
+        gigya.initFor(apiKey: apiKey, apiDomain: domain, cname: cname)
     }
 
     func isLoggedIn() -> Bool {
@@ -196,6 +213,25 @@ class GigyaSdkWrapper<T: GigyaAccountProtocol>: GigyaSdkWrapperProtocol {
             }
         }
     }
+
+    func loginWithCustomId(identifier: String, identifierType: String, password: String, params: [String: Any]) {
+        gigya.login(identifier: identifier, identifierType: identifierType, password: password, params: params) { [weak self] (result) in
+            guard let self = self else { return }
+
+            switch result {
+            case .success(let data):
+                let mapped: [String: Any] = self.accountToDic(account: data)
+                self.promise?.resolve(result: mapped)
+            case .failure(let error):
+                if let interruption = error.interruption {
+                    self.intteruptionHandle(interruption: interruption)
+                }
+                
+                self.promise?.reject(error: error.error)
+            }
+        }
+    }
+
 
     func logout() {
         gigya.logout { (result) in
@@ -272,6 +308,17 @@ class GigyaSdkWrapper<T: GigyaAccountProtocol>: GigyaSdkWrapperProtocol {
 
                 self.promise?.reject(error: error.error)
             }
+        }
+    }
+
+    func getAuthCode() {
+        gigya.getAuthCode() { (result) in
+            switch result {
+               case .success(let code):
+                    self.promise?.resolve(string: code)
+               case .failure(let error):
+                    self.promise?.reject(error: error)
+               }
         }
     }
     
@@ -483,6 +530,46 @@ class GigyaSdkWrapper<T: GigyaAccountProtocol>: GigyaSdkWrapperProtocol {
         if #available(iOS 16.0.0, *) {
             Task {
                 let res = await gigya.webAuthn.revoke()
+                
+                switch res {
+                case .success(let data):
+                    let mapped: [String: Any] = data.mapValues { value in return value.value }
+
+                    self.promise?.resolve(result: mapped)
+                case .failure(let error):
+                    self.promise?.reject(error: error)
+                }
+            }
+        } else {
+            GigyaLogger.log(with: self, message: "not supported in this iOS version.")
+            self.promise?.reject(error: "not supported in this iOS version.")
+        }
+    }
+
+    func webAuthnRevokeId(id: String) {
+        if #available(iOS 16.0.0, *) {
+            Task {
+                let res = await gigya.webAuthn.revoke(id: id)
+                
+                switch res {
+                case .success(let data):
+                    let mapped: [String: Any] = data.mapValues { value in return value.value }
+
+                    self.promise?.resolve(result: mapped)
+                case .failure(let error):
+                    self.promise?.reject(error: error)
+                }
+            }
+        } else {
+            GigyaLogger.log(with: self, message: "not supported in this iOS version.")
+            self.promise?.reject(error: "not supported in this iOS version.")
+        }
+    }
+
+    func webAuthnGetCredentials() {
+        if #available(iOS 16.0.0, *) {
+            Task {
+                let res = await gigya.webAuthn.getCredentials()
                 
                 switch res {
                 case .success(let data):

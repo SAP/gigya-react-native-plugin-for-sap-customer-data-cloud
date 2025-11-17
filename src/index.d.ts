@@ -30,7 +30,7 @@ export namespace Gigya {
 
     function isLoggedIn(): boolean;
 
-    function initFor(apikey: string, apiDomain?: string): void;
+    function initFor(apikey: string, apiDomain?: string, cname?: string): void;
 
     function getSession(): Promise<null | {sessionToken: string, sessionSecret: string, expirationTime: number}>;
 
@@ -45,6 +45,8 @@ export namespace Gigya {
     function register(email: string, password: string, params?: Record<string, any>): Promise<GigyaDictionary>;
 
     function login(loginId: string, password: string, params?: Record<string, any>): Promise<GigyaDictionary>;
+
+    function loginWithCustomId(identifier: string, identifierType: string, password: string, params?: Record<string, any>): Promise<GigyaDictionary>;
 
     function socialLogin(provider: GigyaSocialProviders, params?: Record<string, any>): Promise<GigyaDictionary>;
 
@@ -61,6 +63,8 @@ export namespace Gigya {
     function showScreenSet(name: string, callback: (event: string, data: GigyaDictionary) => void): void;
 
     function showScreenSetWithParams(name: string, params: Record<string, any>, callback: (event: string, data: GigyaDictionary) => void): void;
+
+    function getAuthCode() : Promise<String>;
 
 }
 

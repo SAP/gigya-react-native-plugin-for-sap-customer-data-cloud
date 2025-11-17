@@ -188,6 +188,29 @@ To initiate the flow run the following snippet.
  });
 ```
 
+## Session Exchange Between Mobile & WebView
+
+Applications (mobile/web) within the same site group are now able to share a session from the mobile application to a web page running the JS SDK.
+
+Follow these steps to allow session exchange:
+
+1. Use the “getAuthCode” interface. This call will provide you with the required code that the web page will require for the exchange.
+```javascript
+var code = await Gigya.getAuthCode()
+```
+
+2. Add these URL parameters to your hosted page/website URL using the provided code:
+   *** https://page-url?authCode=code&gig_actions=sso.login ***
+
+3. Make sure that the WebView element you are using to open the URL has JavaScript enabled.
+
+4. Once the page is loaded, the JS SDK will exchange the token provided for a valid session.
+
+
+**Note:**
+When using mobile SSO (single sign-on using the central login page), logging out using the SDK's logout method will only log the user out of the current API key used.
+The user will not be logged out of the other group sites.
+
 ## Resolving interruptions
 
 Much like our core SDKs, resolving interruptions is available using the plugin.
@@ -286,6 +309,8 @@ Follow the platform implementation guides:
 [Swift](https://sap.github.io/gigya-swift-sdk/GigyaSwift/#fidowebauthn-authentication)
 [Android](https://sap.github.io/gigya-android-sdk/sdk-core/#fidowebauthn-authentication)
 
+* Android solution has been updated to use both FIDO & passkeys
+
 **Additional setup for Android:**
 To correctly integrate Android with the FIDO library, do the following:
 
@@ -313,7 +338,10 @@ private ActivityResultLauncher<IntentSenderRequest> resultLauncher = registerFor
 The "***resultLauncher***" object is required for intercommunicating with the FIDO library.
 
 **Usage example**
-Login with FIDO/WebAuthn passkey:
+
+### LOGIN:
+Login with a FIDO key on Android & a passkey on iOS:
+
 ```
 try {
       var operation = await Gigya.webAuthn.login()
@@ -323,7 +351,19 @@ try {
         console.log("webAuthnLogin error " + e)
     }
 ```
-Register a new FIDO/WebAuthn passkey:
+Login with a passkey on both Android & iOS:
+```
+try {
+      var operation = await Gigya.webAuthn.passkeyLogin()
+      console.log("webAuthnLogin success " + operation)
+      // Update login state.
+    } catch (e) {
+        console.log("webAuthnLogin error " + e)
+    }
+```
+
+### REGISTER:
+Register a new FIDO key on Android & a passkey on iOS:
 ```
 try {
       var operation = await Gigya.webAuthn.register()
@@ -332,7 +372,18 @@ try {
         console.log("webAuthnRegister error " + e)
     } 
 ```
-Revoke an existing FIDO/WebAuthn passkey:
+Register a new Passkey on both Android & iOS:
+```
+try {
+      var operation = await Gigya.webAuthn.passkeyRegister()
+      console.log("webAuthnRegister success " + operation)
+    } catch (e) {
+        console.log("webAuthnRegister error " + e)
+    } 
+```
+
+### REVOKE:
+Revoke an existing FIDO key on Android and all passkeys on iOS:
 ```
 try {
       var operation = await Gigya.webAuthn.revoke()
@@ -342,6 +393,27 @@ try {
         console.log("webAuthnRevoke error " + e)
     }
  ```
+
+Revoke a specific passkey on both Android & iOS.
+```
+try {
+      var operation = await Gigya.webAuthn.passkeyRevoke("ID_TO_REVOKE")
+      console.log("webAuthnRevoke success " + operation)
+      // Update login state.
+    } catch (e) {
+        console.log("webAuthnRevoke error " + e)
+    }
+```
+***Note:*** *The key to revoke can be obtained from the new passkeyGetCredentials method available.
+```
+try {
+      var operation = await Gigya.webAuthn.passkeyGetCredentials()
+      console.log("webAuthnGetCredentials success:\n" + JSON.stringify(operation))
+    } catch (error) {
+      console.log("webAuthnGetCredentials:\n" + JSON.stringify(e))
+    }
+```
+
 
 ## Known Issues
 None

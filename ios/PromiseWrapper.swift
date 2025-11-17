@@ -32,6 +32,16 @@ class PromiseWrapper {
         self.clear()
     }
 
+    func resolve(string: String) {
+        guard let promiseResolve = promiseResolve else {
+            return
+        }
+
+        promiseResolve(string)
+
+        self.clear()
+    }
+
     func reject(error: String?, errorCode: Int = -1, data: [String: Any] = [:]) {
         guard let promiseReject = promiseReject else {
             return

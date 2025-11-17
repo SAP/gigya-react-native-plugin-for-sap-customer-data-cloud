@@ -47,6 +47,7 @@ public class GigyaSdkWrapper<T extends GigyaAccount> {
 
     public GigyaSdkWrapper(Application application, Class<T> accountSchema) {
         Gigya.setApplication(application);
+        System.out.println("Gigya SDK Version: " + Gigya.VERSION);
         gigyaInstance = Gigya.getInstance(accountSchema);
 
         final Type type = (new TypeToken<Map<String, Object>>() {
@@ -55,7 +56,7 @@ public class GigyaSdkWrapper<T extends GigyaAccount> {
 
         try {
             IApiRequestFactory ref = Gigya.getContainer().get(IApiRequestFactory.class);
-            ref.setSDK("react_native_" + "0.3.1" + "_android_" + Gigya.VERSION);
+            ref.setSDK("react_native_" + "0.6.0" +  "_android_" + Gigya.VERSION);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -63,14 +64,20 @@ public class GigyaSdkWrapper<T extends GigyaAccount> {
 
     void setExternalProvidersPath(String path) {
         gigyaInstance.setExternalProvidersPath(path);
-    } 
+    }
 
-    void initFor(@Nonnull String apikey, @Nullable String apiDomain) {
-        if (apiDomain == null) {
+    void initFor(@Nonnull String apikey, @Nullable String apiDomain, @Nullable String cname) {
+        if (apiDomain == null && cname == null) {
             gigyaInstance.init(apikey);
             return;
         }
-        gigyaInstance.init(apikey, apiDomain);
+        if (apiDomain != null && cname == null) {
+            gigyaInstance.init(apikey, apiDomain);
+            return;
+        }
+        if (apiDomain != null && cname != null) {
+            gigyaInstance.init(apikey, apiDomain, cname);
+        }
     }
 
     void getSession(Promise promise) {
@@ -91,7 +98,8 @@ public class GigyaSdkWrapper<T extends GigyaAccount> {
     void send(String api, String jsonParameters, Promise promise) {
         GigyaSdkRNLogger.log("send: called");
         promiseWrapper.promise = promise;
-        gigyaInstance.send(api, mapParams(jsonParameters), new GigyaCallback<GigyaApiResponse>() {            @Override
+        gigyaInstance.send(api, mapParams(jsonParameters), new GigyaCallback<GigyaApiResponse>() {
+            @Override
             public void onSuccess(GigyaApiResponse gigyaApiResponse) {
                 GigyaSdkRNLogger.log("send: success with response: " + gigyaApiResponse.asJson());
                 promiseWrapper.resolve(gigyaApiResponse);
@@ -123,17 +131,20 @@ public class GigyaSdkWrapper<T extends GigyaAccount> {
             }
 
             @Override
-            public void onConflictingAccounts(@NonNull GigyaApiResponse response, @NonNull ILinkAccountsResolver resolver) {
+            public void onConflictingAccounts(@NonNull GigyaApiResponse response,
+                    @NonNull ILinkAccountsResolver resolver) {
                 resolverHelper.interrupt = "conflictingAccount";
                 resolverHelper.linkAccountsResolver = resolver;
                 promiseWrapper.reject(response);
             }
 
             @Override
-            public void onPendingRegistration(@NonNull GigyaApiResponse response, @NonNull IPendingRegistrationResolver resolver) {
+            public void onPendingRegistration(@NonNull GigyaApiResponse response,
+                    @NonNull IPendingRegistrationResolver resolver) {
                 resolverHelper.interrupt = "pendingRegistration";
                 resolverHelper.pendingRegistrationResolver = resolver;
-                promiseWrapper.reject(response);;
+                promiseWrapper.reject(response);
+                ;
             }
 
             @Override
@@ -161,14 +172,57 @@ public class GigyaSdkWrapper<T extends GigyaAccount> {
             }
 
             @Override
-            public void onConflictingAccounts(@NonNull GigyaApiResponse response, @NonNull ILinkAccountsResolver resolver) {
+            public void onConflictingAccounts(@NonNull GigyaApiResponse response,
+                    @NonNull ILinkAccountsResolver resolver) {
                 resolverHelper.interrupt = "conflictingAccount";
                 resolverHelper.linkAccountsResolver = resolver;
                 promiseWrapper.reject(response);
             }
 
             @Override
-            public void onPendingRegistration(@NonNull GigyaApiResponse response, @NonNull IPendingRegistrationResolver resolver) {
+            public void onPendingRegistration(@NonNull GigyaApiResponse response,
+                    @NonNull IPendingRegistrationResolver resolver) {
+                resolverHelper.interrupt = "pendingRegistration";
+                resolverHelper.pendingRegistrationResolver = resolver;
+                promiseWrapper.reject(response);
+            }
+
+            @Override
+            public void onPendingVerification(@NonNull GigyaApiResponse response, @Nullable String regToken) {
+                promiseWrapper.reject(response);
+            }
+        });
+    }
+
+    void loginWithCustomId(@Nonnull String identifer, @Nonnull String identiferType, @Nonnull String password, @Nonnull String jsonParameters, Promise promise) {
+        GigyaSdkRNLogger.log("loginWithCustomId: called");
+        promiseWrapper.promise = promise;
+        final Map<String, Object> params = mapParams(jsonParameters);
+        gigyaInstance.login(identifer, identiferType, password, mapParams(jsonParameters), new GigyaLoginCallback<T>() {
+            @Override
+            public void onSuccess(T account) {
+                GigyaSdkRNLogger.log("login: success with response: ");
+                resolverHelper.clear();
+                promiseWrapper.resolve(account);
+            }
+
+            @Override
+            public void onError(GigyaError gigyaError) {
+                GigyaSdkRNLogger.log("register: error with message: " + gigyaError.getLocalizedMessage());
+                promiseWrapper.reject(gigyaError);
+            }
+
+            @Override
+            public void onConflictingAccounts(@NonNull GigyaApiResponse response,
+                    @NonNull ILinkAccountsResolver resolver) {
+                resolverHelper.interrupt = "conflictingAccount";
+                resolverHelper.linkAccountsResolver = resolver;
+                promiseWrapper.reject(response);
+            }
+
+            @Override
+            public void onPendingRegistration(@NonNull GigyaApiResponse response,
+                    @NonNull IPendingRegistrationResolver resolver) {
                 resolverHelper.interrupt = "pendingRegistration";
                 resolverHelper.pendingRegistrationResolver = resolver;
                 promiseWrapper.reject(response);
@@ -253,7 +307,7 @@ public class GigyaSdkWrapper<T extends GigyaAccount> {
                 GigyaSdkRNLogger.log("social login : error with message: " + gigyaError.getLocalizedMessage());
                 promiseWrapper.reject(gigyaError);
             }
-            
+
             @Override
             public void onOperationCanceled() {
                 GigyaSdkRNLogger.log("sso login : canceled");
@@ -262,14 +316,16 @@ public class GigyaSdkWrapper<T extends GigyaAccount> {
             }
 
             @Override
-            public void onConflictingAccounts(@NonNull GigyaApiResponse response, @NonNull ILinkAccountsResolver resolver) {
+            public void onConflictingAccounts(@NonNull GigyaApiResponse response,
+                    @NonNull ILinkAccountsResolver resolver) {
                 resolverHelper.interrupt = "conflictingAccount";
                 resolverHelper.linkAccountsResolver = resolver;
                 promiseWrapper.reject(response);
             }
 
             @Override
-            public void onPendingRegistration(@NonNull GigyaApiResponse response, @NonNull IPendingRegistrationResolver resolver) {
+            public void onPendingRegistration(@NonNull GigyaApiResponse response,
+                    @NonNull IPendingRegistrationResolver resolver) {
                 resolverHelper.interrupt = "pendingRegistration";
                 resolverHelper.pendingRegistrationResolver = resolver;
                 promiseWrapper.reject(response);
@@ -283,7 +339,7 @@ public class GigyaSdkWrapper<T extends GigyaAccount> {
         });
     }
 
-   void sso(@Nonnull String jsonParameters, Promise promise) {
+    void sso(@Nonnull String jsonParameters, Promise promise) {
         GigyaSdkRNLogger.log("sso login: called");
         promiseWrapper.promise = promise;
         gigyaInstance.login(GigyaDefinitions.Providers.SSO, mapParams(jsonParameters), new GigyaLoginCallback<T>() {
@@ -309,20 +365,20 @@ public class GigyaSdkWrapper<T extends GigyaAccount> {
                                 "",
                                 200001,
                                 "Operation canceled",
-                                null
-                        )
-                );
+                                null));
             }
 
             @Override
-            public void onConflictingAccounts(@NonNull GigyaApiResponse response, @NonNull ILinkAccountsResolver resolver) {
+            public void onConflictingAccounts(@NonNull GigyaApiResponse response,
+                    @NonNull ILinkAccountsResolver resolver) {
                 resolverHelper.interrupt = "conflictingAccount";
                 resolverHelper.linkAccountsResolver = resolver;
                 promiseWrapper.reject(response);
             }
 
             @Override
-            public void onPendingRegistration(@NonNull GigyaApiResponse response, @NonNull IPendingRegistrationResolver resolver) {
+            public void onPendingRegistration(@NonNull GigyaApiResponse response,
+                    @NonNull IPendingRegistrationResolver resolver) {
                 resolverHelper.interrupt = "pendingRegistration";
                 resolverHelper.pendingRegistrationResolver = resolver;
                 promiseWrapper.reject(response);
@@ -334,7 +390,7 @@ public class GigyaSdkWrapper<T extends GigyaAccount> {
             }
         });
     }
-    
+
     void addConnection(@Nonnull String provider, @Nonnull String jsonParameters, Promise promise) {
         GigyaSdkRNLogger.log("addConnection: called");
         promiseWrapper.promise = promise;
@@ -371,6 +427,24 @@ public class GigyaSdkWrapper<T extends GigyaAccount> {
         });
     }
 
+    void getAuthCode(Promise promise) {
+        GigyaSdkRNLogger.log("getAuthCode: called");
+        promiseWrapper.promise = promise;
+        gigyaInstance.getAuthCode(new GigyaCallback<String>() {
+            @Override
+            public void onSuccess(String code) {
+                GigyaSdkRNLogger.log("getAuthCode : success");
+                promiseWrapper.resolve(code);
+            }
+
+            @Override
+            public void onError(GigyaError gigyaError) {
+                GigyaSdkRNLogger.log("getAuthCode : error with message: " + gigyaError.getLocalizedMessage());
+                promiseWrapper.reject(gigyaError);
+            }
+        });
+    }
+
     void invalidateSession(Promise promise) {
         GigyaSdkRNLogger.log("invalidate session: called");
         promiseWrapper.promise = promise;
@@ -383,7 +457,8 @@ public class GigyaSdkWrapper<T extends GigyaAccount> {
             IAccountService _accountService = Gigya.getContainer().get(IAccountService.class);
             _accountService.invalidateAccount();
 
-            ISessionVerificationService _sessionVerificationService = Gigya.getContainer().get(ISessionVerificationService.class);
+            ISessionVerificationService _sessionVerificationService = Gigya.getContainer()
+                    .get(ISessionVerificationService.class);
             _sessionVerificationService.stop();
 
             promise.resolve(null);
@@ -396,7 +471,7 @@ public class GigyaSdkWrapper<T extends GigyaAccount> {
         GigyaSdkRNLogger.log("resolve: called with method:" + method);
         promiseWrapper.promise = promise;
         final Map<String, Object> params = mapParams(jsonParameters);
-        switch(resolverHelper.interrupt) {
+        switch (resolverHelper.interrupt) {
             case "pendingRegistration": {
                 if (method.equals("setAccount")) {
                     final Map<String, Object> mappedAccountParams = mapSetAccountParameters(jsonParameters);
@@ -405,14 +480,16 @@ public class GigyaSdkWrapper<T extends GigyaAccount> {
                 break;
             }
             case "conflictingAccount": {
-                switch(method) {
+                switch (method) {
                     case "getConflictingAccount": {
-                        final String conflictingAccountsJson = mapObjectToJson(resolverHelper.linkAccountsResolver.getConflictingAccounts());
+                        final String conflictingAccountsJson = mapObjectToJson(
+                                resolverHelper.linkAccountsResolver.getConflictingAccounts());
                         promise.resolve(conflictingAccountsJson);
-                        break;   
+                        break;
                     }
                     case "linkToSite": {
-                        resolverHelper.linkAccountsResolver.linkToSite((String) params.get("loginId"), (String) params.get("password"));
+                        resolverHelper.linkAccountsResolver.linkToSite((String) params.get("loginId"),
+                                (String) params.get("password"));
                         break;
                     }
                     case "linkToSocial": {
@@ -430,7 +507,8 @@ public class GigyaSdkWrapper<T extends GigyaAccount> {
         }
     }
 
-    void showScreenSet(@Nonnull String name, @Nonnull String jsonParameters, @Nonnull final ReactApplicationContext rnContext) {
+    void showScreenSet(@Nonnull String name, @Nonnull String jsonParameters,
+            @Nonnull final ReactApplicationContext rnContext) {
         GigyaSdkRNLogger.log("show screen-sets : called");
         gigyaInstance.showScreenSet(name, true, mapParams(jsonParameters), new GigyaPluginCallback<T>() {
             @Override
@@ -513,7 +591,8 @@ public class GigyaSdkWrapper<T extends GigyaAccount> {
     /**
      * Event emitter for screen0-set event channel.
      */
-    private void emitScreenSetEvent(@Nonnull String name, @Nullable Map<String, Object> data, ReactApplicationContext rnContext) {
+    private void emitScreenSetEvent(@Nonnull String name, @Nullable Map<String, Object> data,
+            ReactApplicationContext rnContext) {
         GigyaSdkRNLogger.log("emitScreenSetEvent : " + name);
         final Map<String, Object> mapped = new HashMap<>();
         mapped.put("event", name);
@@ -530,7 +609,8 @@ public class GigyaSdkWrapper<T extends GigyaAccount> {
      * Map parameter map from JSON string to usable map for SDK communications.
      */
     private Map<String, Object> mapParams(@Nonnull String json) {
-        if (json.isEmpty()) return new HashMap<>();
+        if (json.isEmpty())
+            return new HashMap<>();
         Map<String, Object> mapped = mapJson(json);
         return mapped;
     }
@@ -564,10 +644,11 @@ public class GigyaSdkWrapper<T extends GigyaAccount> {
         return gson.fromJson(jsonString, type);
     }
 
-     /**
+    /**
      * Mapping specific set account parameters given a JSON String.
      *
-     * @see <a href="https://help.sap.com/viewer/8b8d6fffe113457094a17701f63e3d6a/GIGYA/en-US/41398a8670b21014bbc5a10ce4041860.html?q=accounts.setAccountInfo</a>
+     * @see <a
+     *      href="https://help.sap.com/viewer/8b8d6fffe113457094a17701f63e3d6a/GIGYA/en-US/41398a8670b21014bbc5a10ce4041860.html?q=accounts.setAccountInfo</a>
      */
     private Map<String, Object> mapSetAccountParameters(String jsonString) {
         final Map<String, Object> mapped = mapJson(jsonString);
