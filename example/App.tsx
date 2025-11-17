@@ -23,13 +23,6 @@ import {
 import Dialog from "react-native-dialog";
 import Toast from 'react-native-simple-toast';
 
-import {
-  LearnMoreLinks,
-  Colors,
-  DebugInstructions,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
-
 import {Gigya, GigyaError, GigyaInterruption} from 'gigya-react-native-plugin-for-sap-customer-data-cloud';
 
 import { Button } from 'react-native';
@@ -41,6 +34,7 @@ let linkResolver: LinkAccountResolver | null = null;
 const App = (): React.ReactElement => {
 
   const [visible, setVisible] = useState(false);
+  const [visibleCustomId, setVisibleCustomId] = useState(false);
   const [visibleLink, setVisibleLink] = useState(false);
   const [visibleAccount, setVisibleAccount] = useState(false);
 
@@ -86,7 +80,7 @@ const App = (): React.ReactElement => {
   }, []);
   //END -  Foreground/Background app state tracker.
 
-  Gigya.initFor("4_mL-YkAEegR9vzt6QvHWI5Q");
+  Gigya.initFor("4_mL-YkAEegR9vzt6QvHWI5Q", "us1.gigya.com");
 
   // Login state constant needs to be set only after SDK initialization!
   const [isLoggedIn, updateIsLoggedIn] = useState(Gigya.isLoggedIn());
@@ -191,6 +185,31 @@ const App = (): React.ReactElement => {
     try {
       const request = await Gigya.login(login, password);
       console.log("login success:\n" + request);
+      updateIsLoggedIn(Gigya.isLoggedIn());
+    } catch (error) {
+      const e = error as GigyaError
+      console.log("login error:\n" + JSON.stringify(e));
+
+      switch (e.getInterruption()) {
+        case GigyaInterruption.pendingRegistration: {
+
+          console.log("login interruption: pending registration");
+
+          // Test should continue using regToken when site is configured.
+          const resolver = Gigya.resolverFactory.getResolver(e) as PendingRegistrationResolver;
+          console.log(resolver.regToken)
+
+          break
+        }
+      }
+    }
+  };
+
+   // Login test implementation using custom identifer.
+  const loginWithCustomId = async (identifer: string, password: string) => {
+    try {
+      const request = await Gigya.loginWithCustomId(identifer, "gigya.com/identifiers/customIdentifiers/nationalId", password);
+      console.log("login with custom id success:\n" + request);
       updateIsLoggedIn(Gigya.isLoggedIn());
     } catch (error) {
       const e = error as GigyaError
@@ -419,6 +438,7 @@ const App = (): React.ReactElement => {
   enum Method {
     init,
     login,
+    loginWithCustomId,
     register,
     social,
     logout,
@@ -447,6 +467,11 @@ const App = (): React.ReactElement => {
       }
       case Method.login: {
         setVisible(true)
+        setActiveMethod(method)
+        break
+      }
+      case Method.loginWithCustomId: {
+        setVisibleCustomId(true)
         setActiveMethod(method)
         break
       }
@@ -551,6 +576,13 @@ const App = (): React.ReactElement => {
       method: Method.login,
       description:
         'Login with credentials.',
+      show: ShowIn.notLogged
+    },
+    {
+      title: 'Login with Custom ID',
+      method: Method.loginWithCustomId,
+      description:
+        'Login with Custom ID.',
       show: ShowIn.notLogged
     },
     {
@@ -685,6 +717,7 @@ const App = (): React.ReactElement => {
     setVisible(false)
     setVisibleLink(false)
     setVisibleAccount(false)
+    setVisibleCustomId(false)
     dispose()
   };
 
@@ -699,6 +732,19 @@ const App = (): React.ReactElement => {
       }
       case Method.register: {
         register(userData.login, userData.password)
+        dispose()
+        break
+      }
+    }
+    dispose()
+  };
+
+  const handleLoginWithCustomId = () => {
+    setVisibleCustomId(false)
+    console.log(activeMethod)
+    switch (activeMethod) {
+      case Method.loginWithCustomId: {
+        loginWithCustomId(userData.login, userData.password)
         dispose()
         break
       }
@@ -746,6 +792,14 @@ const App = (): React.ReactElement => {
         <Dialog.Input label="password" onChangeText={(pass: string) => userData.password = pass} />
         <Dialog.Button label="Cancel" onPress={handleCancel} />
         <Dialog.Button label="Submit" onPress={handleLogin} />
+      </Dialog.Container>
+
+      <Dialog.Container visible={visibleCustomId}>
+        <Dialog.Title>Login with Custom ID</Dialog.Title>
+        <Dialog.Input label="identifer" onChangeText={(identifer: string) => userData.login = identifer} />
+        <Dialog.Input label="password" onChangeText={(pass: string) => userData.password = pass} />
+        <Dialog.Button label="Cancel" onPress={handleCancel} />
+        <Dialog.Button label="Submit" onPress={handleLoginWithCustomId} />
       </Dialog.Container>
 
       <Dialog.Container visible={visibleAccount}>
@@ -799,20 +853,20 @@ const App = (): React.ReactElement => {
 
 const styles = StyleSheet.create({
   scrollView: {
-    backgroundColor: Colors.lighter,
+    backgroundColor: '#F3F3F3',
   },
   engine: {
     position: 'absolute',
     right: 0,
   },
   body: {
-    backgroundColor: Colors.white,
+    backgroundColor: '#FFFFFF',
   },
   header: {
     fontSize: 28,
     fontWeight: '600',
-    color: Colors.black,
-    backgroundColor: Colors.grey,
+    color: '#000000',
+    backgroundColor: '#CCCCCC',
     textAlign: 'center',
     padding: 16,
   },
@@ -823,19 +877,19 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 24,
     fontWeight: '600',
-    color: Colors.black,
+    color: '#000000',
   },
   sectionDescription: {
     marginTop: 8,
     fontSize: 18,
     fontWeight: '400',
-    color: Colors.dark,
+    color: '#333333',
   },
   highlight: {
     fontWeight: '700',
   },
   footer: {
-    color: Colors.dark,
+    color: '#333333',
     fontSize: 12,
     fontWeight: '600',
     padding: 4,
@@ -858,21 +912,28 @@ const styles = StyleSheet.create({
     flex: 2,
     fontSize: 18,
     fontWeight: '400',
-    color: Colors.primary,
+    color: '#1292B4',
   },
   description: {
     flex: 3,
     paddingVertical: 16,
     fontWeight: '400',
     fontSize: 18,
-    color: Colors.dark,
+    color: '#333333',
   },
   separator: {
-    backgroundColor: Colors.light,
+    backgroundColor: '#EEEEEE',
     height: 1,
   },
   redText: {
     color: 'red',
+  },
+  greenText: {
+    color: 'green'
+  }
+});
+
+export default App;
   },
   greenText: {
     color: 'green'

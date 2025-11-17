@@ -42,6 +42,13 @@ RCT_EXTERN_METHOD(login:(NSString *)loginId
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 
+RCT_EXTERN_METHOD(loginWithCustomId:(NSString *)identifier
+                  identifierType:(NSString *)identifierType
+                  password:(NSString *)password
+                  params:(NSString *)params
+                  resolver:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject)
+
 RCT_EXTERN_METHOD(register:(NSString *)email
                   password:(NSString *)password
                   params:(NSString *)params

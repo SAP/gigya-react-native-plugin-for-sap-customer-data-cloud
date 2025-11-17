@@ -56,7 +56,7 @@ public class GigyaSdkWrapper<T extends GigyaAccount> {
 
         try {
             IApiRequestFactory ref = Gigya.getContainer().get(IApiRequestFactory.class);
-            ref.setSDK("react_native_" + "0.5.0" +  "_android_" + Gigya.VERSION);
+            ref.setSDK("react_native_" + "0.6.0" +  "_android_" + Gigya.VERSION);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -158,6 +158,47 @@ public class GigyaSdkWrapper<T extends GigyaAccount> {
         GigyaSdkRNLogger.log("login: called");
         promiseWrapper.promise = promise;
         gigyaInstance.login(loginId, password, mapParams(jsonParameters), new GigyaLoginCallback<T>() {
+            @Override
+            public void onSuccess(T account) {
+                GigyaSdkRNLogger.log("login: success with response: ");
+                resolverHelper.clear();
+                promiseWrapper.resolve(account);
+            }
+
+            @Override
+            public void onError(GigyaError gigyaError) {
+                GigyaSdkRNLogger.log("register: error with message: " + gigyaError.getLocalizedMessage());
+                promiseWrapper.reject(gigyaError);
+            }
+
+            @Override
+            public void onConflictingAccounts(@NonNull GigyaApiResponse response,
+                    @NonNull ILinkAccountsResolver resolver) {
+                resolverHelper.interrupt = "conflictingAccount";
+                resolverHelper.linkAccountsResolver = resolver;
+                promiseWrapper.reject(response);
+            }
+
+            @Override
+            public void onPendingRegistration(@NonNull GigyaApiResponse response,
+                    @NonNull IPendingRegistrationResolver resolver) {
+                resolverHelper.interrupt = "pendingRegistration";
+                resolverHelper.pendingRegistrationResolver = resolver;
+                promiseWrapper.reject(response);
+            }
+
+            @Override
+            public void onPendingVerification(@NonNull GigyaApiResponse response, @Nullable String regToken) {
+                promiseWrapper.reject(response);
+            }
+        });
+    }
+
+    void loginWithCustomId(@Nonnull String identifer, @Nonnull String identiferType, @Nonnull String password, @Nonnull String jsonParameters, Promise promise) {
+        GigyaSdkRNLogger.log("loginWithCustomId: called");
+        promiseWrapper.promise = promise;
+        final Map<String, Object> params = mapParams(jsonParameters);
+        gigyaInstance.login(identifer, identiferType, password, mapParams(jsonParameters), new GigyaLoginCallback<T>() {
             @Override
             public void onSuccess(T account) {
                 GigyaSdkRNLogger.log("login: success with response: ");
