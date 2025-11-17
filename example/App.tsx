@@ -23,13 +23,6 @@ import {
 import Dialog from "react-native-dialog";
 import Toast from 'react-native-simple-toast';
 
-import {
-  LearnMoreLinks,
-  Colors,
-  DebugInstructions,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
-
 import {Gigya, GigyaError, GigyaInterruption} from 'gigya-react-native-plugin-for-sap-customer-data-cloud';
 
 import { Button } from 'react-native';
@@ -87,7 +80,7 @@ const App = (): React.ReactElement => {
   }, []);
   //END -  Foreground/Background app state tracker.
 
-  Gigya.initFor("4_mL-YkAEegR9vzt6QvHWI5Q", "us1-st2.gigya.com");
+  Gigya.initFor("4_mL-YkAEegR9vzt6QvHWI5Q", "us1.gigya.com");
 
   // Login state constant needs to be set only after SDK initialization!
   const [isLoggedIn, updateIsLoggedIn] = useState(Gigya.isLoggedIn());
@@ -860,20 +853,20 @@ const App = (): React.ReactElement => {
 
 const styles = StyleSheet.create({
   scrollView: {
-    backgroundColor: Colors.lighter,
+    backgroundColor: '#F3F3F3',
   },
   engine: {
     position: 'absolute',
     right: 0,
   },
   body: {
-    backgroundColor: Colors.white,
+    backgroundColor: '#FFFFFF',
   },
   header: {
     fontSize: 28,
     fontWeight: '600',
-    color: Colors.black,
-    backgroundColor: Colors.grey,
+    color: '#000000',
+    backgroundColor: '#CCCCCC',
     textAlign: 'center',
     padding: 16,
   },
@@ -884,19 +877,19 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 24,
     fontWeight: '600',
-    color: Colors.black,
+    color: '#000000',
   },
   sectionDescription: {
     marginTop: 8,
     fontSize: 18,
     fontWeight: '400',
-    color: Colors.dark,
+    color: '#333333',
   },
   highlight: {
     fontWeight: '700',
   },
   footer: {
-    color: Colors.dark,
+    color: '#333333',
     fontSize: 12,
     fontWeight: '600',
     padding: 4,
@@ -919,21 +912,28 @@ const styles = StyleSheet.create({
     flex: 2,
     fontSize: 18,
     fontWeight: '400',
-    color: Colors.primary,
+    color: '#1292B4',
   },
   description: {
     flex: 3,
     paddingVertical: 16,
     fontWeight: '400',
     fontSize: 18,
-    color: Colors.dark,
+    color: '#333333',
   },
   separator: {
-    backgroundColor: Colors.light,
+    backgroundColor: '#EEEEEE',
     height: 1,
   },
   redText: {
     color: 'red',
+  },
+  greenText: {
+    color: 'green'
+  }
+});
+
+export default App;
   },
   greenText: {
     color: 'green'
