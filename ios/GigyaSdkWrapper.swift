@@ -15,6 +15,7 @@ enum GigyaMethods: String {
     case setSession
     case send
     case login
+    case loginWithCustomId
     case register
     case logout
     case getAccount
@@ -97,6 +98,13 @@ class GigyaSdkWrapper<T: GigyaAccountProtocol>: GigyaSdkWrapperProtocol {
             }
 
             self.login(loginId: email, password: password, params: params["params"] as? [String : Any] ?? [:])
+        case .loginWithCustomId:
+            guard let identifier = params["identifier"] as? String,
+                  let identifierType = params["identifierType"] as? String,
+                  let password = params["password"] as? String else {
+                return
+            }
+            self.loginWithCustomId(identifier: identifier, identifierType: identifierType, password: password, params: params["params"] as? [String : Any] ?? [:])
         case .logout:
             self.logout()
         case .getAccount:
@@ -205,6 +213,25 @@ class GigyaSdkWrapper<T: GigyaAccountProtocol>: GigyaSdkWrapperProtocol {
             }
         }
     }
+
+    func loginWithCustomId(identifier: String, identifierType: String, password: String, params: [String: Any]) {
+        gigya.login(identifier: identifier, identifierType: identifierType, password: password, params: params) { [weak self] (result) in
+            guard let self = self else { return }
+
+            switch result {
+            case .success(let data):
+                let mapped: [String: Any] = self.accountToDic(account: data)
+                self.promise?.resolve(result: mapped)
+            case .failure(let error):
+                if let interruption = error.interruption {
+                    self.intteruptionHandle(interruption: interruption)
+                }
+                
+                self.promise?.reject(error: error.error)
+            }
+        }
+    }
+
 
     func logout() {
         gigya.logout { (result) in
