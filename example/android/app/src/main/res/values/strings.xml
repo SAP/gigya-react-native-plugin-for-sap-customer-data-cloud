@@ -1,6 +1,3 @@
 <resources>
     <string name="app_name">GigyaRnExample</string>
-    <string name="facebook_app_id">APP_ID_HERE </string>
-    <string name="fb_login_protocol_scheme">fbAPP_ID_HERE</string>
-    <string name="facebook_client_token">CLIENT_TOKEN_HERE</string>
 </resources>

@@ -32,8 +32,8 @@ export class GigyaInterface {
      * @param {string} apikey 
      * @param {string} domain 
      */
-    initFor(apikey, domain) {
-        GigyaSdk.initFor(apikey, domain ?? null);
+    initFor(apikey, domain, cname) {
+        GigyaSdk.initFor(apikey, domain ?? null, cname ?? null);
     }
 
     /**
@@ -156,6 +156,24 @@ export class GigyaInterface {
     }
 
     /**
+     * Login with Custom ID.
+     * @param {*} identifier 
+     * @param {*} identifierType 
+     * @param {*} password 
+     * @param {*} params 
+     * @returns Response promise. 
+     */
+    async loginWithCustomId(identifier, identifierType, password, params) {
+        try {
+            const req = await GigyaSdk.loginWithCustomId(identifier, identifierType, password, JSON.stringify(params) ?? "")
+            return JSON.parse(req)
+        } catch (e) {
+            const error = new GigyaError(e)
+            throw error
+        }
+    }
+
+    /**
      * Social login via supported provider.
      * 
      * @param {string} provider 
@@ -251,6 +269,21 @@ export class GigyaInterface {
         }
     }
 
+     /**
+     * Get authentication code required for web session exchange.
+     *  
+     * @returns Response promise.
+     */
+     async getAuthCode() {
+        try {
+            const code = await GigyaSdk.getAuthCode();
+            return code
+        } catch (e) {
+            const error = new GigyaError(e)
+            throw error
+        }
+    }
+
     /**
      * Show screen-set with params.
      * 
@@ -262,7 +295,6 @@ export class GigyaInterface {
         GigyaSdk.showScreenSet(name, JSON.stringify(params) ?? "")
 
         listener = GigyaSdkEvents.addListener('event', (jsonData) => {
-            console.log("eee:"+jsonData)
             const data = JSON.parse(jsonData)
             callback(data.event, data.data)
             

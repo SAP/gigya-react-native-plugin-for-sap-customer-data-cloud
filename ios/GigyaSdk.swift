@@ -25,9 +25,9 @@ public class GigyaSdk: NSObject {
          GigyaSdk.gigya = gigya
     }
 
-    @objc(initFor:apiDomain:)
-    init(apiKey: String, apiDomain: String?) {
-        GigyaSdk.gigya?.initFor(apiKey: apiKey, domain: apiDomain)
+    @objc(initFor:apiDomain:cname:)
+    func initFor(apiKey: String, apiDomain: String?, cname: String?) {
+         GigyaSdk.gigya?.initFor(apiKey: apiKey, domain: apiDomain, cname: cname)
     }
 
     @objc(isLoggedIn)
@@ -89,6 +89,15 @@ public class GigyaSdk: NSObject {
         GigyaSdk.gigya?.sendEvent(.login, params: newParams, promise: promise)
     }
 
+    @objc(loginWithCustomId:identifierType:password:params:resolver:rejecter:)
+    func loginWithCustomId(_ identifier: String, identifierType: String, password: String, params: String, resolve: @escaping RCTPromiseResolveBlock, reject: @escaping RCTPromiseRejectBlock) -> Void {
+        promise.set(promiseResolve: resolve, promiseReject: reject)
+
+        let jsonToParams = GigyaSdk.toJson(data: params)
+        let newParams: [String : Any] = ["identifier": identifier,"identifierType": identifierType, "password": password, "params": jsonToParams];
+        GigyaSdk.gigya?.sendEvent(.loginWithCustomId, params: newParams, promise: promise)
+    }
+
     @objc(getAccount:resolver:rejecter:)
     func getAccount(_ params: String, resolve: @escaping RCTPromiseResolveBlock, reject: @escaping RCTPromiseRejectBlock) -> Void {
         promise.set(promiseResolve: resolve, promiseReject: reject)
@@ -127,6 +136,13 @@ public class GigyaSdk: NSObject {
 
         let newParmas: [String: Any] = ["params": jsonToParams]
         GigyaSdk.gigya?.sendEvent(.sso, params: newParmas, promise: promise)
+    }
+
+    @objc(getAuthCode:rejecter:)
+    func getAuthCode(_ resolve: @escaping RCTPromiseResolveBlock, reject: @escaping RCTPromiseRejectBlock) -> Void {
+        promise.set(promiseResolve: resolve, promiseReject: reject)
+
+        GigyaSdk.gigya?.sendEvent(.getAuthCode, params: [:], promise: promise)
     }
 
     @objc(addConnection:resolver:rejecter:)

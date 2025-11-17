@@ -37,8 +37,8 @@ public class GigyaSdkModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void initFor(String apikey, String apiDomain) {
-        gigyaSdk.initFor(apikey, apiDomain);
+    public void initFor(String apikey, String apiDomain, @Nullable String cname) {
+        gigyaSdk.initFor(apikey, apiDomain, cname);
     }
 
     @ReactMethod(isBlockingSynchronousMethod = true)
@@ -85,6 +85,11 @@ public class GigyaSdkModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
+    public void loginWithCustomId(@Nonnull String identifier, @Nonnull String identifierType, @Nonnull String password, @Nonnull String params, Promise promise) {
+        gigyaSdk.loginWithCustomId(identifier, identifierType, password, params, promise);
+    }
+
+    @ReactMethod
     public void logout(Promise promise) {
         gigyaSdk.logout(promise);
     }
@@ -118,6 +123,11 @@ public class GigyaSdkModule extends ReactContextBaseJavaModule {
     public void removeConnection(@Nonnull String provider, Promise promise) {
         gigyaSdk.removeConnection(provider, promise);
     }
+
+    @ReactMethod
+    public void getAuthCode(Promise promise) {
+        gigyaSdk.getAuthCode(promise);
+    } 
 
     @ReactMethod
     public void resolve(@Nonnull String method, @Nonnull String params, Promise promise) {

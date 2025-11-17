@@ -41,4 +41,18 @@ public class GigyaWebAuthn: NSObject {
         GigyaSdk.gigya?.sendEvent(.webAuthnRevoke, params: [:], promise: promise)
     }
 
+    @objc(passkeyRevoke:resolver:rejecter:)
+    func passkeyRevoke(_ keyId: String, resolve: @escaping RCTPromiseResolveBlock, reject: @escaping RCTPromiseRejectBlock) -> Void {
+        promise.set(promiseResolve: resolve, promiseReject: reject)
+
+        GigyaSdk.gigya?.sendEvent(.webAuthnRevokeId, params: ["id": keyId], promise: promise)
+    }
+
+    @objc(passkeyGetCredentials:rejecter:)
+    func passkeyGetCredentials(_ resolve: @escaping RCTPromiseResolveBlock, reject: @escaping RCTPromiseRejectBlock) -> Void {
+        promise.set(promiseResolve: resolve, promiseReject: reject)
+
+        GigyaSdk.gigya?.sendEvent(.webAuthnGetCredentials, params: [:], promise: promise)
+    }
+
 }

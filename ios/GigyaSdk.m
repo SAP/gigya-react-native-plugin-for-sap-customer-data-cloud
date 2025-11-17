@@ -42,6 +42,13 @@ RCT_EXTERN_METHOD(login:(NSString *)loginId
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 
+RCT_EXTERN_METHOD(loginWithCustomId:(NSString *)identifier
+                  identifierType:(NSString *)identifierType
+                  password:(NSString *)password
+                  params:(NSString *)params
+                  resolver:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject)
+
 RCT_EXTERN_METHOD(register:(NSString *)email
                   password:(NSString *)password
                   params:(NSString *)params
@@ -65,6 +72,9 @@ RCT_EXTERN_METHOD(sso: (NSString *)params
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 
+RCT_EXTERN_METHOD(getAuthCode:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject)
+
 RCT_EXTERN_METHOD(addConnection: (NSString *)provider
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
@@ -76,7 +86,8 @@ RCT_EXTERN_METHOD(removeConnection: (NSString *)provider
 RCT_EXTERN__BLOCKING_SYNCHRONOUS_METHOD(isLoggedIn)
 
 RCT_EXTERN_METHOD(initFor:(NSString *)apiKey
-                  apiDomain:(NSString *)apiDomain)
+                  apiDomain:(NSString *)apiDomain
+                  cname:(NSString *)cname)
 
 RCT_EXTERN_METHOD(showScreenSet:(NSString *)name
                   params:(NSString *)params)

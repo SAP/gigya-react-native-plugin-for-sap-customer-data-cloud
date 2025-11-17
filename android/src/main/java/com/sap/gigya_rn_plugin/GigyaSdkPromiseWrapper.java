@@ -37,6 +37,11 @@ public class GigyaSdkPromiseWrapper<T extends GigyaAccount> {
         promise.resolve(response.asJson());
     }
 
+    public void resolve(String response) {
+        if (promise == null) return;
+        promise.resolve(response);
+    }
+
     public void reject(GigyaError error) {
         if (promise == null) return;
         promise.reject(String.valueOf(error.getErrorCode()), error.getData());
