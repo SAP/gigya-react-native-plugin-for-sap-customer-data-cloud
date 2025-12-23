@@ -37,28 +37,29 @@ export class WebAuthnService {
     async passkeyLogin() {
         if (Platform.OS === 'ios') {
             this.login()
-            return
+        } else {
+            try {
+                const req = await GigyaWebAuthn.passkeyLogin()
+                return JSON.parse(req)
+            } catch (e) {
+                const error = new GigyaError(e)
+                throw error
+            }
         }
-        try {
-            const req = await GigyaWebAuthn.passkeyLogin()
-            return JSON.parse(req)
-        } catch (e) {
-            const error = new GigyaError(e)
-            throw error
-        }
+
     }
 
     async passkeyRegister() {
         if (Platform.OS === 'ios') {
             this.register()
-            return
-        }
-        try {
-            const req = await GigyaWebAuthn.passkeyRegister()
-            return JSON.parse(req)
-        } catch (e) {
-            const error = new GigyaError(e)
-            throw error
+        } else {
+            try {
+                const req = await GigyaWebAuthn.passkeyRegister()
+                return JSON.parse(req)
+            } catch (e) {
+                const error = new GigyaError(e)
+                throw error
+            }
         }
     }
 
