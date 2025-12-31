@@ -934,10 +934,3 @@ const styles = StyleSheet.create({
 });
 
 export default App;
-  },
-  greenText: {
-    color: 'green'
-  }
-});
-
-export default App;

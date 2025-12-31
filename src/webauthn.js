@@ -36,7 +36,7 @@ export class WebAuthnService {
 
     async passkeyLogin() {
         if (Platform.OS === 'ios') {
-            this.login()
+             return this.login()
         } else {
             try {
                 const req = await GigyaWebAuthn.passkeyLogin()
@@ -51,7 +51,7 @@ export class WebAuthnService {
 
     async passkeyRegister() {
         if (Platform.OS === 'ios') {
-            this.register()
+             return this.register()
         } else {
             try {
                 const req = await GigyaWebAuthn.passkeyRegister()
