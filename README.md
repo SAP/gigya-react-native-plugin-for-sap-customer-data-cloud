@@ -384,6 +384,8 @@ try {
 
 ### REVOKE:
 Revoke an existing FIDO key on Android and all passkeys on iOS:
+Using this method will revoke only keys that were created using the native register method. It will
+not revoke keys created using the web interface (screen-sets)
 ```
 try {
       var operation = await Gigya.webAuthn.revoke()
@@ -395,6 +397,7 @@ try {
  ```
 
 Revoke a specific passkey on both Android & iOS.
+Specific key is fetched using the "getCredentials" method only. This is relevant for both native/web keys.
 ```
 try {
       var operation = await Gigya.webAuthn.passkeyRevoke("ID_TO_REVOKE")
