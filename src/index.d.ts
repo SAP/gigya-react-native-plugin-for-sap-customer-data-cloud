@@ -60,9 +60,9 @@ export namespace Gigya {
     
     function removeAccount(provider: GigyaSocialProviders): Promise<GigyaDictionary>;
 
-    function showScreenSet(name: string, callback: (event: string, data: GigyaDictionary) => void): void;
+    function showScreenSet(name: string, callback: (event: string, data: GigyaDictionary) => void, isModal?: boolean): void;
 
-    function showScreenSetWithParams(name: string, params: Record<string, any>, callback: (event: string, data: GigyaDictionary) => void): void;
+    function showScreenSetWithParams(name: string, params: Record<string, any>, callback: (event: string, data: GigyaDictionary) => void, isModal?: boolean): void;
 
     function getAuthCode() : Promise<String>;
 
