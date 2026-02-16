@@ -2,17 +2,19 @@ import { NativeEventEmitter, NativeModules } from 'react-native'
 import { BiometricService } from './biometric'
 import { ResolverFactory } from './resolvers'
 import { WebAuthnService } from './webauthn'
+import { RequestQueue } from './queue'
 
 const { GigyaSdk } = NativeModules
 
 const GigyaSdkEvents = new NativeEventEmitter(NativeModules.GigyaSdkEvents)
 
 export class GigyaInterface {
-    resolverFactory = new ResolverFactory()
-    
-    biometric = new BiometricService()
-
-    webAuthn = new WebAuthnService()
+    constructor() {
+        this.queue = new RequestQueue()
+        this.resolverFactory = new ResolverFactory()
+        this.biometric = new BiometricService(this.queue)
+        this.webAuthn = new WebAuthnService(this.queue)
+    }
 
     /**
      * Check login state.
@@ -43,14 +45,16 @@ export class GigyaInterface {
      * @returns Session promise.
      */
     async getSession() {
-        try {
-            const result = await GigyaSdk.getSession()
-            if (result === '{}') return null            
-            return JSON.parse(result)
-        } catch (e) {
-            const error = new GigyaError(e)
-            throw error
-        }
+        return this.queue.enqueue(async () => {
+            try {
+                const result = await GigyaSdk.getSession()
+                if (result === '{}') return null            
+                return JSON.parse(result)
+            } catch (e) {
+                const error = new GigyaError(e)
+                throw error
+            }
+        })
     }
 
     /**
@@ -63,13 +67,15 @@ export class GigyaInterface {
      * @returns Session promise.
      */
     async setSession(token, secret, expiration) {
-        try {
-            const req = await GigyaSdk.setSession(token, secret, expiration ?? 0)
-            return JSON.parse(req)
-        } catch (e) {
-            const error = new GigyaError(e)
-            throw error
-        }
+        return this.queue.enqueue(async () => {
+            try {
+                const req = await GigyaSdk.setSession(token, secret, expiration ?? 0)
+                return JSON.parse(req)
+            } catch (e) {
+                const error = new GigyaError(e)
+                throw error
+            }
+        })
     }
 
     /**
@@ -78,13 +84,15 @@ export class GigyaInterface {
      * 
      */
     async invalidateSession() {
-        try {
-            const req = await GigyaSdk.invalidateSession()
-            return req
-        } catch (e) {
-            const error = new GigyaError(e)
-            throw error
-        }
+        return this.queue.enqueue(async () => {
+            try {
+                const req = await GigyaSdk.invalidateSession()
+                return req
+            } catch (e) {
+                const error = new GigyaError(e)
+                throw error
+            }
+        })
     }
     
     /**
@@ -96,13 +104,15 @@ export class GigyaInterface {
      * @returns Response promise.
      */
     async send(api, params) {
-        try {
-            const req = await GigyaSdk.send(api, JSON.stringify(params) ?? "")
-            return JSON.parse(req)
-        } catch (e) {
-            const error = new GigyaError(e)
-            throw error
-        }
+        return this.queue.enqueue(async () => {
+            try {
+                const req = await GigyaSdk.send(api, JSON.stringify(params) ?? "")
+                return JSON.parse(req)
+            } catch (e) {
+                const error = new GigyaError(e)
+                throw error
+            }
+        })
     }
 
     /**
@@ -111,13 +121,15 @@ export class GigyaInterface {
      * @returns Response promise.
      */
     async logout() {
-        try {
-            const req = await GigyaSdk.logout();
-            return JSON.parse(req)
-        } catch (e) {
-            const error = new GigyaError(e)
-            throw error
-        }
+        return this.queue.enqueue(async () => {
+            try {
+                const req = await GigyaSdk.logout();
+                return JSON.parse(req)
+            } catch (e) {
+                const error = new GigyaError(e)
+                throw error
+            }
+        })
     }
 
     /**
@@ -129,13 +141,15 @@ export class GigyaInterface {
      * @returns Response promise.
      */
     async register(email, password, params) {
-        try {
-            const req = await GigyaSdk.register(email, password, JSON.stringify(params) ?? "")
-            return JSON.parse(req)
-        } catch (e) {
-            const error = new GigyaError(e)
-            throw error
-        }
+        return this.queue.enqueue(async () => {
+            try {
+                const req = await GigyaSdk.register(email, password, JSON.stringify(params) ?? "")
+                return JSON.parse(req)
+            } catch (e) {
+                const error = new GigyaError(e)
+                throw error
+            }
+        })
     }
 
     /**
@@ -146,13 +160,15 @@ export class GigyaInterface {
      * @returns Response promise. 
      */
     async login(loginId, password, params) {
-        try {
-            const req = await GigyaSdk.login(loginId, password, JSON.stringify(params) ?? "")
-            return JSON.parse(req)
-        } catch (e) {
-            const error = new GigyaError(e)
-            throw error
-        }
+        return this.queue.enqueue(async () => {
+            try {
+                const req = await GigyaSdk.login(loginId, password, JSON.stringify(params) ?? "")
+                return JSON.parse(req)
+            } catch (e) {
+                const error = new GigyaError(e)
+                throw error
+            }
+        })
     }
 
     /**
@@ -164,13 +180,15 @@ export class GigyaInterface {
      * @returns Response promise. 
      */
     async loginWithCustomId(identifier, identifierType, password, params) {
-        try {
-            const req = await GigyaSdk.loginWithCustomId(identifier, identifierType, password, JSON.stringify(params) ?? "")
-            return JSON.parse(req)
-        } catch (e) {
-            const error = new GigyaError(e)
-            throw error
-        }
+        return this.queue.enqueue(async () => {
+            try {
+                const req = await GigyaSdk.loginWithCustomId(identifier, identifierType, password, JSON.stringify(params) ?? "")
+                return JSON.parse(req)
+            } catch (e) {
+                const error = new GigyaError(e)
+                throw error
+            }
+        })
     }
 
     /**
@@ -181,13 +199,15 @@ export class GigyaInterface {
      * @returns Response promise. 
      */
     async socialLogin(provider, params) {
-        try {
-            const req = await GigyaSdk.socialLogin(provider, JSON.stringify(params) ?? "")
-            return JSON.parse(req)
-        } catch (e) {
-            const error = new GigyaError(e)
-            throw error
-        }
+        return this.queue.enqueue(async () => {
+            try {
+                const req = await GigyaSdk.socialLogin(provider, JSON.stringify(params) ?? "")
+                return JSON.parse(req)
+            } catch (e) {
+                const error = new GigyaError(e)
+                throw error
+            }
+        })
     }
 
     /**
@@ -197,13 +217,15 @@ export class GigyaInterface {
      * @returns Response promise. 
      */
     async sso(params) {
-        try {
-            const req = await GigyaSdk.sso(JSON.stringify(params) ?? "")
-            return JSON.parse(req)
-        } catch (e) {
-            const error = new GigyaError(e)
-            throw error
-        }
+        return this.queue.enqueue(async () => {
+            try {
+                const req = await GigyaSdk.sso(JSON.stringify(params) ?? "")
+                return JSON.parse(req)
+            } catch (e) {
+                const error = new GigyaError(e)
+                throw error
+            }
+        })
     }
 
     /**
@@ -212,13 +234,15 @@ export class GigyaInterface {
      * @returns Response promise.
      */
     async setAccount(params) {
-        try {
-            const req = await GigyaSdk.setAccount(JSON.stringify(params) ?? "")
-            return JSON.parse(req)
-        } catch (e) {
-            const error = new GigyaError(e)
-            throw error
-        }
+        return this.queue.enqueue(async () => {
+            try {
+                const req = await GigyaSdk.setAccount(JSON.stringify(params) ?? "")
+                return JSON.parse(req)
+            } catch (e) {
+                const error = new GigyaError(e)
+                throw error
+            }
+        })
     }
 
     /**
@@ -228,13 +252,15 @@ export class GigyaInterface {
      * @returns Response promise.
      */
     async getAccount(params) {
-        try {
-            const req = await GigyaSdk.getAccount(JSON.stringify(params) ?? "")
-            return JSON.parse(req)
-        } catch (e) {
-            const error = new GigyaError(e)
-            throw error
-        }
+        return this.queue.enqueue(async () => {
+            try {
+                const req = await GigyaSdk.getAccount(JSON.stringify(params) ?? "")
+                return JSON.parse(req)
+            } catch (e) {
+                const error = new GigyaError(e)
+                throw error
+            }
+        })
     }
 
     /**
@@ -244,13 +270,15 @@ export class GigyaInterface {
      * @returns Response promise.
      */
     async addConnection(provider, params) {
-        try {
-            const req = await GigyaSdk.addConnection(provider ?? "", JSON.stringify(params) ?? "")
-            return JSON.parse(req)
-        } catch (e) {
-            const error = new GigyaError(e)
-            throw error
-        }
+        return this.queue.enqueue(async () => {
+            try {
+                const req = await GigyaSdk.addConnection(provider ?? "", JSON.stringify(params) ?? "")
+                return JSON.parse(req)
+            } catch (e) {
+                const error = new GigyaError(e)
+                throw error
+            }
+        })
     }
 
     /**
@@ -260,13 +288,15 @@ export class GigyaInterface {
      * @returns Response promise.
      */
     async removeConnection(provider) {
-        try {
-            const req = await GigyaSdk.removeConnection(provider ?? "")
-            return JSON.parse(req)
-        } catch (e) {
-            const error = new GigyaError(e)
-            throw error
-        }
+        return this.queue.enqueue(async () => {
+            try {
+                const req = await GigyaSdk.removeConnection(provider ?? "")
+                return JSON.parse(req)
+            } catch (e) {
+                const error = new GigyaError(e)
+                throw error
+            }
+        })
     }
 
      /**
@@ -275,13 +305,15 @@ export class GigyaInterface {
      * @returns Response promise.
      */
      async getAuthCode() {
-        try {
-            const code = await GigyaSdk.getAuthCode();
-            return code
-        } catch (e) {
-            const error = new GigyaError(e)
-            throw error
-        }
+        return this.queue.enqueue(async () => {
+            try {
+                const code = await GigyaSdk.getAuthCode();
+                return code
+            } catch (e) {
+                const error = new GigyaError(e)
+                throw error
+            }
+        })
     }
 
     /**
