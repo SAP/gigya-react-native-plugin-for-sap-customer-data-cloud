@@ -59,7 +59,7 @@ protocol GigyaSdkWrapperProtocol {
 
     func sendEvent(_ name: GigyaMethods, params: [String: Any], promise: PromiseWrapper)
 
-    func showScreenSet(name: String, params: [String: Any])
+    func showScreenSet(name: String, params: [String: Any], isModal: Bool)
 
     func useResolver(method: String, params: [String: Any], promise: PromiseWrapper)
 }
@@ -322,13 +322,13 @@ class GigyaSdkWrapper<T: GigyaAccountProtocol>: GigyaSdkWrapperProtocol {
         }
     }
     
-    func showScreenSet(name: String, params: [String: Any]) {
+    func showScreenSet(name: String, params: [String: Any], isModal: Bool) {
         guard let viewController = RCTPresentedViewController() else {
             GigyaLogger.log(with: self, message: "Presented viewController not found.")
             return
         }
 
-        gigya.showScreenSet(with: name, viewController: viewController, params: params) { (result) in
+        gigya.showScreenSet(with: name, viewController: viewController, params: params, isModal: isModal) { (result) in
             switch result {
             case .onBeforeValidation(event: let event):
                 let data: [String: Any] = ["event": "onBeforeValidation", "data": event]

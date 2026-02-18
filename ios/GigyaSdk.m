@@ -90,7 +90,8 @@ RCT_EXTERN_METHOD(initFor:(NSString *)apiKey
                   cname:(NSString *)cname)
 
 RCT_EXTERN_METHOD(showScreenSet:(NSString *)name
-                  params:(NSString *)params)
+                  params:(NSString *)params
+                  isModal:(BOOL *)isModal)
 
 RCT_EXTERN_METHOD(resolve:(NSString *)method
                   params:(NSString *)params
