@@ -31,5 +31,15 @@ target 'GigyaRnExample' do
       :mac_catalyst_enabled => false,
       # :ccache_enabled => true
     )
+
+    # fmt 11.0.2 uses consteval in FMT_COMPILE_STRING which Xcode 26's clang rejects under C++20.
+    # Force fmt (and glog which depends on it) to compile as C++17 instead.
+    installer.pods_project.targets.each do |target|
+      if ['fmt', 'glog'].include?(target.name)
+        target.build_configurations.each do |config|
+          config.build_settings['CLANG_CXX_LANGUAGE_STANDARD'] = 'c++17'
+        end
+      end
+    end
   end
 end

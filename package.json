@@ -25,6 +25,11 @@
     "react": "^19.0.0",
     "react-native": ">=0.59.0-rc.0 <1.0.x"
   },
+  "react-native": {
+    "ios": {
+      "type": "spm"
+    }
+  },
   "devDependencies": {
     "react": "^19.0.0",
     "react-native": ">=0.70.2"

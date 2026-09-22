@@ -7,10 +7,30 @@ A React Native plugin for interfacing with SAP Customer Data Cloud. This plugin 
 
 ## Requirements
 Android SDK support requires Android SDK 23 and above (For Biometric capabilities, SDK 23 and above is required).
-iOS support requires iOS 10 and above.
+iOS support requires iOS 13.0 and above.
 
 ## Download and Installation
 Add the plugin in your **package.json** file.
+
+### iOS — Swift Package Manager
+
+1. Install the package:
+```sh
+yarn install
+# or
+npm install
+```
+
+2. Run CocoaPods (**required before opening Xcode**):
+```sh
+cd ios && pod install
+```
+
+3. In Xcode, select your project → **Package Dependencies** tab → click **+** → **Add Local…** → navigate to `node_modules/gigya-react-native-plugin-for-sap-customer-data-cloud` → **Add Package**.
+
+4. When prompted, select **gigya-react-native-plugin-for-sap-customer-data-cloud** and add it to your app target.
+
+5. Build the project.
 
 ## Setup & Gigya core integration
 
