@@ -145,23 +145,21 @@ public class GigyaSdk: NSObject {
         GigyaSdk.gigya?.sendEvent(.getAuthCode, params: [:], promise: promise)
     }
 
-    @objc(addConnection:resolver:rejecter:)
-    func addConnection(_ params: String, resolve: @escaping RCTPromiseResolveBlock, reject: @escaping RCTPromiseRejectBlock) -> Void {
+    @objc(addConnection:params:resolver:rejecter:)
+    func addConnection(_ provider: String, params: String, resolve: @escaping RCTPromiseResolveBlock, reject: @escaping RCTPromiseRejectBlock) -> Void {
         promise.set(promiseResolve: resolve, promiseReject: reject)
 
         let jsonToParams = GigyaSdk.toJson(data: params)
 
-        let newParams: [String : Any] = ["params": jsonToParams];
+        let newParams: [String : Any] = ["provider": provider, "params": jsonToParams];
         GigyaSdk.gigya?.sendEvent(.addConnection, params: newParams, promise: promise)
     }
 
     @objc(removeConnection:resolver:rejecter:)
-    func removeConnection(_ params: String, resolve: @escaping RCTPromiseResolveBlock, reject: @escaping RCTPromiseRejectBlock) -> Void {
+    func removeConnection(_ provider: String, resolve: @escaping RCTPromiseResolveBlock, reject: @escaping RCTPromiseRejectBlock) -> Void {
         promise.set(promiseResolve: resolve, promiseReject: reject)
 
-        let jsonToParams = GigyaSdk.toJson(data: params)
-
-        let newParams: [String : Any] = ["params": jsonToParams];
+        let newParams: [String : Any] = ["provider": provider];
         GigyaSdk.gigya?.sendEvent(.removeConnection, params: newParams, promise: promise)
     }
 

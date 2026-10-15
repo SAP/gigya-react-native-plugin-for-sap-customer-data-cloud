@@ -388,7 +388,7 @@ class GigyaSdkWrapper<T: GigyaAccountProtocol>: GigyaSdkWrapperProtocol {
             GigyaLogger.log(with: self, message: "Social provider not found.")
             return
         }
-        gigya.addConnection(provider: providerx, viewController: viewController) { (result) in
+        gigya.addConnection(provider: providerx, viewController: viewController, params: params) { (result) in
             switch result {
             case .success:
                 self.promise?.resolve(result: [])

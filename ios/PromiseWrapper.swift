@@ -58,6 +58,8 @@ class PromiseWrapper {
         switch error {
             case .gigyaError(let data):
                 self.reject(error: data.errorMessage, errorCode: data.errorCode, data: data.toDictionary())
+            case .providerError(let data) where data == GigyaDefinitions.Plugin.canceled:
+                self.reject(error: data, errorCode: 200001, data: ["errorCode": 200001, "errorDetails": "Operation canceled"])
             default:
                 self.reject(error: error.localizedDescription)
         }

@@ -56,9 +56,9 @@ export namespace Gigya {
 
     function getAccount(params?: Record<string, any>): Promise<GigyaDictionary>;
 
-    function addAccount(provider: GigyaSocialProviders, params?: Record<string, any>): Promise<GigyaDictionary>;
+    function addConnection(provider: GigyaSocialProviders, params?: Record<string, any>): Promise<GigyaDictionary>;
     
-    function removeAccount(provider: GigyaSocialProviders): Promise<GigyaDictionary>;
+    function removeConnection(provider: GigyaSocialProviders): Promise<GigyaDictionary>;
 
     function showScreenSet(name: string, callback: (event: string, data: GigyaDictionary) => void): void;
 

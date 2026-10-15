@@ -406,6 +406,12 @@ public class GigyaSdkWrapper<T extends GigyaAccount> {
                 GigyaSdkRNLogger.log("addConnection : error with message: " + gigyaError.getLocalizedMessage());
                 promiseWrapper.reject(gigyaError);
             }
+
+            @Override
+            public void onOperationCanceled() {
+                GigyaSdkRNLogger.log("addConnection : canceled");
+                promiseWrapper.reject(GigyaError.cancelledOperation());
+            }
         });
     }
 

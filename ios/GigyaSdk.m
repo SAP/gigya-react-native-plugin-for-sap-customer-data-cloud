@@ -76,6 +76,7 @@ RCT_EXTERN_METHOD(getAuthCode:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 
 RCT_EXTERN_METHOD(addConnection: (NSString *)provider
+                  params: (NSString *)params
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 
