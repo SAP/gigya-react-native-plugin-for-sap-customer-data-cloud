@@ -352,7 +352,13 @@ export class GigyaInterface {
  */
 export class GigyaError {
     constructor(error) {
-        const e = JSON.parse(error.message)
+        let e
+        try {
+            e = JSON.parse(error.message)
+        } catch {
+            // Android rejects errors built from a code alone (e.g. a cancelled provider flow) without a JSON payload.
+            e = { errorCode: Number(error.code), errorDetails: error.message }
+        }
         this.callId = e.callId
         this.errorCode = e.errorCode
         this.statusCode = e.statusCode
